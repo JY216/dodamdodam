@@ -1,0 +1,64 @@
+@import 'def';
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: $global-white;
+  height: $global-nav-height;
+  box-shadow: $global-shadow-sm;
+
+  .inner {
+    @include flex-between;
+    height: 100%;
+    width: 100%;
+    padding: 0 3rem;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    width: 8rem;
+
+    img {
+      height: 3rem;
+      width: auto;
+      object-fit: contain;
+    }
+  }
+
+  .menu {
+    display: flex;
+    gap: 10rem;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .item a {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $global-text-color;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $global-color-primary-dark;
+    }
+  }
+
+  .auth {
+    width: 8rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .nav-login {
+    font-size: 1rem;
+    font-weight: 400;
+    color: $global-text-muted;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $global-text-color;
+    }
+  }
+}

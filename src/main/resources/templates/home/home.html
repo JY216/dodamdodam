@@ -6,8 +6,63 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>도담도담</title>
+    <link rel="stylesheet" href="/assets/styles/home.css">
 </head>
 <body>
+<!-- 네비게이션 바 -->
+<header class="nav">
+    <nav class="inner">
+        <div class="logo">
+            <img src="/assets/images/logo.png" alt="도담도담 로고">
+        </div>
+        <ul class="menu">
+            <li class="item"><a href="#">검색</a></li>
+            <li class="item"><a href="#">새로 들어온 책</a></li>
+            <li class="item"><a href="#">베스트셀러</a></li>
+            <li class="item"><a href="#">희망 도서 신청</a></li>
+        </ul>
+        <div class="auth">
+            <a href="#" class="nav-login">login</a>
+        </div>
+    </nav>
+</header>
 
+<main class="main">
+    <!-- 배너 -->
+    <section class="banner">
+        <img
+                class="image"
+                src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200&q=80"
+                alt="도서관 전경"
+        >
+    </section>
+    <!-- 검색 -->
+    <section class="search">
+        <div class="search-bar">
+            <input
+                    class="search input"
+                    type="text"
+                    placeholder="검색어를 입력해 주세요."
+            >
+            <button class="search-btn" type="button" aria-label="검색">
+                <!--          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"-->
+                <!--            fill="none" stroke="currentColor" stroke-width="2.2"-->
+                <!--            stroke-linecap="round" stroke-linejoin="round">-->
+                <!--            <circle cx="11" cy="11" r="8"/>-->
+                <!--            <line x1="21" y1="21" x2="16.65" y2="16.65"/>-->
+                <!--          </svg>-->
+            </button>
+        </div>
+    </section>
+
+    <section class="cards">
+        <div class="card card-left">
+
+        </div>
+        <div class="card card-right">
+
+        </div>
+    </section>
+</main>
 </body>
 </html>

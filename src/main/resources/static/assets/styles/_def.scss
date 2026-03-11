@@ -1,0 +1,46 @@
+// Colors
+$global-color-primary:        #55B14E;
+$global-color-primary-light:  #98D095;
+$global-color-primary-dark:   #459C3F;
+$global-color-highlight:      #68BA63;
+$global-color-invalid:        #ff6467;
+$global-color-warning:        #e74c3c;
+
+// Background & Border & Text
+$global-background-color:     #FCF9F9;
+$global-border-color:         darken($global-background-color, 5%);
+$global-text-color:           #212121;
+$global-text-muted:           #888888;
+$global-text-placeholder:     #aaaaaa;
+
+// Common
+$global-white:                #ffffff;
+$global-font-main:            'Noto Sans KR', sans-serif;
+
+$global-border-radius-md:     1rem;
+$global-border-radius-pill:   3.125rem;
+
+$global-shadow-sm:            0 0.125rem 0.5rem rgba(0, 0, 0, 0.08);
+
+$global-container-max:        80rem;
+$global-nav-height:           4rem;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin container {
+  width: 100%;
+  max-width: $global-container-max;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
