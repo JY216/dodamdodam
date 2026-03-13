@@ -1,0 +1,179 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #FCF9F9;
+  color: #212121;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul, li {
+  list-style: none;
+}
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #ffffff;
+  height: 4rem;
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.08);
+}
+.nav .inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  padding: 0 3rem;
+}
+.nav .logo {
+  display: flex;
+  align-items: center;
+  width: 8rem;
+}
+.nav .logo img {
+  height: 3rem;
+  width: auto;
+  object-fit: contain;
+}
+.nav .menu {
+  display: flex;
+  gap: 10rem;
+  flex: 1;
+  justify-content: center;
+}
+.nav .item a {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212121;
+  transition: color 0.2s ease;
+}
+.nav .item a:hover {
+  color: #459C3F;
+}
+.nav .auth {
+  width: 8rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.nav .nav-login {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #888888;
+  transition: color 0.2s ease;
+}
+.nav .nav-login:hover {
+  color: #212121;
+}
+
+.main {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  padding-top: 1.5rem;
+  padding-bottom: 3.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.banner {
+  width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.banner .image {
+  width: 100%;
+  height: 18.75rem;
+  object-fit: cover;
+  display: block;
+}
+
+.search {
+  width: 100%;
+}
+.search .search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #98D095;
+  border-radius: 3.125rem;
+  padding: 0.875rem 1.25rem;
+  gap: 0.75rem;
+}
+.search input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 1rem;
+  color: #212121;
+}
+.search input::placeholder {
+  color: #aaaaaa;
+}
+.search .search-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #888888;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+.search .search-btn:hover {
+  color: #459C3F;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.25rem;
+}
+
+.card {
+  border-radius: 1rem;
+  min-height: 20rem;
+  padding: 1.5rem;
+}
+.card.card-left {
+  background-color: #98D095;
+}
+.card.card-right {
+  background-color: #55B14E;
+}
+
+@media (max-width: 48rem) {
+  .nav .menu {
+    gap: 1.25rem;
+  }
+  .nav .item a {
+    font-size: 0.85rem;
+  }
+  .banner .image {
+    height: 12.5rem;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 30rem) {
+  .nav .menu {
+    gap: 0.75rem;
+  }
+}
+
+/*# sourceMappingURL=home.css.map */
