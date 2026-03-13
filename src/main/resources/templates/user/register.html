@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>회원가입</title>
+    <link href="/user/styles/register.css" rel="stylesheet">
+</head>
+<body>
+<div id="addressDialog">
+    <div class="modal"></div>
+</div>
+<form novalidate class="register-form" name="registerForm">
+    <h1 class="title">회원가입</h1>
+    <ul class="step">
+        <li class="item term active">
+            <span class="number">1</span>
+            <span class="caption">이용약관</span>
+        </li>
+        <li class="item verification">
+            <span class="number">2</span>
+            <span class="caption">이메일 인증</span>
+        </li>
+        <li class="item information">
+            <span class="number">3</span>
+            <span class="caption">정보 입력</span>
+        </li>
+        <li class="item complete">
+            <span class="number">4</span>
+            <span class="caption">가입 완료</span>
+        </li>
+    </ul>
+
+    <!-- 1단계: 이용약관 -->
+    <div class="content term" data-visible>
+        <div class="description">아래 서비스 이용약관, 개인정보 처리방침, 마케팅 정보 수신 약관 등을 읽어 보신 뒤 회원가입을 진행해 주시기 바랍니다. 사용자는 약관을 거부할 권리가 있으며 일부 약관의 경우 동의 거부시 서비스를 이용할 수 없을 수도 있습니다.</div>
+        <label>
+            <span class="label-caption">서비스 이용약관</span>
+            <textarea readonly name="termPolicy" rows="7" spellcheck="false">서비스 이용약관</textarea>
+        </label>
+        <label class="check-label">
+            <input name="termPolicyCheck" type="checkbox">
+            <span class="check-box"></span>
+            <span class="check-caption">[필수] 위 서비스 이용약관을 읽어보았으며 이해하였고 동의합니다.</span>
+        </label>
+        <div class="space" role="none"></div>
+        <label>
+            <span class="label-caption">개인정보 처리방침</span>
+            <textarea readonly name="termPrivacy" rows="7" spellcheck="false">개인정보 처리방침</textarea>
+        </label>
+        <label class="check-label">
+            <input name="termPrivacyCheck" type="checkbox">
+            <span class="check-box"></span>
+            <span class="check-caption">[필수] 위 개인정보 처리방침을 읽어보았으며 이해하였고 동의합니다.</span>
+        </label>
+        <div class="space" role="none"></div>
+        <label>
+            <span class="label-caption">마케팅 정보 수신 약관</span>
+            <textarea readonly name="termMarketing" rows="7" spellcheck="false">마케팅 정보 수신 약관</textarea>
+        </label>
+        <label class="check-label">
+            <input name="termMarketingCheck" type="checkbox">
+            <span class="check-box"></span>
+            <span class="check-caption">[선택] 위 마케팅 정보 수신 약관을 읽어보았으며 이해하였고 동의합니다.</span>
+        </label>
+    </div>
+
+    <!-- 2단계: 이메일 인증 -->
+    <div class="content verification" data-visible>
+        <input hidden name="emailSalt" type="hidden">
+        <div class="description">이메일 인증을 진행해 주세요. 입력하신 이메일은 로그인이나 분실한 계정 정보를 복원하는데 사용됨으로 꼭 이메일을 수신할 수 있는 실제 이메일 정보를 입력해 주세요.</div>
+        <label>
+            <span class="label-caption">이메일</span>
+            <span class="label-row">
+                <input required autocomplete="email" class="-flex-stretch" maxlength="50" minlength="8" name="email" spellcheck="false" type="email">
+                <button name="emailCodeSendButton" type="button">
+                    <span class="btn-caption">인증번호 전송</span>
+                </button>
+            </span>
+            <span class="message-wrapper warning-wrapper">
+                <span class="message-caption">올바른 이메일을 입력해 주세요.</span>
+            </span>
+        </label>
+        <label>
+            <span class="label-caption">이메일 인증번호</span>
+            <span class="label-row">
+                <input disabled required autocomplete="off" class="-flex-stretch" maxlength="6" minlength="6" name="emailCode" spellcheck="false" type="text">
+                <button disabled name="emailCodeVerifyButton" type="button">
+                    <span class="btn-caption">인증번호 확인</span>
+                </button>
+            </span>
+            <span class="message-wrapper warning-wrapper">
+                <span class="message-caption">올바른 이메일 인증번호를 입력해 주세요.</span>
+            </span>
+        </label>
+    </div>
+
+    <!-- 3단계: 정보 입력 -->
+    <div class="content information" data-visible>
+        <!-- 성명 -->
+        <label>
+            <span class="label-caption">성명</span>
+            <input required autocomplete="off" maxlength="5" minlength="2" name="name" placeholder="성명을 입력해 주세요." spellcheck="false" type="text">
+        </label>
+
+        <!-- 생년월일 -->
+        <label>
+            <span class="label-caption">생년월일</span>
+            <input required name="birth" type="date">
+        </label>
+
+        <!-- 성별 -->
+        <label>
+            <span class="label-caption">성별</span>
+            <select required name="gender">
+                <option disabled hidden selected value="-1">성별을 선택해 주세요.</option>
+                <option value="M">남</option>
+                <option value="F">여</option>
+            </select>
+        </label>
+
+        <!-- 아이디 -->
+        <label>
+            <span class="label-caption">아이디</span>
+            <span class="label-row">
+                <input required autocomplete="off" class="-flex-stretch" maxlength="20" minlength="4" name="userId" placeholder="아이디를 입력해 주세요." spellcheck="false" type="text">
+                <button name="userIdCheckButton" type="button">
+                    <span class="btn-caption">중복 확인</span>
+                </button>
+            </span>
+            <span class="message-wrapper warning-wrapper">
+                <span class="message-caption">올바른 아이디를 입력해 주세요.</span>
+            </span>
+        </label>
+
+        <!-- 비밀번호 -->
+        <label>
+            <span class="label-caption">비밀번호</span>
+            <input required autocomplete="off" maxlength="50" minlength="6" name="password" placeholder="비밀번호를 입력해 주세요." spellcheck="false" type="password">
+            <span class="message-wrapper warning-wrapper">
+                <span class="message-caption">올바른 비밀번호를 입력해 주세요.</span>
+            </span>
+        </label>
+
+        <!-- 비밀번호 확인 -->
+        <label>
+            <span class="label-caption">비밀번호 확인</span>
+            <input required autocomplete="off" maxlength="50" minlength="6" name="passwordCheck" placeholder="비밀번호를 한 번 더 입력해 주세요." spellcheck="false" type="password">
+            <span class="message-wrapper warning-wrapper">
+                <span class="message-caption">비밀번호가 일치하지 않습니다.</span>
+            </span>
+        </label>
+
+        <!-- 휴대번호 -->
+        <label>
+            <span class="label-caption">휴대번호</span>
+            <span class="label-row">
+                <select required class="-flex-stretch" name="mobileFirst">
+                    <option selected value="010">010</option>
+                    <option value="011">011</option>
+                    <option value="016">016</option>
+                    <option value="017">017</option>
+                    <option value="019">019</option>
+                </select>
+                <input required autocomplete="off" class="-flex-stretch" maxlength="4" minlength="3" name="mobileSecond" placeholder="0000" spellcheck="false" type="text">
+                <input required autocomplete="off" class="-flex-stretch" maxlength="4" minlength="4" name="mobileThird" placeholder="0000" spellcheck="false" type="text">
+            </span>
+            <span class="message-wrapper warning-wrapper">
+                <span class="message-caption">올바른 휴대번호를 입력해 주세요.</span>
+            </span>
+        </label>
+
+        <!-- 전화번호 -->
+        <label>
+            <span class="label-caption">전화번호</span>
+            <span class="label-row">
+                <select class="-flex-stretch" name="phoneFirst">
+                    <option value="02">02</option>
+                    <option value="031">031</option>
+                    <option value="032">032</option>
+                    <option value="033">033</option>
+                    <option value="041">041</option>
+                    <option value="042">042</option>
+                    <option value="043">043</option>
+                    <option value="051">051</option>
+                    <option value="052">052</option>
+                    <option value="053">053</option>
+                    <option value="054">054</option>
+                    <option value="055">055</option>
+                    <option value="061">061</option>
+                    <option value="062">062</option>
+                    <option value="063">063</option>
+                    <option value="064">064</option>
+                </select>
+                <input autocomplete="off" class="-flex-stretch" maxlength="4" minlength="3" name="phoneSecond" placeholder="0000" spellcheck="false" type="text">
+                <input autocomplete="off" class="-flex-stretch" maxlength="4" minlength="4" name="phoneThird" placeholder="0000" spellcheck="false" type="text">
+            </span>
+        </label>
+
+        <!-- 주소 -->
+        <label>
+            <span class="label-caption">주소</span>
+            <span class="label-row">
+                <input readonly required class="-flex-stretch" maxlength="5" minlength="5" name="addressPostal" placeholder="우편번호" spellcheck="false" type="text">
+                <button name="addressFindButton" type="button">주소 찾기</button>
+            </span>
+            <input readonly required maxlength="100" minlength="1" name="addressPrimary" placeholder="기본 주소('주소 찾기' 버튼을 클릭해 주세요.)" spellcheck="false" type="text">
+            <input maxlength="100" minlength="0" name="addressSecondary" placeholder="상세 주소(건물명, 동, 호 등)" spellcheck="false" type="text">
+            <span class="message-wrapper warning-wrapper">
+                <span class="message-caption">주소를 입력해 주세요.</span>
+            </span>
+        </label>
+    </div>
+
+    <!-- 4단계: 가입 완료 -->
+    <div class="content complete" data-visible>
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="150" height="150" viewBox="0,0,256,256">
+            <g fill="#a6a09b" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                <g transform="scale(10.66667,10.66667)">
+                    <path d="M19.98047,5.99023c-0.2598,0.00774 -0.50638,0.11632 -0.6875,0.30273l-10.29297,10.29297l-3.29297,-3.29297c-0.25082,-0.26124 -0.62327,-0.36647 -0.97371,-0.27511c-0.35044,0.09136 -0.62411,0.36503 -0.71547,0.71547c-0.09136,0.35044 0.01388,0.72289 0.27511,0.97371l4,4c0.39053,0.39037 1.02353,0.39037 1.41406,0l11,-11c0.29576,-0.28749 0.38469,-0.72707 0.22393,-1.10691c-0.16075,-0.37985 -0.53821,-0.62204 -0.9505,-0.60988z"></path>
+                </g>
+            </g>
+        </svg>
+        <h2 class="title">회원가입 완료</h2>
+        <span class="subtitle">회원가입해 주셔서 감사합니다. 아래 '완료' 버튼을 클릭하면 로그인 페이지로 이동합니다.</span>
+    </div>
+
+    <!-- 버튼 -->
+    <div class="button-container">
+        <button name="cancel" type="button" class="btn-gray" data-visible>취소</button>
+        <span class="-flex-stretch" role="none"></span>
+        <button name="previous" type="button" class="btn-gray">
+            <span class="btn-caption">이전</span>
+        </button>
+        <button name="next" type="submit" class="btn-concept" data-visible>
+            <span class="btn-caption">다음</span>
+        </button>
+        <button name="complete" type="submit" class="btn-concept">완료</button>
+    </div>
+</form>
+</body>
+</html>
