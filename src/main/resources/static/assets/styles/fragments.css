@@ -1,0 +1,41 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #ffffff;
+  height: 4rem;
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.08);
+}
+.nav .inner {
+  width: 100%;
+  max-width: 62.5rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+.nav .menu {
+  display: flex;
+  gap: 2.5rem;
+}
+.nav .item a {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #212121;
+  transition: color 0.2s ease;
+}
+.nav .item a:hover {
+  color: #459C3F;
+}
+.nav .nav-login {
+  font-size: 0.9rem;
+  color: #888888;
+  transition: color 0.2s ease;
+}
+.nav .nav-login:hover {
+  color: #212121;
+}
+
+/*# sourceMappingURL=fragments.css.map */

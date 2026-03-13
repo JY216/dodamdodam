@@ -11,6 +11,8 @@ body {
   background-color: $global-background-color;
   color: $global-text-color;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 a {
