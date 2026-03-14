@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav th:fragment="sidebar(currentMenu)" class="admin-sidebar" id="adminSidebar">
+
+    <!-- 로고 -->
+    <div class="sidebar-logo">
+        도담도담 <span class="sidebar-logo__accent">ADMIN</span>
+    </div>
+
+    <!-- ── Overview ── -->
+    <div class="sidebar-section">
+        <p class="sidebar-section__title">Overview</p>
+        <ul class="sidebar-menu">
+            <li>
+                <a th:href="@{/admin?menu=dashboard}"
+                   th:classappend="${currentMenu == 'dashboard'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor"/>
+                        <rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor" opacity=".6"/>
+                        <rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".6"/>
+                        <rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".4"/>
+                    </svg>
+                    <span>대시보드</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <hr class="sidebar-divider">
+
+    <!-- ── 도서 관리 ── -->
+    <div class="sidebar-section">
+        <p class="sidebar-section__title">도서 관리</p>
+        <ul class="sidebar-menu">
+            <li>
+                <a th:href="@{/admin?menu=book-list}"
+                   th:classappend="${currentMenu == 'book-list'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <rect x="2" y="2" width="4" height="12" rx="1" fill="currentColor" opacity=".5"/>
+                        <rect x="7" y="2" width="4" height="12" rx="1" fill="currentColor" opacity=".7"/>
+                        <rect x="12" y="2" width="2" height="12" rx="1" fill="currentColor"/>
+                    </svg>
+                    <span>도서 목록 / 편집</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin?menu=book-register}"
+                   th:classappend="${currentMenu == 'book-register'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/>
+                        <line x1="8" y1="5" x2="8" y2="11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                        <line x1="5" y1="8" x2="11" y2="8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg>
+                    <span>신규 도서 등록</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin?menu=book-status}"
+                   th:classappend="${currentMenu == 'book-status'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/>
+                        <path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>도서 상태 관리</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin?menu=book-recommend}"
+                   th:classappend="${currentMenu == 'book-recommend'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M8 2l1.5 3 3.3.5-2.4 2.3.6 3.2L8 9.5l-3 1.5.6-3.2L3.2 5.5l3.3-.5z"
+                              stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                    </svg>
+                    <span>추천 도서 설정</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <hr class="sidebar-divider">
+
+    <!-- ── 회원 관리 ── -->
+    <div class="sidebar-section">
+        <p class="sidebar-section__title">회원 관리</p>
+        <ul class="sidebar-menu">
+            <li>
+                <a th:href="@{/admin?menu=user-list}"
+                   th:classappend="${currentMenu == 'user-list'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.2"/>
+                        <path d="M2.5 13c0-3 2.5-4.5 5.5-4.5s5.5 1.5 5.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                    </svg>
+                    <span>회원 목록 조회</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin?menu=user-status}"
+                   th:classappend="${currentMenu == 'user-status'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.2"/>
+                        <path d="M2.5 13c0-3 2.5-4.5 5.5-4.5s5.5 1.5 5.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                        <line x1="11" y1="9" x2="15" y2="13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                        <line x1="15" y1="9" x2="11" y2="13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                    </svg>
+                    <span>회원 상태 제어</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin?menu=user-activity}"
+                   th:classappend="${currentMenu == 'user-activity'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M2 12V4h12v8H2z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                        <line x1="5" y1="7" x2="11" y2="7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                        <line x1="5" y1="9.5" x2="11" y2="9.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                    </svg>
+                    <span>회원 활동 조회</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <hr class="sidebar-divider">
+
+    <!-- ── 대출 및 반납 ── -->
+    <div class="sidebar-section">
+        <p class="sidebar-section__title">대출 및 반납</p>
+        <ul class="sidebar-menu">
+            <li>
+                <a th:href="@{/admin?menu=circulation-process}"
+                   th:classappend="${currentMenu == 'circulation-process'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M3 8h10M9 5l4 3-4 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>대출 / 반납 처리</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin?menu=circulation-status}"
+                   th:classappend="${currentMenu == 'circulation-status'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/>
+                        <path d="M8 5v3.5l2 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>대출 현황 관리</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin?menu=circulation-history}"
+                   th:classappend="${currentMenu == 'circulation-history'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.1"/>
+                        <line x1="5" y1="6" x2="11" y2="6" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                        <line x1="5" y1="8.5" x2="11" y2="8.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                        <line x1="5" y1="11" x2="8" y2="11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                    </svg>
+                    <span>대출 기록 관리</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <hr class="sidebar-divider">
+
+    <!-- ── 문화 행사 ── -->
+    <div class="sidebar-section">
+        <p class="sidebar-section__title">문화 행사</p>
+        <ul class="sidebar-menu">
+            <li>
+                <a th:href="@{/admin?menu=event-register}"
+                   th:classappend="${currentMenu == 'event-register'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.1"/>
+                        <line x1="5" y1="1.5" x2="5" y2="5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                        <line x1="11" y1="1.5" x2="11" y2="5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                        <line x1="2" y1="7" x2="14" y2="7" stroke="currentColor" stroke-width="1.1"/>
+                        <line x1="8" y1="9.5" x2="8" y2="12.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                        <line x1="6.5" y1="11" x2="9.5" y2="11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                    </svg>
+                    <span>행사 / 강좌 등록</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin?menu=event-manage}"
+                   th:classappend="${currentMenu == 'event-manage'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <circle cx="5.5" cy="5.5" r="2.2" stroke="currentColor" stroke-width="1.1"/>
+                        <circle cx="10.5" cy="5.5" r="2.2" stroke="currentColor" stroke-width="1.1"/>
+                        <path d="M1 13c0-2.5 2-3.8 4.5-3.8S9 11.5 9 13" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                        <path d="M9.5 13c0-2.5 1.5-3.8 4-3.8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                    </svg>
+                    <span>행사 운영 관리</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin?menu=event-list}"
+                   th:classappend="${currentMenu == 'event-list'} ? 'is-active'"
+                   class="sidebar-menu__item">
+                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <line x1="3" y1="5" x2="13" y2="5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                        <line x1="3" y1="8" x2="13" y2="8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                        <line x1="3" y1="11" x2="9" y2="11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                    </svg>
+                    <span>행사 목록</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="sidebar-footer">
+        <a th:href="@{/}" class="sidebar-menu__item sidebar-footer__home">
+            <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M2 6.5L8 2l6 4.5V14H10v-3H6v3H2V6.5z"
+                      stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            <span>메인페이지로 돌아가기</span>
+        </a>
+    </div>
+</nav>
+
+</body>
+</html>

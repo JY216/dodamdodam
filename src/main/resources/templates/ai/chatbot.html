@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>도담도담 - 도서관 챗봇</title>
+    <link rel="stylesheet" href="/ai/assets/styles/chatbot.css">
+    <script defer src="/ai/assets/scripts/chatbot.js"></script>
+</head>
+<body>
+<div class="chat-wrapper">
+
+    <!-- 헤더 -->
+    <div class="topbar">
+        <div class="icon-wrap">
+            <svg viewBox="0 0 24 24">
+                <path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/>
+            </svg>
+        </div>
+        <div class="topbar-info">
+            <div class="title">도담도담 챗봇</div>
+            <div class="subtitle">책 추천이 필요하다면 물어보세요</div>
+        </div>
+    </div>
+
+    <!-- 채팅 영역 -->
+    <div class="chat-area" id="chatArea">
+        <div class="msg">
+            <div class="avatar">봇</div>
+            <div>
+                <div class="bubble bot">안녕하세요! 어떤 책을 찾고 계신가요?<br>장르나 관심사를 알려주시면 추천해드릴게요 😊</div>
+                <div class="chips" id="quickChips">
+                    <button class="chip" onclick="sendChip('SF 소설 추천해줘')">SF 소설</button>
+                    <button class="chip" onclick="sendChip('자기계발 책 추천해줘')">자기계발</button>
+                    <button class="chip" onclick="sendChip('역사 소설 추천해줘')">역사 소설</button>
+                    <button class="chip" onclick="sendChip('최근 베스트셀러 알려줘')">베스트셀러</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 입력창 -->
+    <div class="input-area">
+        <label for="msgInput" class="sr-only">메시지 입력</label>
+        <input type="text" id="msgInput" placeholder="책 장르나 관심사를 입력하세요..." />
+        <button class="send-btn" onclick="sendMessage()">
+            <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+        </button>
+    </div>
+
+</div>
+</body>
+</html>

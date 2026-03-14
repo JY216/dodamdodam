@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>관리자 페이지</title>
+    <!-- SCSS 컴파일된 CSS 경로에 맞게 수정하세요 -->
+    <link rel="stylesheet" th:href="@{/admin/styles/sidebar.css}">
+</head>
+<body>
+<div class="admin-layout">
+
+    <!-- 사이드바 fragment -->
+    <th:block th:replace="~{admin/admin-common :: sidebar(${currentMenu})}"></th:block>
+
+    <!-- 메인 영역 -->
+    <main class="admin-main">
+        <th:block th:switch="${currentMenu}">
+
+            <!-- 대시보드 -->
+            <div th:case="'dashboard'">
+                <th:block th:replace="~{admin/sections/dashboard :: dashboardSection}"></th:block>
+            </div>
+
+            <!-- 도서 관리 -->
+            <div th:case="'book-list'">
+                <th:block th:replace="~{admin/sections/book-list :: bookListSection}"></th:block>
+            </div>
+            <div th:case="'book-register'">
+                <th:block th:replace="~{admin/sections/book-register :: bookRegisterSection}"></th:block>
+            </div>
+            <div th:case="'book-status'">
+                <th:block th:replace="~{admin/sections/book-status :: bookStatusSection}"></th:block>
+            </div>
+            <div th:case="'book-recommend'">
+                <th:block th:replace="~{admin/sections/book-recommend :: bookRecommendSection}"></th:block>
+            </div>
+
+            <!-- 회원 관리 -->
+            <div th:case="'user-list'">
+                <th:block th:replace="~{admin/sections/user-list :: userListSection}"></th:block>
+            </div>
+            <div th:case="'user-status'">
+                <th:block th:replace="~{admin/sections/user-status :: userStatusSection}"></th:block>
+            </div>
+            <div th:case="'user-activity'">
+                <th:block th:replace="~{admin/sections/user-activity :: userActivitySection}"></th:block>
+            </div>
+
+            <!-- 대출 및 반납 -->
+            <div th:case="'circulation-process'">
+                <th:block th:replace="~{admin/sections/circulation-process :: circulationProcessSection}"></th:block>
+            </div>
+            <div th:case="'circulation-status'">
+                <th:block th:replace="~{admin/sections/circulation-status :: circulationStatusSection}"></th:block>
+            </div>
+            <div th:case="'circulation-history'">
+                <th:block th:replace="~{admin/sections/circulation-history :: circulationHistorySection}"></th:block>
+            </div>
+
+            <!-- 문화 행사 -->
+            <div th:case="'event-register'">
+                <th:block th:replace="~{admin/sections/event-register :: eventRegisterSection}"></th:block>
+            </div>
+            <div th:case="'event-manage'">
+                <th:block th:replace="~{admin/sections/event-manage :: eventManageSection}"></th:block>
+            </div>
+            <div th:case="'event-list'">
+                <th:block th:replace="~{admin/sections/event-list :: eventListSection}"></th:block>
+            </div>
+
+        </th:block>
+    </main>
+
+</div>
+</body>
+</html>
