@@ -26,6 +26,7 @@ ul, li {
   position: sticky;
   top: 0;
   z-index: 100;
+  width: 100%;
   background-color: #ffffff;
   height: 4rem;
   box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.08);
@@ -79,6 +80,7 @@ ul, li {
 }
 
 .footer {
+  width: 100%;
   background-color: #459C3F;
   color: #ffffff;
   padding: 2.5rem 1.5rem;
@@ -288,7 +290,7 @@ select {
 }
 .check-label .check-caption {
   font-size: 0.85rem;
-  color: #444;
+  color: #888888;
   line-height: 1.5;
 }
 
@@ -321,6 +323,9 @@ button {
   white-space: nowrap;
   transition: opacity 0.2s ease;
   font-family: "Noto Sans KR", sans-serif;
+  background-color: #55B14E;
+  color: #ffffff;
+  border: none;
 }
 button:hover {
   opacity: 0.85;
@@ -328,7 +333,7 @@ button:hover {
 
 .btn-concept {
   background-color: #55B14E;
-  color: #fff;
+  color: #ffffff;
   border: none;
 }
 
@@ -342,7 +347,7 @@ button:hover {
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 26rem;
+  max-width: 40rem;
 }
 .button-container .-flex-stretch {
   flex: 1;

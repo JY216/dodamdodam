@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>로그인</title>
     <link rel="stylesheet" href="/user/styles/login.css">
+    <script defer src="/user/scripts/login.js"></script>
 </head>
 <body>
 <!-- 네비게이션 바 -->
@@ -31,7 +32,7 @@
     <div class="login-box">
         <h1 class="login-title">LOGIN</h1>
 
-        <div class="login-form">
+        <form class="login-form" name="loginForm" method="post">
             <div class="form-field">
                 <label class="form-label">
                     <span class="form-caption">ID</span>
@@ -39,18 +40,18 @@
                 </label>
                 <label class="form-field">
                     <span class="form-caption">PASSWORD</span>
-                    <input class="form-input" type="password" id="userPw" name="userPw">
+                    <input class="form-input" type="password" id="password" name="password">
                 </label>
 
-                <button class="btn btn-label" type="button">로그인</button>
-                <button class="btn btn-register" type="button">회원가입</button>
+                <button class="btn btn-label" type="submit">로그인</button>
+                <button class="btn btn-register" type="button" onclick="location.href='/register'">회원가입</button>
                 <div class="login-links">
                     <a href="#" class="login-link">아이디 찾기</a>
                     <span class="login-link-divider">|</span>
                     <a href="#" class="login-link">비밀번호 찾기</a>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </main>
 <footer class="footer">

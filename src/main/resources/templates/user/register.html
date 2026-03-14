@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>회원가입</title>
-    <link href="/user/styles/register.css" rel="stylesheet">
+    <link rel="stylesheet" href="/user/styles/register.css">
+    <script defer src="/user/scripts/register.js"></script>
+    <script src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 <div id="addressDialog">
     <div class="modal"></div>
 </div>
-<form novalidate class="register-form" name="registerForm">
+<form novalidate class="register-form" name="registerForm" method="post">
     <h1 class="title">회원가입</h1>
     <ul class="step">
         <li class="item term active">
@@ -33,11 +35,71 @@
     </ul>
 
     <!-- 1단계: 이용약관 -->
-    <div class="content term" data-visible>
+    <div class="content term">
         <div class="description">아래 서비스 이용약관, 개인정보 처리방침, 마케팅 정보 수신 약관 등을 읽어 보신 뒤 회원가입을 진행해 주시기 바랍니다. 사용자는 약관을 거부할 권리가 있으며 일부 약관의 경우 동의 거부시 서비스를 이용할 수 없을 수도 있습니다.</div>
         <label>
             <span class="label-caption">서비스 이용약관</span>
-            <textarea readonly name="termPolicy" rows="7" spellcheck="false">서비스 이용약관</textarea>
+            <textarea readonly name="termPolicy" rows="7" spellcheck="false">
+서비스 이용약관
+
+제1조 목적
+
+본 약관은 회사가 제공하는 제반 서비스의 이용과 관련하여 회사와 회원 간의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
+
+제2조 용어의 정의
+
+1. 서비스라 함은 구현되는 단말기와 상관없이 회원이 이용할 수 있는 회사의 제반 서비스를 의미합니다.
+
+2. 회원이라 함은 회사의 서비스에 접속하여 본 약관에 따라 회사와 이용계약을 체결하고 회사가 제공하는 서비스를 이용하는 고객을 의미합니다.
+
+3. 아이디라 함은 회원의 식별과 서비스 이용을 위하여 회원이 정하고 회사가 승인하는 문자와 숫자의 조합을 의미합니다.
+
+제3조 약관의 게시와 개정
+
+1. 회사는 본 약관의 내용을 회원이 쉽게 알 수 있도록 서비스 초기 화면에 게시합니다.
+
+2. 회사는 관계 법령을 위배하지 않는 범위에서 본 약관을 개정할 수 있습니다.
+
+3. 회사가 약관을 개정할 경우에는 적용일자 및 개정사유를 명시하여 현행약관과 함께 서비스 공지사항에 공지합니다.
+
+제4조 이용계약 체결
+
+1. 이용계약은 회원이 되고자 하는 자가 약관의 내용에 대하여 동의를 한 다음 회원가입신청을 하고 회사가 이러한 신청에 대하여 승낙함으로써 체결됩니다.
+2. 회사는 가입신청자의 신청에 대하여 서비스 이용을 승낙함을 원칙으로 합니다. 다만, 회사는 다음 각 호에 해당하는 신청에 대하여는 승낙을 하지 않거나 사후에 이용계약을 해지할 수 있습니다.
+
+- 가입신청자가 이 약관에 의하여 이전에 회원자격을 상실한 적이 있는 경우
+- 타인의 명의를 이용한 경우
+- 허위의 정보를 기재하거나 회사가 제시하는 내용을 기재하지 않은 경우
+
+제5조 회원정보의 변경
+
+1. 회원은 개인정보관리화면을 통하여 언제든지 본인의 개인정보를 열람하고 수정할 수 있습니다.
+2. 회원은 회원가입신청 시 기재한 사항이 변경되었을 경우 온라인으로 수정을 하거나 전자우편 기타 방법으로 회사에 대하여 그 변경사항을 알려야 합니다.
+
+제6조 개인정보보호 의무
+
+회사는 정보통신망법 등 관계 법령이 정하는 바에 따라 회원의 개인정보를 보호하기 위해 노력합니다. 개인정보의 보호 및 사용에 대해서는 관련 법 및 회사의 개인정보처리방침이 적용됩니다.
+
+제7조 회원의 의무
+1. 회원은 다음 행위를 하여서는 안 됩니다.
+
+- 신청 또는 변경 시 허위내용의 등록
+- 타인의 정보도용
+- 회사가 게시한 정보의 변경
+- 회사가 정한 정보 이외의 정보 등의 송신 또는 게시
+- 회사와 기타 제3자의 저작권 등 지적재산권에 대한 침해
+- 회사 및 기타 제3자의 명예를 손상시키거나 업무를 방해하는 행위
+- 외설 혹은 폭력적인 메시지, 화상, 음성, 기타 공서양속에 반하는 정보를 서비스에 공개 또는 게시하는 행위
+
+제8조 서비스의 제공 및 변경
+1. 회사는 회원에게 아래와 같은 서비스를 제공합니다.
+
+- 콘텐츠 제공 서비스
+- 게시판 서비스
+- 기타 회사가 추가 개발하거나 다른 회사와의 제휴계약 등을 통해 회원에게 제공하는 일체의 서비스
+
+2. 회사는 서비스의 운영상, 기술상의 필요에 따라 제공하고 있는 전부 또는 일부 서비스를 변경할 수 있습니다.
+            </textarea>
         </label>
         <label class="check-label">
             <input name="termPolicyCheck" type="checkbox">
@@ -47,7 +109,70 @@
         <div class="space" role="none"></div>
         <label>
             <span class="label-caption">개인정보 처리방침</span>
-            <textarea readonly name="termPrivacy" rows="7" spellcheck="false">개인정보 처리방침</textarea>
+            <textarea readonly name="termPrivacy" rows="7" spellcheck="false">
+개인정보 처리방침
+
+제1조 개인정보의 처리 목적
+
+회사는 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경되는 경우에는 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.
+
+1. 홈페이지 회원 가입 및 관리
+회원 가입 의사 확인, 회원제 서비스 제공에 따른 본인 식별 및 인증, 회원자격 유지 및 관리, 서비스 부정이용 방지, 각종 고지 및 통지 등을 목적으로 개인정보를 처리합니다.
+
+2. 서비스 제공
+콘텐츠 제공, 맞춤 서비스 제공 등 서비스 제공에 관한 계약 이행 및 서비스 이용료 정산을 목적으로 개인정보를 처리합니다.
+
+제2조 개인정보의 처리 및 보유기간
+
+1. 회사는 법령에 따른 개인정보 보유 및 이용기간 또는 정보주체로부터 개인정보를 수집 시에 동의받은 개인정보 보유 및 이용기간 내에서 개인정보를 처리 및 보유합니다.
+
+2. 각각의 개인정보 처리 및 보유 기간은 다음과 같습니다.
+- 홈페이지 회원 가입 및 관리 : 홈페이지 탈퇴 시까지
+- 다만, 관계 법령 위반에 따른 수사 및 조사 등이 진행 중인 경우에는 해당 수사 및 조사 종료 시까지
+- 서비스 이용에 따른 채권 및 채무관계 잔존 시에는 해당 채권 및 채무관계 정산 시까지
+
+제3조 처리하는 개인정보 항목
+
+회사는 다음의 개인정보 항목을 처리하고 있습니다.
+
+1. 회원 가입 및 관리
+- 필수항목 : 성명, 아이디, 비밀번호, 이메일 주소, 휴대전화번호
+
+2. 서비스 이용 과정에서 아래와 같은 정보들이 자동으로 생성되어 수집될 수 있습니다.
+- IP주소, 쿠키, 서비스 이용 기록, 방문 기록, 불량 이용 기록 등
+
+제4조 개인정보의 제3자 제공
+회사는 정보주체의 개인정보를 제1조에서 명시한 범위 내에서만 처리하며, 정보주체의 동의, 법률의 특별한 규정 등 개인정보 보호법 제17조 및 제18조에 해당하는 경우에만 개인정보를 제3자에게 제공합니다.
+
+제5조 정보주체와 법정대리인의 권리 및 의무
+
+1. 정보주체는 회사에 대해 언제든지 개인정보 열람, 정정, 삭제, 처리정지 요구 등의 권리를 행사할 수 있습니다.
+
+2. 권리 행사는 회사에 대해 서면, 전자우편 등을 통하여 하실 수 있으며 회사는 이에 대해 지체 없이 조치하겠습니다.
+
+제6조 개인정보의 파기
+
+1. 회사는 개인정보 보유기간의 경과, 처리목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체 없이 해당 개인정보를 파기합니다.
+
+2. 전자적 파일 형태의 정보는 기록을 재생할 수 없는 기술적 방법을 사용하며, 종이 문서에 출력된 개인정보는 분쇄기로 분쇄하거나 소각을 통하여 파기합니다.
+
+제7조 개인정보의 안전성 확보조치
+회사는 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고 있습니다.
+
+1. 관리적 조치 : 내부관리계획 수립 및 시행, 정기적 직원 교육 등
+
+2. 기술적 조치 : 개인정보처리시스템 등의 접근권한 관리, 접속기록의 보관, 고유식별정보 등의 암호화, 보안프로그램 설치
+
+3. 물리적 조치 : 자료보관실 등의 접근통제
+
+제8조 개인정보 보호책임자
+회사는 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
+
+1. 개인정보 보호책임자
+
+- 성명 : 이지안
+- 연락처 : ljh5898@hanmail.net
+            </textarea>
         </label>
         <label class="check-label">
             <input name="termPrivacyCheck" type="checkbox">
@@ -57,7 +182,43 @@
         <div class="space" role="none"></div>
         <label>
             <span class="label-caption">마케팅 정보 수신 약관</span>
-            <textarea readonly name="termMarketing" rows="7" spellcheck="false">마케팅 정보 수신 약관</textarea>
+            <textarea readonly name="termMarketing" rows="7" spellcheck="false">
+마케팅 정보 수신 동의
+
+제1조 수집 및 이용 목적
+
+회사는 다음의 목적을 위하여 개인정보를 수집 및 이용합니다.
+
+1. 신규 서비스 및 제품 홍보, 이벤트 정보 안내
+
+2. 인구통계학적 특성에 따른 서비스 제공 및 광고 게재
+
+3. 서비스 유효성 확인, 접속 빈도 파악 또는 회원의 서비스 이용에 대한 통계 확인
+
+제2조 수집하는 개인정보 항목
+
+회사는 마케팅 정보 전송을 위해 아래의 정보를 수집합니다.
+
+1. 필수항목 : 이메일 주소, 휴대전화번호
+
+2. 선택항목 : 성별, 생년월일, 서비스 이용 기록
+
+제3조 개인정보의 보유 및 이용 기간
+
+1. 마케팅 목적의 개인정보 이용 기간은 수신 동의 시점부터 회원 탈퇴 시 또는 수신 동의 철회 시까지입니다.
+
+2. 단, 관계 법령의 규정에 따라 보존할 필요가 있는 경우 해당 기간까지 안전하게 보관합니다.
+
+제4조 수신 동의 거부권 및 불이익
+
+1. 귀하는 마케팅 정보 수신 동의를 거부할 권리가 있습니다.
+
+2. 동의 거부 시에도 서비스 이용은 가능하나, 회사에서 제공하는 이벤트, 할인 혜택, 맞춤형 콘텐츠 안내 등 유용한 정보를 받아보실 수 없습니다.
+
+제5조 전송 방법
+
+마케팅 정보는 전자우편, 휴대전화 문자 메시지, 앱 푸시 알림 등의 방법으로 전송될 수 있습니다.
+            </textarea>
         </label>
         <label class="check-label">
             <input name="termMarketingCheck" type="checkbox">
@@ -67,7 +228,7 @@
     </div>
 
     <!-- 2단계: 이메일 인증 -->
-    <div class="content verification" data-visible>
+    <div class="content verification">
         <input hidden name="emailSalt" type="hidden">
         <div class="description">이메일 인증을 진행해 주세요. 입력하신 이메일은 로그인이나 분실한 계정 정보를 복원하는데 사용됨으로 꼭 이메일을 수신할 수 있는 실제 이메일 정보를 입력해 주세요.</div>
         <label>
@@ -97,7 +258,7 @@
     </div>
 
     <!-- 3단계: 정보 입력 -->
-    <div class="content information" data-visible>
+    <div class="content information">
         <!-- 성명 -->
         <label>
             <span class="label-caption">성명</span>
@@ -171,41 +332,13 @@
             </span>
         </label>
 
-        <!-- 전화번호 -->
-        <label>
-            <span class="label-caption">전화번호</span>
-            <span class="label-row">
-                <select class="-flex-stretch" name="phoneFirst">
-                    <option value="02">02</option>
-                    <option value="031">031</option>
-                    <option value="032">032</option>
-                    <option value="033">033</option>
-                    <option value="041">041</option>
-                    <option value="042">042</option>
-                    <option value="043">043</option>
-                    <option value="051">051</option>
-                    <option value="052">052</option>
-                    <option value="053">053</option>
-                    <option value="054">054</option>
-                    <option value="055">055</option>
-                    <option value="061">061</option>
-                    <option value="062">062</option>
-                    <option value="063">063</option>
-                    <option value="064">064</option>
-                </select>
-                <input autocomplete="off" class="-flex-stretch" maxlength="4" minlength="3" name="phoneSecond" placeholder="0000" spellcheck="false" type="text">
-                <input autocomplete="off" class="-flex-stretch" maxlength="4" minlength="4" name="phoneThird" placeholder="0000" spellcheck="false" type="text">
-            </span>
-        </label>
-
         <!-- 주소 -->
         <label>
             <span class="label-caption">주소</span>
             <span class="label-row">
-                <input readonly required class="-flex-stretch" maxlength="5" minlength="5" name="addressPostal" placeholder="우편번호" spellcheck="false" type="text">
-                <button name="addressFindButton" type="button">주소 찾기</button>
+                <input readonly required maxlength="100" minlength="1" name="addressPrimary" placeholder="기본 주소('주소 찾기' 버튼을 클릭해 주세요.)" spellcheck="false" type="text">
+            <button name="addressFindButton" type="button">주소 찾기</button>
             </span>
-            <input readonly required maxlength="100" minlength="1" name="addressPrimary" placeholder="기본 주소('주소 찾기' 버튼을 클릭해 주세요.)" spellcheck="false" type="text">
             <input maxlength="100" minlength="0" name="addressSecondary" placeholder="상세 주소(건물명, 동, 호 등)" spellcheck="false" type="text">
             <span class="message-wrapper warning-wrapper">
                 <span class="message-caption">주소를 입력해 주세요.</span>
@@ -214,7 +347,7 @@
     </div>
 
     <!-- 4단계: 가입 완료 -->
-    <div class="content complete" data-visible>
+    <div class="content complete">
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="150" height="150" viewBox="0,0,256,256">
             <g fill="#a6a09b" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
                 <g transform="scale(10.66667,10.66667)">

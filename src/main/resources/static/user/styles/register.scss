@@ -2,10 +2,7 @@
 @import "../../assets/styles/common";
 @import "../../assets/styles/fragments";
 
-// =============================================
 // 전체 폼 레이아웃
-// =============================================
-
 .register-form {
   @include container;
   display: flex;
@@ -23,10 +20,7 @@
   }
 }
 
-// =============================================
-// 스텝 표시
-// =============================================
-
+// 스텝
 .step {
   display: flex;
   justify-content: center;
@@ -46,7 +40,7 @@
     position: relative;
 
     .number {
-      display: none; // 사진 기준 숫자 숨김
+      display: none;
     }
 
     .caption {
@@ -65,7 +59,7 @@
       &::after {
         content: '';
         position: absolute;
-        bottom: -1.0625rem; // border-bottom에 딱 붙게
+        bottom: -1.0625rem;
         left: 0;
         width: 100%;
         height: 0.1875rem;
@@ -76,10 +70,7 @@
   }
 }
 
-// =============================================
 // 콘텐츠 영역 공통
-// =============================================
-
 .content {
   display: none;
   flex-direction: column;
@@ -102,10 +93,7 @@
   }
 }
 
-// =============================================
 // label 공통
-// =============================================
-
 label {
   display: flex;
   flex-direction: column;
@@ -126,10 +114,7 @@ label {
   gap: 0.5rem;
 }
 
-// =============================================
 // input / select / textarea 공통
-// =============================================
-
 input:not([type="checkbox"]),
 select,
 textarea {
@@ -180,10 +165,7 @@ select {
   flex: 1;
 }
 
-// =============================================
 // 체크박스 label
-// =============================================
-
 .check-label {
   display: flex;
   flex-direction: row;
@@ -201,15 +183,12 @@ select {
 
   .check-caption {
     font-size: 0.85rem;
-    color: #444;
+    color: $global-text-muted;
     line-height: 1.5;
   }
 }
 
-// =============================================
 // 메시지 (경고)
-// =============================================
-
 .message-wrapper {
   display: none;
   align-items: center;
@@ -230,10 +209,7 @@ select {
   }
 }
 
-// =============================================
 // 버튼 공통
-// =============================================
-
 button {
   display: inline-flex;
   align-items: center;
@@ -247,6 +223,9 @@ button {
   white-space: nowrap;
   transition: opacity 0.2s ease;
   font-family: $global-font-main;
+  background-color: $global-color-primary;
+  color: #ffffff;
+  border: none;
 
   &:hover {
     opacity: 0.85;
@@ -255,7 +234,7 @@ button {
 
 .btn-concept {
   background-color: $global-color-primary;
-  color: #fff;
+  color: #ffffff;
   border: none;
 }
 
@@ -265,25 +244,19 @@ button {
   border: 0.0625rem solid #ccc;
 }
 
-// =============================================
 // 버튼 컨테이너
-// =============================================
-
 .button-container {
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 26rem;
+  max-width: 40rem;
 
   .-flex-stretch {
     flex: 1;
   }
 }
 
-// =============================================
 // 완료 페이지
-// =============================================
-
 .content.complete {
   align-items: center;
   text-align: center;
