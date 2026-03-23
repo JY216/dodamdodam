@@ -430,4 +430,42 @@ ul, li {
   color: #ff6467;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding-top: 1.5rem;
+}
+
+.page-group {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.page-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0.0625rem solid rgb(243.5, 232, 232);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: #888888;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  background-color: #ffffff;
+}
+.page-link:hover {
+  border-color: #55B14E;
+  color: #55B14E;
+}
+.page-link--active {
+  background-color: #55B14E;
+  border-color: #55B14E;
+  color: #ffffff;
+  font-weight: 700;
+}
+
 /*# sourceMappingURL=book-list.css.map */
