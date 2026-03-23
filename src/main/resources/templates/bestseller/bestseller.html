@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>베스트/스테디셀러 - 도담도담</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/bestseller/styles/bestseller.css">
+</head>
+<body>
+
+<header th:replace="~{fragment/common :: nav}"></header>
+
+<main class="bestseller-main">
+    <div class="bestseller-container">
+
+        <!-- 헤더 -->
+        <div class="bestseller-header">
+            <div class="bestseller-title-wrap">
+                <h1 class="bestseller-title">베스트셀러</h1>
+                <div class="bestseller-tooltip-wrap">
+                    <span class="tooltip-trigger">?</span>
+                    <div class="tooltip-box">베스트셀러는 알라딘을 기준으로 나타납니다.</div>
+                </div>
+            </div>
+            <p class="bestseller-desc">베스트셀러를 한 눈에 보세요!</p>
+        </div>
+
+        <!-- 탭 + 필터 -->
+        <div class="bestseller-controls">
+            <div class="bestseller-tabs">
+                <button class="tab-btn tab-btn--active" data-tab="bestseller">베스트셀러</button>
+                <button class="tab-btn" data-tab="popular">인기대출도서</button>
+            </div>
+            <div class="bestseller-filters">
+                <select class="filter-select" id="categoryFilter">
+                    <option value="0">분야 선택</option>
+                    <option value="1">국내도서 전체</option>
+                    <option value="50998">소설</option>
+                    <option value="51378">인문학</option>
+                    <option value="70216">자기계발</option>
+                    <option value="517">경제/경영</option>
+                    <option value="56831">과학</option>
+                    <option value="74">역사</option>
+                    <option value="351">IT/컴퓨터</option>
+                    <option value="2551">만화</option>
+                    <option value="1108">어린이</option>
+                    <option value="13789">청소년</option>
+                </select>
+                <button class="filter-search-btn">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+                        <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 도서 목록 -->
+        <div class="book-grid" id="bookGrid">
+            <!-- 로딩 상태 -->
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p>도서 정보를 불러오는 중이에요...</p>
+            </div>
+
+            <!-- 도서 아이템 (JS로 동적 생성) -->
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{fragment/common :: footer}"></footer>
+
+<script src="/bestseller/scripts/bestseller.js"></script>
+</body>
+</html>

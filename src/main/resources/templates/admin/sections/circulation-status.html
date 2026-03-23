@@ -2,8 +2,56 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <body>
 <th:block th:fragment="circulationStatusSection">
-    <h2>대출 현황 관리</h2>
-    <p>준비 중입니다.</p>
+
+    <div class="admin-list">
+        <div class="admin-list-header">
+            <div>
+                <h2 class="admin-list-title">대출 현황 관리</h2>
+                <p class="admin-list-subtitle">현재 대출 중인 도서 현황을 확인해요.</p>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="book-table">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>회원명</th>
+                    <th>도서명</th>
+                    <th>저자</th>
+                    <th>대출일</th>
+                    <th>반납 예정일</th>
+                    <th>D-day</th>
+                    <th>상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="loan : ${loans}" th:if="${loan.status == 'LOANED'}">
+                    <td th:text="${loan.id}"></td>
+                    <td th:text="${loan.userName}"></td>
+                    <td class="col-ellipsis" th:text="${loan.bookTitle}"></td>
+                    <td th:text="${loan.bookAuthor}"></td>
+                    <td th:text="${#temporals.format(loan.loanDate, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${loan.dueDate}"></td>
+                    <td>
+                        <span th:if="${loan.dueDate != null}"
+                              th:class="${loan.dday < 0} ? 'dday dday--overdue' : 'dday dday--ok'"
+                              th:text="${loan.dday < 0} ? '연체 ' + ${-loan.dday} + '일' : 'D-' + ${loan.dday}">
+                        </span>
+                        <span th:if="${loan.dueDate == null}">-</span>
+                    </td>
+                    <td>
+                        <span class="status-badge status-badge--loaned">대출 중</span>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(loans)}">
+                    <td colspan="8" class="table-empty">대출 중인 도서가 없어요.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </th:block>
 </body>
 </html>

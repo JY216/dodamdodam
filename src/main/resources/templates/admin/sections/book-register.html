@@ -2,8 +2,83 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <body>
 <th:block th:fragment="bookRegisterSection">
-    <h2>신규 도서 등록</h2>
-    <p>준비 중입니다.</p>
+
+    <div class="admin-register">
+        <h2 class="admin-register-title">신규 도서 등록</h2>
+        <p class="admin-register-subtitle">ISBN 바코드를 스캔하거나 직접 입력해 도서를 등록하세요.</p>
+
+        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
+        <div class="alert alert--error" th:if="${errorMsg}" th:text="${errorMsg}"></div>
+        <form class="register-form" action="/admin/books/register" method="post">
+
+            <!-- ISBN + 바코드 스캔 -->
+            <div class="isbn-field">
+                <label style="font-size: 0.85rem; font-weight: 600;">ISBN <span style="color:#ff6467">*</span></label>
+                <div class="isbn-field-row">
+                    <input type="text" id="isbn" name="isbn" placeholder="ISBN을 입력하거나 바코드를 스캔하세요">
+                    <button type="button" class="btn-isbn-search" id="isbnSearchBtn">🔍 도서 조회</button>
+                    <button type="button" class="scan-btn" id="scanBtn">📷 바코드 스캔</button>
+                </div>
+            </div>
+
+            <!-- 카메라 영역 -->
+            <div class="camera-area" id="cameraArea">
+                <div id="camera"></div>
+                <p class="camera-area-hint">바코드를 카메라 중앙에 맞춰주세요</p>
+                <button type="button" class="stop-scan-btn" id="stopScanBtn">✕ 스캔 중지</button>
+            </div>
+
+            <hr class="form-divider">
+
+            <!-- 도서 정보 입력 -->
+            <div class="form-grid">
+                <div class="form-field form-grid-full">
+                    <label>도서명 <span class="required">*</span></label>
+                    <input type="text" id="title" name="title" placeholder="도서명을 입력하세요">
+                </div>
+                <div class="form-field">
+                    <label>저자 <span class="required">*</span></label>
+                    <input type="text" id="author" name="author" placeholder="저자명">
+                </div>
+                <div class="form-field">
+                    <label>출판사 <span class="required">*</span></label>
+                    <input type="text" id="publisher" name="publisher" placeholder="출판사명">
+                </div>
+                <div class="form-field">
+                    <label>출판일</label>
+                    <input type="date" id="publishDate" name="publishDate">
+                </div>
+                <div class="form-field">
+                    <label>카테고리 <span class="required">*</span></label>
+                    <select id="category" name="categoryId">
+                        <option value="">카테고리 선택</option>
+                        <option th:each="category : ${categories}"
+                                th:value="${category.id}"
+                                th:text="${category.name}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label>수량 <span class="required">*</span></label>
+                    <input type="number" id="quantity" name="totalQuantity" min="1" value="1">
+                </div>
+                <div class="form-field">
+                    <label>가격</label>
+                    <input type="number" id="price" name="price" min="0" placeholder="0">
+                </div>
+            </div>
+
+            <!-- 버튼 -->
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="history.back()">취소</button>
+                <button type="submit" class="btn-submit">등록하기</button>
+            </div>
+            <input type="hidden" id="coverImage" name="coverImage">
+        </form>
+    </div>
+    <!-- QuaggaJS 먼저 로드 후 JS 파일 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+    <script th:src="@{/admin/scripts/sections/book-register.js}"></script>
 </th:block>
 </body>
 </html>

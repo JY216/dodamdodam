@@ -2,8 +2,60 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <body>
 <th:block th:fragment="bookStatusSection">
-    <h2>도서 상태 관리</h2>
-    <p>준비 중입니다.</p>
+
+    <div class="admin-list">
+        <div class="admin-list-header">
+            <div>
+                <h2 class="admin-list-title">도서 상태 관리</h2>
+                <p class="admin-list-subtitle">도서별 대출 현황과 사본 상태를 관리할 수 있어요.</p>
+            </div>
+        </div>
+
+        <!-- 테이블 -->
+        <div class="table-wrap">
+            <table class="book-table">
+                <thead>
+                <tr>
+                    <th>도서명</th>
+                    <th>저자</th>
+                    <th>전체 수량</th>
+                    <th>대출 가능</th>
+                    <th>상태</th>
+                    <th>사본 관리</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="book : ${books}">
+                    <td th:text="${book.title}"></td>
+                    <td th:text="${book.author}"></td>
+                    <td th:text="${book.totalQuantity}"></td>
+                    <td>
+                        <span th:text="${book.availableQuantity}"></span>
+                        <span th:text="'/' + ${book.totalQuantity}" class="text-muted"></span>
+                    </td>
+                    <td>
+                        <span class="status-badge"
+                              th:classappend="${book.availableQuantity > 0} ? 'status-badge--available' : 'status-badge--loaned'"
+                              th:text="${book.availableQuantity > 0} ? '대출 가능' : '대출 불가'">
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn-edit" th:onclick="|location.href='/admin?menu=book-copies&id=${book.id}'|">사본 보기</button>
+                        <form th:action="@{/admin/books/add-copy}" method="post" style="display:inline;">
+                            <input type="hidden" name="bookId" th:value="${book.id}">
+                            <input type="hidden" name="totalQuantity" th:value="${book.totalQuantity}">
+                            <button type="submit" class="btn-add-copy">+ 수량 추가</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(books)}">
+                    <td colspan="6" class="table-empty">등록된 도서가 없어요.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </th:block>
 </body>
 </html>

@@ -1,0 +1,268 @@
+@import "../../assets/styles/def";
+@import "../../assets/styles/common";
+@import "../../assets/styles/fragments";
+
+.wish-main {
+  @include container;
+  padding-top: 2.5rem;
+  padding-bottom: 5rem;
+}
+
+.wish-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  align-items: center;
+}
+
+// 헤더
+.wish-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  width: 100%;
+  max-width: 80rem;
+}
+
+.wish-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $global-text-color;
+  letter-spacing: -0.02em;
+}
+
+.wish-desc {
+  font-size: 0.9rem;
+  color: $global-text-muted;
+}
+
+// 폼
+.wish-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 80rem;
+  width: 100%;
+}
+
+// 섹션
+.wish-section-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: $global-text-color;
+  margin-bottom: 0.625rem;
+}
+
+// 신청 정보 박스
+.wish-info-box {
+  border: 0.0625rem solid $global-color-primary-light;
+  border-radius: 0.625rem;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  background-color: rgba($global-color-primary, 0.03);
+
+  p {
+    font-size: 0.875rem;
+    color: $global-text-color;
+
+    span {
+      font-weight: 600;
+    }
+  }
+}
+
+// 필드
+.wish-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.wish-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $global-text-color;
+}
+
+// 인풋
+.wish-input {
+  height: 2.75rem;
+  padding: 0 1rem;
+  border: 0.0625rem solid $global-border-color;
+  border-radius: 0.5rem;
+  font-family: $global-font-main;
+  font-size: 0.95rem;
+  color: $global-text-color;
+  background-color: $global-background-color;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &::placeholder {
+    color: $global-text-placeholder;
+  }
+
+  &:focus {
+    border-color: $global-color-primary;
+    box-shadow: 0 0 0 0.2rem rgba($global-color-primary, 0.12);
+  }
+
+  &--flex {
+    flex: 1;
+  }
+
+  &:disabled {
+    background-color: darken($global-background-color, 3%);
+    color: $global-text-muted;
+    cursor: not-allowed;
+  }
+}
+
+// 도서 검색 행
+.wish-book-search-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+// 도서 검색 버튼
+.btn-book-search {
+  height: 2.75rem;
+  padding: 0 1.25rem;
+  background-color: $global-color-primary;
+  color: $global-white;
+  border: none;
+  border-radius: 0.5rem;
+  font-family: $global-font-main;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: $global-color-primary-dark;
+  }
+}
+
+// 체크박스
+.wish-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  color: $global-text-muted;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.wish-checkbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: $global-color-primary;
+  cursor: pointer;
+}
+
+// 그리드
+.wish-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+
+  &--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// 텍스트에어리어
+.wish-textarea {
+  padding: 0.875rem 1rem;
+  border: 0.0625rem solid $global-border-color;
+  border-radius: 0.5rem;
+  font-family: $global-font-main;
+  font-size: 0.95rem;
+  color: $global-text-color;
+  background-color: $global-background-color;
+  outline: none;
+  resize: vertical;
+  min-height: 15rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: $global-color-primary;
+    box-shadow: 0 0 0 0.2rem rgba($global-color-primary, 0.12);
+  }
+}
+
+// 버튼 영역
+.wish-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-wish-submit {
+  height: 3rem;
+  padding: 0 2.5rem;
+  background-color: $global-color-primary;
+  color: $global-white;
+  border: none;
+  border-radius: $global-border-radius-pill;
+  font-family: $global-font-main;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+
+  &:hover {
+    background-color: $global-color-primary-dark;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+// 검색 드롭다운
+.search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: calc(100% - 10rem);
+  background-color: $global-white;
+  border: 0.0625rem solid $global-border-color;
+  border-radius: 0.5rem;
+  box-shadow: $global-shadow-sm;
+  z-index: 100;
+  max-height: 15rem;
+  overflow-y: auto;
+}
+
+.search-dropdown-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-bottom: 0.0625rem solid $global-border-color;
+  transition: background-color 0.15s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: rgba($global-color-primary, 0.05);
+  }
+}
+
+.dropdown-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $global-text-color;
+}
+
+.dropdown-meta {
+  font-size: 0.78rem;
+  color: $global-text-muted;
+}

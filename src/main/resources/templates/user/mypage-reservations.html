@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>예약 현황 - 도담도담</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/user/styles/mypage-loans.css">
+</head>
+<body>
+
+<header th:replace="~{fragment/common :: nav}"></header>
+
+<main class="loans-main">
+    <div class="loans-container">
+
+        <!-- 헤더 -->
+        <div class="loans-header">
+            <h1 class="loans-title">
+                <span class="loans-username" th:text="${userName}">이용자</span>
+                님의 도서 예약 현황
+            </h1>
+            <p class="loans-desc">관리자 승인 후 대출이 시작돼요. 예약 취소는 승인 전에만 가능해요.</p>
+        </div>
+
+        <!-- 예약 목록 -->
+        <div class="loans-list" th:if="${not #lists.isEmpty(loans)}">
+            <div class="loan-item" th:each="loan : ${loans}">
+
+                <!-- 책 표지 -->
+                <div class="loan-cover">
+                    <img th:src="${loan.bookCover}" th:alt="${loan.bookTitle}"
+                         onerror="this.style.display='none'">
+                </div>
+
+                <!-- 책 정보 -->
+                <div class="loan-info">
+                    <h3 class="loan-title" th:text="${loan.bookTitle}">책 제목</h3>
+                    <p class="loan-meta">
+                        <span th:text="${loan.bookAuthor}">저자</span>
+                        <span class="loan-meta-divider">|</span>
+                        <span th:text="'예약일 ' + ${#temporals.format(loan.createdAt, 'yyyy-MM-dd')}"></span>
+                    </p>
+                    <span class="loan-status-badge"
+                          th:classappend="${loan.status == 'PENDING'} ? 'loan-status-badge--pending' :
+                                         (${loan.status == 'LOANED'} ? 'loan-status-badge--loaned' : 'loan-status-badge--returned')"
+                          th:text="${loan.status == 'PENDING'} ? '승인 대기 중' :
+                                   (${loan.status == 'LOANED'} ? '대출 중' : '완료')">
+                    </span>
+                </div>
+
+                <!-- 예약 취소 버튼 -->
+                <div class="loan-action">
+                    <form th:if="${loan.status == 'PENDING'}"
+                          th:action="@{/mypage/reservations/cancel}" method="post">
+                        <input type="hidden" name="loanId" th:value="${loan.id}">
+                        <button type="submit" class="btn-cancel-reserve">예약 취소</button>
+                    </form>
+                    <span th:unless="${loan.status == 'PENDING'}" class="text-muted">-</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 예약 내역 없음 -->
+        <div class="loans-empty" th:if="${#lists.isEmpty(loans)}">
+            <p>예약 중인 도서가 없어요.</p>
+            <a href="/search" class="btn-search">도서 검색하러 가기</a>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{fragment/common :: footer}"></footer>
+
+</body>
+</html>

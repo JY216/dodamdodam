@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="bookCopiesSection">
+
+    <div class="admin-list">
+        <div class="admin-list-header">
+            <div>
+                <h2 class="admin-list-title">사본 관리</h2>
+                <p class="admin-list-subtitle">
+                    <span th:text="${book.title}"></span> &nbsp;·&nbsp;
+                    <span th:text="${book.author}"></span>
+                </p>
+            </div>
+            <a th:href="@{/admin(menu='book-status')}" class="btn-back">← 돌아가기</a>
+        </div>
+
+        <!-- 테이블 -->
+        <div class="table-wrap">
+            <table class="book-table">
+                <thead>
+                <tr>
+                    <th>사본 번호</th>
+                    <th>현재 상태</th>
+                    <th>상태 변경</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="copy, stat : ${copies}">
+                    <td th:text="'#' + ${stat.count}"></td>
+                    <td>
+                        <span class="status-badge"
+                              th:classappend="${copy.status == 'AVAILABLE'} ? 'status-badge--available' :
+                                             (${copy.status == 'LOANED'} ? 'status-badge--loaned' :
+                                             'status-badge--etc')"
+                              th:text="${copy.status == 'AVAILABLE'} ? '대출 가능' :
+                                       (${copy.status == 'LOANED'} ? '대출 중' :
+                                       (${copy.status == 'LOST'} ? '분실' : '폐기'))">
+                        </span>
+                    </td>
+                    <td>
+                        <form th:action="@{/admin/books/update-copy-status}" method="post" style="display:inline-flex; gap:0.5rem; align-items:center; justify-content:center;">
+                            <input type="hidden" name="copyId" th:value="${copy.id}">
+                            <input type="hidden" name="bookId" th:value="${book.id}">
+                            <select name="status" class="status-select">
+                                <option value="AVAILABLE" th:selected="${copy.status == 'AVAILABLE'}">대출 가능</option>
+                                <option value="LOANED"    th:selected="${copy.status == 'LOANED'}">대출 중</option>
+                                <option value="LOST"      th:selected="${copy.status == 'LOST'}">분실</option>
+                                <option value="DISCARDED" th:selected="${copy.status == 'DISCARDED'}">폐기</option>
+                            </select>
+                            <button type="submit" class="btn-edit">변경</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(copies)}">
+                    <td colspan="3" class="table-empty">사본이 없어요.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>

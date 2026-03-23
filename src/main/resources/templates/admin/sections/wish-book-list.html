@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="wishBookListSection">
+
+    <div class="admin-list">
+        <div class="admin-list-header">
+            <div>
+                <h2 class="admin-list-title">희망도서 신청내역</h2>
+                <p class="admin-list-subtitle">유저가 신청한 희망 도서 목록을 확인하고 처리해요.</p>
+            </div>
+        </div>
+
+        <!-- 알림 메시지 -->
+        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
+
+        <div class="table-wrap">
+            <table class="book-table">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>신청자</th>
+                    <th>도서명</th>
+                    <th>저자</th>
+                    <th>출판사</th>
+                    <th>ISBN</th>
+                    <th>가격</th>
+                    <th>신청일</th>
+                    <th>상태</th>
+                    <th>처리</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="wish : ${wishBooks}">
+                    <td th:text="${wish.id}"></td>
+                    <td th:text="${wish.userName}"></td>
+                    <td class="col-ellipsis" th:text="${wish.title}"></td>
+                    <td class="col-ellipsis" th:text="${wish.author}"></td>
+                    <td class="col-ellipsis" th:text="${wish.publisher}"></td>
+                    <td class="col-ellipsis" th:text="${wish.isbn}"></td>
+                    <td th:text="${wish.price != null} ? ${wish.price} + '원' : '-'"></td>
+                    <td th:text="${#temporals.format(wish.createdAt, 'yyyy-MM-dd')}"></td>
+                    <td>
+                        <span class="status-badge"
+                              th:classappend="${wish.status == 'PENDING'} ? 'status-badge--pending' :
+                                             (${wish.status == 'APPROVED'} ? 'status-badge--available' :
+                                             (${wish.status == 'PURCHASED'} ? 'status-badge--available' :
+                                             'status-badge--etc'))"
+                              th:text="${wish.status == 'PENDING'} ? '검토 중' :
+                                       (${wish.status == 'APPROVED'} ? '승인' :
+                                       (${wish.status == 'PURCHASED'} ? '구매 완료' : '반려'))">
+                        </span>
+                    </td>
+                    <td>
+                        <div style="display:flex; gap:0.375rem; justify-content:center;">
+                            <!-- 승인 -->
+                            <form th:if="${wish.status == 'PENDING'}"
+                                  th:action="@{/admin/wish-books/status}" method="post" style="display:inline;">
+                                <input type="hidden" name="id" th:value="${wish.id}">
+                                <input type="hidden" name="status" value="APPROVED">
+                                <button type="submit" class="btn-approve">승인</button>
+                            </form>
+                            <!-- 반려 -->
+                            <form th:if="${wish.status == 'PENDING'}"
+                                  th:action="@{/admin/wish-books/status}" method="post" style="display:inline;">
+                                <input type="hidden" name="id" th:value="${wish.id}">
+                                <input type="hidden" name="status" value="REJECTED">
+                                <button type="submit" class="btn-return">반려</button>
+                            </form>
+                            <!-- 구매 완료 -->
+                            <form th:if="${wish.status == 'APPROVED'}"
+                                  th:action="@{/admin/wish-books/status}" method="post" style="display:inline;">
+                                <input type="hidden" name="id" th:value="${wish.id}">
+                                <input type="hidden" name="status" value="PURCHASED">
+                                <button type="submit" class="btn-approve">구매 완료</button>
+                            </form>
+                            <span th:if="${wish.status == 'PURCHASED' or wish.status == 'REJECTED'}"
+                                  class="text-muted">완료</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(wishBooks)}">
+                    <td colspan="10" class="table-empty">신청 내역이 없어요.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>

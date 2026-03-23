@@ -8,6 +8,8 @@
     <title>관리자 페이지</title>
     <!-- SCSS 컴파일된 CSS 경로에 맞게 수정하세요 -->
     <link rel="stylesheet" th:href="@{/admin/styles/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/admin/styles/sections/book-register.css}">
+    <link rel="stylesheet" th:href="@{/admin/styles/sections/book-list.css}">
 </head>
 <body>
 <div class="admin-layout">
@@ -28,11 +30,17 @@
             <div th:case="'book-list'">
                 <th:block th:replace="~{admin/sections/book-list :: bookListSection}"></th:block>
             </div>
+            <div th:case="'wish-book-list'">
+                <th:block th:replace="~{admin/sections/wish-book-list :: wishBookListSection}"></th:block>
+            </div>
             <div th:case="'book-register'">
                 <th:block th:replace="~{admin/sections/book-register :: bookRegisterSection}"></th:block>
             </div>
             <div th:case="'book-status'">
                 <th:block th:replace="~{admin/sections/book-status :: bookStatusSection}"></th:block>
+            </div>
+            <div th:case="'book-copies'">
+                <th:block th:replace="~{admin/sections/book-copies :: bookCopiesSection}"></th:block>
             </div>
             <div th:case="'book-recommend'">
                 <th:block th:replace="~{admin/sections/book-recommend :: bookRecommendSection}"></th:block>

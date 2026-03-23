@@ -1,9 +1,60 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="../../../../../../../Downloads/circulation.scss">
 <body>
 <th:block th:fragment="circulationHistorySection">
-    <h2>대출 기록 관리</h2>
-    <p>준비 중입니다.</p>
+
+    <div class="admin-list">
+        <div class="admin-list-header">
+            <div>
+                <h2 class="admin-list-title">대출 기록 관리</h2>
+                <p class="admin-list-subtitle">전체 대출 기록을 조회해요.</p>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="book-table">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>회원명</th>
+                    <th>도서명</th>
+                    <th>저자</th>
+                    <th>예약일</th>
+                    <th>대출일</th>
+                    <th>반납 예정일</th>
+                    <th>실제 반납일</th>
+                    <th>상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="loan : ${loans}">
+                    <td th:text="${loan.id}"></td>
+                    <td th:text="${loan.userName}"></td>
+                    <td class="col-ellipsis" th:text="${loan.bookTitle}"></td>
+                    <td th:text="${loan.bookAuthor}"></td>
+                    <td th:text="${#temporals.format(loan.createdAt, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${loan.loanDate != null} ? ${#temporals.format(loan.loanDate, 'yyyy-MM-dd')} : '-'"></td>
+                    <td th:text="${loan.dueDate != null} ? ${loan.dueDate} : '-'"></td>
+                    <td th:text="${loan.returnDate != null} ? ${#temporals.format(loan.returnDate, 'yyyy-MM-dd')} : '-'"></td>
+                    <td>
+                        <span class="status-badge"
+                              th:classappend="${loan.status == 'PENDING'} ? 'status-badge--pending' :
+                                             (${loan.status == 'LOANED'} ? 'status-badge--loaned' :
+                                             'status-badge--returned')"
+                              th:text="${loan.status == 'PENDING'} ? '예약 중' :
+                                       (${loan.status == 'LOANED'} ? '대출 중' : '반납 완료')">
+                        </span>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(loans)}">
+                    <td colspan="9" class="table-empty">대출 기록이 없어요.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </th:block>
 </body>
 </html>

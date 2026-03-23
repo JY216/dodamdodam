@@ -1,0 +1,341 @@
+@import "../../assets/styles/def";
+@import "../../assets/styles/common";
+@import "../../assets/styles/fragments";
+
+.search-main {
+  @include container;
+  padding-top: 2.5rem;
+  padding-bottom: 5rem;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+// 헤더
+.search-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.search-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $global-text-color;
+  letter-spacing: -0.02em;
+}
+
+.search-desc {
+  font-size: 0.9rem;
+  color: $global-text-muted;
+}
+
+// 검색 바
+.search-bar-wrap {
+  width: 100%;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: $global-white;
+  border: 0.0625rem solid $global-border-color;
+  border-radius: 0.5rem;
+  padding: 0 0.5rem 0 0;
+  box-shadow: $global-shadow-sm;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus-within {
+    border-color: $global-color-primary;
+    box-shadow: 0 0 0 0.2rem rgba($global-color-primary, 0.12);
+  }
+}
+
+.search-type {
+  height: 3.25rem;
+  padding: 0 1.25rem 0 1.75rem;
+  border: none;
+  background-color: transparent;
+  font-family: $global-font-main;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $global-text-color;
+  outline: none;
+  cursor: pointer;
+  border-radius: 0.5rem 0 0 0.5rem;
+  appearance: none;
+  min-width: 5rem;
+
+  option {
+    background-color: $global-white;
+    color: $global-text-color;
+  }
+}
+
+.search-divider {
+  width: 0.0625rem;
+  height: 1.5rem;
+  background-color: $global-border-color;
+  margin: 0 0.5rem;
+}
+
+.search-input {
+  flex: 1;
+  height: 3.25rem;
+  padding: 0 1rem;
+  border: none;
+  outline: none;
+  font-family: $global-font-main;
+  font-size: 1rem;
+  color: $global-text-color;
+  background-color: transparent;
+
+  &::placeholder {
+    color: $global-text-placeholder;
+  }
+}
+
+.search-btn {
+  @include flex-center;
+  width: 2.75rem;
+  height: 2.75rem;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: $global-color-primary;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+
+  svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  &:hover {
+    background-color: $global-color-primary-dark;
+    color: $global-white;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// 검색 결과
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+// 결과 없음
+.search-empty {
+  text-align: center;
+  padding: 4rem 0;
+  color: $global-text-muted;
+
+  p {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  &-sub {
+    font-size: 0.875rem;
+    font-weight: 400 !important;
+  }
+}
+
+// 책 목록
+.book-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: $global-white;
+  border-radius: $global-border-radius-md;
+  box-shadow: $global-shadow-sm;
+  overflow: hidden;
+}
+
+// 책 아이템
+.book-item {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 0.0625rem solid $global-border-color;
+  transition: background-color 0.15s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: rgba($global-color-primary, 0.03);
+  }
+}
+
+// 책 표지
+.book-cover {
+  flex-shrink: 0;
+  width: 5rem;
+  height: 5.5rem;
+  background-color: $global-color-primary-light;
+  border-radius: 0.375rem;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+// 책 정보
+.book-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.book-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $global-text-color;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-meta {
+  font-size: 0.82rem;
+  color: $global-text-muted;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.meta-divider {
+  color: $global-border-color;
+}
+
+.book-category {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $global-color-primary-dark;
+  background-color: rgba($global-color-primary, 0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  width: fit-content;
+}
+
+// 예약 버튼
+.book-action {
+  flex-shrink: 0;
+}
+
+.btn-reserve {
+  height: 2.5rem;
+  padding: 0 1.5rem;
+  border: none;
+  border-radius: $global-border-radius-pill;
+  font-family: $global-font-main;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+
+  &--available {
+    background-color: $global-color-primary;
+    color: $global-white;
+
+    &:hover {
+      background-color: $global-color-primary-dark;
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+
+  &--unavailable {
+    background-color: $global-background-color;
+    color: $global-text-muted;
+    cursor: not-allowed;
+    border: 0.0625rem solid $global-border-color;
+  }
+}
+
+.btn-reserve--wish {
+  background-color: transparent;
+  color: $global-color-primary;
+  border: 0.0625rem solid $global-color-primary;
+  display: inline-flex;
+  align-items: center;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: $global-border-radius-pill;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background-color: $global-color-primary;
+    color: $global-white;
+  }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding-top: 1.5rem;
+}
+
+.page-group {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.page-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0.0625rem solid $global-border-color;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: $global-text-muted;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  background-color: $global-white;
+
+  &:hover {
+    border-color: $global-color-primary;
+    color: $global-color-primary;
+  }
+
+  &--active {
+    background-color: $global-color-primary;
+    border-color: $global-color-primary;
+    color: $global-white;
+    font-weight: 700;
+  }
+}

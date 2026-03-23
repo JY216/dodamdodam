@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>도서 검색 - 도담도담</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/search/styles/book-search.css">
+</head>
+<body>
+
+<header th:replace="~{fragment/common :: nav}"></header>
+
+<main class="search-main">
+    <div class="search-container">
+
+        <!-- 헤더 -->
+        <div class="search-header">
+            <h1 class="search-title">도서 검색</h1>
+            <p class="search-desc">도서를 검색하여 찾아보세요!</p>
+        </div>
+
+        <!-- 검색 바 -->
+        <form class="search-bar-wrap" action="/search" method="get">
+            <div class="search-bar">
+                <select name="type" class="search-type">
+                    <option value="all" th:selected="${type == 'all'}">전체</option>
+                    <option value="title" th:selected="${type == 'title'}">제목</option>
+                    <option value="author" th:selected="${type == 'author'}">저자</option>
+                    <option value="isbn" th:selected="${type == 'isbn'}">ISBN</option>
+                </select>
+                <div class="search-divider"></div>
+                <input type="text" name="keyword" class="search-input"
+                       placeholder="검색어를 입력하세요"
+                       th:value="${keyword}">
+                <button type="submit" class="search-btn">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+                        <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+        </form>
+
+        <!-- 검색 결과 -->
+        <div class="search-results" th:if="${books != null}">
+
+            <!-- 결과 없음 -->
+            <div class="search-empty" th:if="${#lists.isEmpty(books)}">
+                <p>검색 결과가 없어요.</p>
+                <p class="search-empty-sub">다른 검색어로 다시 시도해보세요.</p>
+            </div>
+
+            <!-- 결과 목록 -->
+            <ul class="book-list" th:unless="${#lists.isEmpty(books)}">
+                <li class="book-item" th:each="book : ${books}">
+                    <!-- 책 표지 -->
+                    <div class="book-cover">
+                        <img th:src="${book.coverImage}" th:alt="${book.title}"
+                             onerror="this.style.display='none'">
+                    </div>
+
+                    <!-- 책 정보 -->
+                    <div class="book-info">
+                        <h3 class="book-title" th:text="${book.title}"></h3>
+                        <p class="book-meta">
+                            <span th:text="${book.author}"></span>
+                            <span class="meta-divider">|</span>
+                            <span th:text="${book.publisher}"></span>
+                            <span class="meta-divider">|</span>
+                            <span th:text="${book.publishDate}"></span>
+                            <span class="meta-divider">|</span>
+                            <span th:text="${book.isbn}"></span>
+                        </p>
+                        <p class="book-category" th:text="${book.categoryName}"></p>
+                    </div>
+
+                    <div class="book-action">
+                        <!-- DB에 있고 대출 가능한 책 -->
+                        <form th:if="${book.availableQuantity > 0}"
+                              th:action="@{/reserve}" method="post" style="display:inline;">
+                            <input type="hidden" name="bookId" th:value="${book.id}">
+                            <button type="submit" class="btn-reserve btn-reserve--available">예약</button>
+                        </form>
+
+                        <!-- DB에 있지만 대출 불가 -->
+                        <button th:if="${book.availableQuantity == 0}"
+                                class="btn-reserve btn-reserve--unavailable" disabled>
+                            예약불가
+                        </button>
+
+                        <!-- DB에 없는 책 (카카오 API) -->
+                        <a th:if="${book.availableQuantity == -1}"
+                           href="/wish-book" class="btn-reserve btn-reserve--wish">
+                            희망도서 신청
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- 검색 결과 목록 아래에 추가 -->
+        <div class="pagination" th:if="${pageVo != null and pageVo.maxPage > 1}">
+            <!-- 첫 페이지 / 이전 -->
+            <div class="page-group" th:if="${pageVo.requestPage > pageVo.minPage}">
+                <a class="page-link" th:href="@{/search(keyword=${keyword}, type=${type}, page=${pageVo.minPage})}">&lt;&lt;</a>
+                <a class="page-link" th:href="@{/search(keyword=${keyword}, type=${type}, page=${pageVo.requestPage - 1})}">&lt;</a>
+            </div>
+            <!-- 페이지 번호 -->
+            <div class="page-group">
+                <a th:each="p : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}"
+                   th:text="${p}"
+                   th:href="@{/search(keyword=${keyword}, type=${type}, page=${p})}"
+                   th:class="${p == pageVo.requestPage} ? 'page-link page-link--active' : 'page-link'">
+                </a>
+            </div>
+            <!-- 다음 / 마지막 -->
+            <div class="page-group" th:if="${pageVo.requestPage < pageVo.maxPage}">
+                <a class="page-link" th:href="@{/search(keyword=${keyword}, type=${type}, page=${pageVo.requestPage + 1})}">&gt;</a>
+                <a class="page-link" th:href="@{/search(keyword=${keyword}, type=${type}, page=${pageVo.maxPage})}">&gt;&gt;</a>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragment/common :: footer}"></footer>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>대출 현황 - 도담도담</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/user/styles/mypage-loans.css">
+</head>
+<body>
+
+<header th:replace="~{fragment/common :: nav}"></header>
+
+<main class="loans-main">
+    <div class="loans-container">
+
+        <!-- 헤더 -->
+        <div class="loans-header">
+            <h1 class="loans-title">
+                <span class="loans-username" th:text="${userName}">이용자</span>
+                님의 대출 현황
+            </h1>
+            <p class="loans-desc">대출 후 일주일이 지나면 반납 기한을 연장할 수 있습니다. 다만, 다음 예약자가 있는 도서는 연장이 되지 않습니다.</p>
+        </div>
+
+        <!-- 대출 목록 -->
+        <div class="loans-list" th:if="${not #lists.isEmpty(loans)}">
+            <div class="loan-item" th:each="loan : ${loans}">
+
+                <!-- 책 표지 -->
+                <div class="loan-cover">
+                    <img th:src="${loan.bookCover}" th:alt="${loan.bookTitle}"
+                         onerror="this.style.display='none'">
+                </div>
+
+                <!-- 책 정보 -->
+                <div class="loan-info">
+                    <h3 class="loan-title" th:text="${loan.bookTitle}">책 제목</h3>
+                    <p class="loan-meta">
+                        <span th:text="${loan.bookAuthor}">저자</span>
+                        <span class="loan-meta-divider">|</span>
+                        <span th:text="${loan.dueDate != null} ? '반납 예정일 ' + ${loan.dueDate} : '승인 대기 중'"></span>
+                        <span th:if="${loan.dday != null}">
+                            <span class="loan-dday"
+                                  th:classappend="${loan.dday < 0} ? 'loan-dday--overdue' : 'loan-dday--ok'"
+                                  th:text="${loan.dday < 0} ? '(' + ${-loan.dday} + '일 연체)' : '(D-' + ${loan.dday} + ')'">
+                            </span>
+                        </span>
+                    </p>
+                    <span class="loan-status-badge"
+                          th:classappend="${loan.status == 'PENDING'} ? 'loan-status-badge--pending' :
+                                         (${loan.status == 'LOANED'} ? 'loan-status-badge--loaned' : 'loan-status-badge--returned')"
+                          th:text="${loan.status == 'PENDING'} ? '예약 중' :
+                                   (${loan.status == 'LOANED'} ? '대출 중' : '반납 완료')">
+                    </span>
+                </div>
+
+                <!-- 기한 연장 버튼 -->
+                <div class="loan-action">
+                    <form th:if="${loan.status == 'LOANED' and loan.dday >= -7}"
+                          th:action="@{/mypage/loans/extend}" method="post">
+                        <input type="hidden" name="loanId" th:value="${loan.id}">
+                        <button type="submit" class="btn-extend">기한 연장</button>
+                    </form>
+                    <button th:if="${loan.status == 'LOANED' and loan.dday < -7}"
+                            class="btn-extend btn-extend--disabled" disabled>
+                        연장 불가
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 대출 내역 없음 -->
+        <div class="loans-empty" th:if="${#lists.isEmpty(loans)}">
+            <p>현재 대출 중인 도서가 없어요.</p>
+            <a href="/search" class="btn-search">도서 검색하러 가기</a>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{fragment/common :: footer}"></footer>
+
+</body>
+</html>

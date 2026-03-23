@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>희망 도서 신청 - 도담도담</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/wish-book/styles/wish-book.css">
+    <script src="/wish-book/scripts/wish-book.js"></script>
+</head>
+<body>
+
+<header th:replace="~{fragment/common :: nav}"></header>
+
+<main class="wish-main">
+    <div class="wish-container">
+
+        <!-- 헤더 -->
+        <div class="wish-header">
+            <h1 class="wish-title">희망도서신청</h1>
+            <p class="wish-desc">원하는 도서가 없다면 신청해보세요!</p>
+        </div>
+
+        <form class="wish-form" action="/wish-book" method="post">
+
+            <!-- 신청 정보 -->
+            <div class="wish-section">
+                <h2 class="wish-section-title">신청 정보</h2>
+                <div class="wish-info-box">
+                    <p>신청자명 : <span th:text="${userName}">이용자</span></p>
+                    <p>전화번호 : <span th:text="${userPhone}">010 - 0000 - 0000</span></p>
+                    <p>신청일자 : <span th:text="${today}">2026-03-21</span></p>
+                </div>
+            </div>
+
+            <!-- 희망 도서명 -->
+            <div class="wish-field">
+                <label class="wish-label">희망 도서명</label>
+                <div class="wish-book-search-row">
+                    <input type="text" id="wishTitle" name="title"
+                           class="wish-input wish-input--flex" placeholder="">
+                    <button type="button" class="btn-book-search" id="bookSearchBtn">도서 검색</button>
+                    <label class="wish-checkbox-label">
+                        <input type="checkbox" id="directInput" class="wish-checkbox">
+                        직접 입력
+                    </label>
+                </div>
+            </div>
+
+            <!-- 저자 / 출판사 / 출판연도 -->
+            <div class="wish-grid">
+                <div class="wish-field">
+                    <label class="wish-label">저자</label>
+                    <input type="text" id="author" name="author" class="wish-input">
+                </div>
+                <div class="wish-field">
+                    <label class="wish-label">출판사</label>
+                    <input type="text" id="publisher" name="publisher" class="wish-input">
+                </div>
+                <div class="wish-field">
+                    <label class="wish-label">출판연도</label>
+                    <input type="text" id="publishYear" name="publishYear" class="wish-input" placeholder="예) 2024">
+                </div>
+            </div>
+
+            <!-- ISBN / 가격 -->
+            <div class="wish-grid wish-grid--2">
+                <div class="wish-field">
+                    <label class="wish-label">ISBN</label>
+                    <input type="text" id="isbn" name="isbn" class="wish-input">
+                </div>
+                <div class="wish-field">
+                    <label class="wish-label">가격</label>
+                    <input type="number" id="price" name="price" class="wish-input" min="0">
+                </div>
+            </div>
+
+            <!-- 신청 사유 -->
+            <div class="wish-field">
+                <label class="wish-label">신청 사유</label>
+                <textarea id="reason" name="reason" class="wish-textarea" rows="4"></textarea>
+            </div>
+
+            <!-- 버튼 -->
+            <div class="wish-actions">
+                <button type="submit" class="btn-wish-submit">신청하기</button>
+            </div>
+
+        </form>
+    </div>
+</main>
+
+<footer th:replace="~{fragment/common :: footer}"></footer>
+
+<script src="/user/scripts/wish-book.js"></script>
+</body>
+</html>

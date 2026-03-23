@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dev.yeonlog.dodamdodam.mappers.BookMapper">
+    <!--    카테고리 전체 조회-->
+    <select id="selectAllCategories" resultType="dev.yeonlog.dodamdodam.entities.CategoryEntity">
+        SELECT `id`,
+               `name`
+        FROM `dodamdodam`.`categories`
+    </select>
+<!--    도서 목록-->
+    <select id="selectAllBooks" resultType="dev.yeonlog.dodamdodam.entities.BookEntity">
+        SELECT b.`id`,
+               b.`isbn`,
+               b.`title`,
+               b.`author`,
+               b.`publisher`,
+               b.`publish_date`,
+               b.`category_id`,
+               b.`total_quantity`,
+               b.`status`,
+               b.`is_recommended`,
+               b.`recommend_reason`,
+               b.`price`,
+               b.created_at,
+               c.`name` AS `category_name`
+        FROM `dodamdodam`.`books` AS `b`
+        LEFT JOIN `dodamdodam`.`categories` c ON b.`category_id` = c.`id`
+        ORDER BY b.`created_at` DESC
+    </select>
+    <select id="selectAllBooksWithStatus" resultType="dev.yeonlog.dodamdodam.entities.BookEntity">
+        SELECT b.`id`,
+               b.`title`,
+               b.`author`,
+               b.`total_quantity`,
+               COUNT(CASE WHEN bc.`status` = 'AVAILABLE' THEN 1 END) AS `available_quantity`
+        FROM `dodamdodam`.`books` AS b
+        LEFT JOIN `dodamdodam`.`book_copies` bc ON b.`id` = bc.`book_id`
+        GROUP BY b.`id`, b.`title`, b.`author`, b.`total_quantity`, b.`created_at`
+        ORDER BY b.`created_at` DESC
+    </select>
+    <!--    도서 등록-->
+    <insert id="insertBook" parameterType="dev.yeonlog.dodamdodam.entities.BookEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `dodamdodam`.`books` (`isbn`,
+                                          `title`,
+                                          `author`,
+                                          `publisher`,
+                                          `publish_date`,
+                                          `category_id`,
+                                          `total_quantity`,
+                                          `status`,
+                                          `is_recommended`,
+                                          `recommend_reason`,
+                                          `price`,
+                                          `cover_image`)
+        VALUES (#{isbn},
+                #{title},
+                #{author},
+                #{publisher},
+                #{publishDate},
+                #{categoryId},
+                #{totalQuantity},
+                'AVAILABLE',
+                0,
+                #{recommendReason},
+                #{price},
+                #{coverImage})
+    </insert>
+<!--    도서 사본 등록-->
+    <insert id="insertBookCopy" parameterType="dev.yeonlog.dodamdodam.entities.BookCopyEntity">
+        INSERT INTO `dodamdodam`.`book_copies` (book_id, status)
+        VALUES (#{bookId}, 'AVAILABLE')
+    </insert>
+    <insert id="addBookCopy">
+        INSERT INTO `dodamdodam`.`book_copies` (`book_id`, `status`)
+        VALUES (#{bookId}, 'AVAILABLE')
+    </insert>
+    <update id="updateTotalQuantity">
+        UPDATE `dodamdodam`.`books`
+        SET `total_quantity` = #{quantity}
+        WHERE `id` = #{id}
+    </update>
+<!-- 사본 보기-->
+    <select id="selectCopiesByBookId" resultType="dev.yeonlog.dodamdodam.entities.BookCopyEntity">
+        SELECT `id`,
+               `book_id`,
+               `status`
+        FROM `dodamdodam`.`book_copies`
+        WHERE `book_id` = #{bookId}
+    </select>
+    <select id="selectById" resultType="dev.yeonlog.dodamdodam.entities.BookEntity">
+        SELECT *
+        FROM `dodamdodam`.`books`
+        WHERE `id` = #{id}
+    </select>
+    <update id="updateCopyStatus">
+        UPDATE `dodamdodam`.`book_copies`
+        SET `status` = #{status}
+        WHERE `id` = #{id}
+    </update>
+<!--    도서 검색-->
+    <select id="searchBooks" resultType="dev.yeonlog.dodamdodam.entities.BookEntity">
+        SELECT b.`id`,
+               b.`isbn`,
+               b.`title`,
+               b.`author`,
+               b.`publisher`,
+               b.`publish_date`,
+               b.`category_id`,
+               b.`total_quantity`,
+               b.`status`,
+               b.`created_at`,
+               b.`cover_image`,
+               c.`name` AS `category_name`,
+               COUNT(CASE WHEN bc.`status` = 'AVAILABLE' THEN 1 END) AS `available_quantity`
+        FROM `dodamdodam`.`books` AS b
+        LEFT JOIN `dodamdodam`.`categories` AS c ON b.`category_id` = c.`id`
+        LEFT JOIN `dodamdodam`.`book_copies` AS bc ON b.`id` = bc.`book_id`
+        <where>
+            <choose>
+                <when test="type == 'title'">
+                    b.`title` LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="type == 'author'">
+                    b.`author` LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="type == 'isbn'">
+                    b.`isbn` LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <otherwise>
+                    b.`title`    LIKE CONCAT('%', #{keyword}, '%')
+                    OR b.`author`    LIKE CONCAT('%', #{keyword}, '%')
+                    OR b.`isbn`      LIKE CONCAT('%', #{keyword}, '%')
+                    OR b.`publisher` LIKE CONCAT('%', #{keyword}, '%')
+                </otherwise>
+            </choose>
+        </where>
+        GROUP BY b.`id`, b.`isbn`, b.`title`, b.`author`, b.`publisher`,
+        b.`publish_date`, b.`category_id`, b.`total_quantity`,
+        b.`status`, b.`created_at`, b.`cover_image`, c.`name`
+        ORDER BY b.`created_at` DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+    <select id="selectAvailableCopy" resultType="dev.yeonlog.dodamdodam.entities.BookCopyEntity">
+        SELECT *
+        FROM `dodamdodam`.`book_copies`
+        WHERE `book_id` = #{bookId}
+        AND `status` = 'AVAILABLE'
+        LIMIT 1
+    </select>
+    <select id="countSearchBooks" resultType="int">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`books` AS b
+        LEFT JOIN `dodamdodam`.`categories` AS c ON b.`category_id` = c.`id`
+        <where>
+            <choose>
+                <when test="type == 'title'">
+                    b.`title` LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="type == 'author'">
+                    b.`author` LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="type == 'isbn'">
+                    b.`isbn` LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <otherwise>
+                    b.`title` LIKE CONCAT('%', #{keyword}, '%')
+                    OR b.`author` LIKE CONCAT('%', #{keyword}, '%')
+                    OR b.`isbn` LIKE CONCAT('%', #{keyword}, '%')
+                    OR b.`publisher` LIKE CONCAT('%', #{keyword}, '%')
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+</mapper>

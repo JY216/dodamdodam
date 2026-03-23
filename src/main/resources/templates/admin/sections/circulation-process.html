@@ -2,8 +2,81 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <body>
 <th:block th:fragment="circulationProcessSection">
-    <h2>대출 / 반납 처리</h2>
-    <p>준비 중입니다.</p>
+
+    <div class="admin-list">
+        <div class="admin-list-header">
+            <div>
+                <h2 class="admin-list-title">대출 / 반납 처리</h2>
+                <p class="admin-list-subtitle">예약 신청 목록을 확인하고 대출 승인 및 반납을 처리해요.</p>
+            </div>
+        </div>
+
+        <!-- 알림 메시지 -->
+        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
+        <div class="alert alert--error" th:if="${errorMsg}" th:text="${errorMsg}"></div>
+
+        <div class="table-wrap">
+            <table class="book-table">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>회원명</th>
+                    <th>도서명</th>
+                    <th>저자</th>
+                    <th>예약일</th>
+                    <th>대출일</th>
+                    <th>반납 예정일</th>
+                    <th>상태</th>
+                    <th>처리</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="loan : ${loans}">
+                    <td th:text="${loan.id}"></td>
+                    <td th:text="${loan.userName}"></td>
+                    <td class="col-ellipsis" th:text="${loan.bookTitle}"></td>
+                    <td th:text="${loan.bookAuthor}"></td>
+                    <td th:text="${#temporals.format(loan.createdAt, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${loan.loanDate != null} ? ${#temporals.format(loan.loanDate, 'yyyy-MM-dd')} : '-'"></td>
+                    <td th:text="${loan.dueDate != null} ? ${loan.dueDate} : '-'"></td>
+                    <td>
+                        <span class="status-badge"
+                              th:classappend="${loan.status == 'PENDING'} ? 'status-badge--pending' :
+                                             (${loan.status == 'LOANED'} ? 'status-badge--loaned' :
+                                             'status-badge--returned')"
+                              th:text="${loan.status == 'PENDING'} ? '예약 중' :
+                                       (${loan.status == 'LOANED'} ? '대출 중' : '반납 완료')">
+                        </span>
+                    </td>
+                    <td>
+                        <!-- 승인 버튼 (PENDING일 때) -->
+                        <form th:if="${loan.status == 'PENDING'}"
+                              th:action="@{/admin/loans/approve}" method="post" style="display:inline;">
+                            <input type="hidden" name="loanId" th:value="${loan.id}">
+                            <input type="hidden" name="copyId" th:value="${loan.copyId}">
+                            <button type="submit" class="btn-approve">승인</button>
+                        </form>
+
+                        <!-- 반납 버튼 (LOANED일 때) -->
+                        <form th:if="${loan.status == 'LOANED'}"
+                              th:action="@{/admin/loans/return}" method="post" style="display:inline;">
+                            <input type="hidden" name="loanId" th:value="${loan.id}">
+                            <input type="hidden" name="copyId" th:value="${loan.copyId}">
+                            <button type="submit" class="btn-return">반납</button>
+                        </form>
+
+                        <!-- 반납 완료 -->
+                        <span th:if="${loan.status == 'RETURNED'}" class="text-muted">완료</span>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(loans)}">
+                    <td colspan="9" class="table-empty">예약 내역이 없어요.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </th:block>
 </body>
 </html>

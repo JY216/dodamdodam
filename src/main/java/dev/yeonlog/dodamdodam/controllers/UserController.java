@@ -1,26 +1,34 @@
 package dev.yeonlog.dodamdodam.controllers;
 
+import dev.yeonlog.dodamdodam.mappers.LoanMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import dev.yeonlog.dodamdodam.entities.EmailTokenEntity;
+import dev.yeonlog.dodamdodam.entities.LoanEntity;
 import dev.yeonlog.dodamdodam.entities.UserEntity;
+import dev.yeonlog.dodamdodam.mappers.UserMapper;
 import dev.yeonlog.dodamdodam.services.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserMapper userMapper;
+    private final LoanMapper loanMapper;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLogin() {
@@ -89,5 +97,75 @@ public class UserController {
             response.put("result", "FAILURE");
         }
         return response;
+    }
+
+    // 마이 페이지
+    @RequestMapping(value = "/mypage", method = RequestMethod.GET)
+    public String mypage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (userDetails == null) return "redirect:/login";
+
+        String userId = userDetails.getUsername();
+        List<LoanEntity> loans = loanMapper.selectLoansByUserId(userId);
+
+        long loanCount = loans.stream().filter(l -> l.getStatus().equals("LOANED")).count();
+        long pendingCount = loans.stream().filter(l -> l.getStatus().equals("PENDING")).count();
+
+        // 유저 이름 가져오기
+        UserEntity user = userMapper.selectByUserId(userId);
+
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("loanCount", loanCount);
+        model.addAttribute("pendingCount", pendingCount);
+
+        return "user/mypage";
+    }
+
+    // 도서 대출 현황
+    @RequestMapping(value = "/mypage/loans", method = RequestMethod.GET)
+    public String myLoans(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (userDetails == null) return "redirect:/login";
+
+        String userId = userDetails.getUsername();
+        UserEntity user = userMapper.selectByUserId(userId);
+        List<LoanEntity> loans = loanMapper.selectLoansByUserId(userId);
+
+        // D-day 계산
+        loans.forEach(loan -> {
+            if (loan.getDueDate() != null && loan.getStatus().equals("LOANED")) {
+                long diff = java.time.temporal.ChronoUnit.DAYS.between(
+                        java.time.LocalDate.now(), loan.getDueDate()
+                );
+                loan.setDday(diff);
+            }
+        });
+
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("loans", loans);
+
+        return "user/mypage-loans";
+    }
+
+    // 도서 예약 현황
+    @RequestMapping(value = "/mypage/reservations", method = RequestMethod.GET)
+    public String myReservations(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (userDetails == null) return "redirect:/login";
+
+        String userId = userDetails.getUsername();
+        UserEntity user = userMapper.selectByUserId(userId);
+        List<LoanEntity> loans = loanMapper.selectLoansByUserId(userId);
+
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("loans", loans);
+
+        return "user/mypage-reservations.html";
+    }
+
+    // 예약 취소
+    @RequestMapping(value = "/mypage/reservations/cancel", method = RequestMethod.POST)
+    public String cancelReservation(@RequestParam long loanId,
+                                    RedirectAttributes redirectAttributes) {
+        loanMapper.cancelLoan(loanId);
+        redirectAttributes.addFlashAttribute("successMsg", "예약이 취소됐어요.");
+        return "redirect:/mypage/reservations";
     }
 }
