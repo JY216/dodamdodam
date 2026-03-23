@@ -307,3 +307,45 @@
     font-weight: 600;
   }
 }
+
+// 페이지네이션
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding-top: 1.5rem;
+}
+
+.page-group {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.page-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0.0625rem solid $global-border-color;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: $global-text-muted;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: $global-white;
+
+  &:hover {
+    border-color: $global-color-primary;
+    color: $global-color-primary;
+  }
+
+  &--active {
+    background-color: $global-color-primary;
+    border-color: $global-color-primary;
+    color: $global-white;
+    font-weight: 700;
+  }
+}
