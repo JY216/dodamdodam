@@ -1,0 +1,264 @@
+@import "../../assets/styles/def";
+
+.page-wrap {
+  @include container;
+  padding-top: 2.75rem;
+  padding-bottom: 5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2.25rem;
+  color: $global-text-color;
+}
+
+// 히어로 영역
+.hero {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+  background: $global-white;
+  border: 1px solid $global-border-color;
+  border-radius: $global-border-radius-md;
+  box-shadow: $global-shadow-sm;
+  padding: 2.25rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+
+  @media (max-width: 40rem) {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+    padding: 1.5rem;
+  }
+}
+
+// 표지
+.cover-wrap {
+  flex-shrink: 0;
+  width: 12.5rem;
+
+  img {
+    width: 100%;
+    border-radius: $global-border-radius-md;
+    box-shadow: 0 0.625rem 2.25rem rgba(0, 0, 0, 0.18);
+  }
+
+  @media (max-width: 40rem) {
+    width: 9.375rem;
+  }
+}
+
+// 도서 정보
+.info-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.book-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: $global-text-color;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: 40rem) {
+    font-size: 1.375rem;
+  }
+}
+
+.book-byline {
+  font-size: 0.875rem;
+  color: $global-text-muted;
+  margin-bottom: 1.75rem;
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+  align-items: center;
+
+  .sep {
+    color: $global-border-color;
+  }
+}
+
+// 메타 테이블
+.meta-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.75rem;
+
+  tr {
+    border-bottom: 1px solid $global-border-color;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  td {
+    padding: 0.625rem 0.25rem;
+    font-size: 0.9rem;
+    vertical-align: top;
+  }
+
+  .label {
+    width: 5rem;
+    color: $global-text-muted;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .value {
+    color: $global-text-color;
+  }
+}
+
+// 키워드 칩
+.keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.kw {
+  background: rgba($global-color-primary-light, 0.2);
+  color: $global-color-primary-dark;
+  border-radius: $global-border-radius-pill;
+  padding: 0.1875rem 0.6875rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+// 하트(찜) 버튼
+.heart-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: $global-white;
+  border: 1.5px solid $global-border-color;
+  border-radius: $global-border-radius-md;
+  width: 2.625rem;
+  height: 2.625rem;
+  @include flex-center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: $global-color-warning;
+  }
+
+  &.on svg {
+    fill: $global-color-warning;
+    stroke: $global-color-warning;
+  }
+}
+
+// 액션 버튼
+.actions {
+  display: flex;
+  gap: 0.625rem;
+  margin-top: 0.25rem;
+}
+
+.btn-loc {
+  background: $global-white;
+  border: 1.5px solid $global-border-color;
+  color: $global-text-muted;
+  border-radius: $global-border-radius-md;
+  padding: 0.6875rem 1.375rem;
+  font-family: $global-font-main;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: $global-color-primary;
+    color: $global-color-primary;
+  }
+}
+
+.btn-reserve {
+  background: $global-color-primary-dark;
+  border: none;
+  color: $global-white;
+  border-radius: $global-border-radius-md;
+  padding: 0.6875rem 1.875rem;
+  font-family: $global-font-main;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: $global-color-primary;
+  }
+}
+
+// 섹션 공통
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: $global-text-color;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid $global-color-primary-light;
+  margin-bottom: 1.125rem;
+}
+
+.book-desc {
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: $global-text-muted;
+  background: $global-white;
+  border: 1px solid $global-border-color;
+  border-radius: $global-border-radius-md;
+  padding: 1.375rem 1.5rem;
+}
+
+// 소장정보 테이블
+.holding-wrap {
+  border-radius: $global-border-radius-md;
+  overflow: hidden;
+  border: 1px solid $global-border-color;
+}
+
+.holding-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+
+  th {
+    background: rgba($global-color-primary-light, 0.2);
+    color: $global-color-primary-dark;
+    font-weight: 600;
+    padding: 0.8125rem 1rem;
+    text-align: center;
+  }
+
+  td {
+    background: $global-white;
+    padding: 0.8125rem 1rem;
+    text-align: center;
+    border-top: 1px solid $global-border-color;
+    color: $global-text-color;
+  }
+
+  tbody tr:hover td {
+    background: rgba($global-color-primary-light, 0.15);
+  }
+}
+
+.status-out {
+  color: $global-color-invalid;
+  font-weight: 600;
+}
+
+.status-in {
+  color: $global-color-primary;
+  font-weight: 600;
+}

@@ -7,8 +7,10 @@ import dev.yeonlog.dodamdodam.mappers.BookMapper;
 import dev.yeonlog.dodamdodam.vos.PageVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -151,4 +153,10 @@ public class SearchController {
         int total = root.path("meta").path("total_count").asInt();
         return Math.min(total, 500);
     }
+
+    @RequestMapping(value = "/book-detail/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String bookDetail(@PathVariable Long id, Model model) {
+        return null;
+    }
+
 }

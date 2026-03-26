@@ -9,6 +9,7 @@
     <title>도서 검색 - 도담도담</title>
     <link rel="stylesheet" href="/assets/styles/common.css">
     <link rel="stylesheet" href="/search/styles/book-search.css">
+    <script defer src="/search/scripts/book-detail.js"></script>
 </head>
 <body>
 
@@ -56,7 +57,7 @@
 
             <!-- 결과 목록 -->
             <ul class="book-list" th:unless="${#lists.isEmpty(books)}">
-                <li class="book-item" th:each="book : ${books}">
+                <li class="book-item" th:each="book : ${books}" th:data-book-id="${book.id}">
                     <!-- 책 표지 -->
                     <div class="book-cover">
                         <img th:src="${book.coverImage}" th:alt="${book.title}"

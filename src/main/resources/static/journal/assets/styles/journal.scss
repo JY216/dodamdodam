@@ -1,0 +1,693 @@
+@import "../../../assets/styles/def";
+
+$sidebar-w:  25rem;
+$nav-h:      $global-nav-height;
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+// 사이드바
+.sidebar {
+  width: $sidebar-w;
+  background: $global-white;
+  border-right: 1px solid $global-border-color;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 50;
+  overflow: hidden;
+
+  &.collapsed {
+    transform: translateX(-$sidebar-w);
+  }
+}
+
+.sidebar-header {
+  padding: 1.5rem 1.25rem 1rem;
+  border-bottom: 1px solid $global-border-color;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.sidebar-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $global-text-color;
+}
+
+.sidebar-count {
+  background: rgba($global-color-primary-light, 0.2);
+  color: $global-color-primary-dark;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: $global-border-radius-pill;
+}
+
+.sidebar-search {
+  padding: 0.875rem 1.25rem;
+  border-bottom: 0.0625rem solid $global-border-color;
+  flex-shrink: 0;
+
+  input {
+    width: 100%;
+    background: $global-background-color;
+    border: 1px solid $global-border-color;
+    border-radius: $global-border-radius-pill;
+    padding: 0.45rem 0.9rem;
+    font-family: $global-font-main;
+    font-size: 0.82rem;
+    color: $global-text-color;
+    outline: none;
+    transition: border-color 0.15s;
+
+    &::placeholder { color: $global-text-placeholder; }
+    &:focus { border-color: $global-color-primary; }
+  }
+}
+
+.sidebar-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: $global-border-color;
+    border-radius: 2px;
+  }
+}
+
+// 사이드바 일지 아이템
+.journal-item {
+  padding: 0.875rem 1.25rem;
+  cursor: pointer;
+  border-bottom: 1px solid $global-border-color;
+  transition: background 0.12s;
+  position: relative;
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: rgba($global-color-primary-light, 0.15); }
+
+  &.active {
+    background: rgba($global-color-primary-light, 0.15);
+    border-left: 3px solid $global-color-primary;
+  }
+}
+
+.journal-item-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: $global-text-color;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 2.5rem;
+}
+
+.journal-item-book {
+  font-size: 0.78rem;
+  color: $global-color-primary-dark;
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.journal-item-date {
+  font-size: 0.75rem;
+  color: $global-text-muted;
+}
+
+.journal-item-del {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $global-text-placeholder;
+  padding: 0.25rem;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
+  font-size: 0.85rem;
+  line-height: 1;
+
+  .journal-item:hover & { opacity: 1; }
+  &:hover { color: $global-color-invalid; }
+}
+
+.sidebar-empty {
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: $global-text-muted;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+// 사이드바 토글 탭
+.sidebar-toggle {
+  position: fixed;
+  top: 1.5rem;
+  left: $sidebar-w;
+  width: 1.75rem;
+  height: 3rem;
+  background: $global-white;
+  border: 1px solid $global-border-color;
+  border-left: none;
+  border-radius: 0 0.5rem 0.5rem 0;
+  cursor: pointer;
+  @include flex-center;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.15s;
+  z-index: 51;
+  box-shadow: $global-shadow-sm;
+
+  &:hover { background: rgba($global-color-primary-light, 0.15); }
+
+  svg {
+    transition: transform 0.3s;
+    color: $global-text-muted;
+  }
+
+  &.collapsed {
+    left: 0;
+
+    svg { transform: rotate(180deg); }
+  }
+}
+
+// 메인 콘텐츠
+.main {
+  margin-left: $sidebar-w;
+  flex: 1;
+  padding: 2.5rem 2rem 4rem;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: calc(100% - #{$sidebar-w});
+
+  &.expanded {
+    margin-left: 0;
+    max-width: 100%;
+  }
+}
+
+.main-inner {
+  @include container;
+  max-width: 62.5rem;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $global-text-color;
+  margin-bottom: 0.375rem;
+}
+
+.page-sub {
+  font-size: 0.85rem;
+  color: $global-text-muted;
+  margin-bottom: 2rem;
+}
+
+// 독서 목표 카드
+.goal-card {
+  background: $global-white;
+  border: 1px solid $global-border-color;
+  border-radius: $global-border-radius-md;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.75rem;
+  box-shadow: $global-shadow-sm;
+}
+
+.goal-card-top {
+  @include flex-between;
+  margin-bottom: 1.125rem;
+}
+
+.goal-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $global-text-color;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  svg { color: $global-color-primary; }
+}
+
+.goal-edit-btn {
+  background: none;
+  border: 1px solid $global-border-color;
+  border-radius: $global-border-radius-pill;
+  padding: 0.3rem 0.875rem;
+  font-family: $global-font-main;
+  font-size: 0.78rem;
+  color: $global-text-muted;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: $global-color-primary;
+    color: $global-color-primary;
+  }
+}
+
+.goal-numbers {
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  margin-bottom: 0.875rem;
+}
+
+.goal-current {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: $global-color-primary-dark;
+  line-height: 1;
+}
+
+.goal-sep {
+  font-size: 1.25rem;
+  color: $global-border-color;
+}
+
+.goal-total {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: $global-text-muted;
+  line-height: 1;
+}
+
+.goal-unit {
+  font-size: 0.85rem;
+  color: $global-text-muted;
+  margin-left: 0.25rem;
+}
+
+.goal-bar-wrap {
+  background: $global-background-color;
+  border-radius: $global-border-radius-pill;
+  height: 10px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.goal-bar {
+  height: 100%;
+  background: linear-gradient(90deg, $global-color-primary-dark, $global-color-primary);
+  border-radius: $global-border-radius-pill;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.goal-bar-info {
+  @include flex-between;
+  font-size: 0.78rem;
+  color: $global-text-muted;
+}
+
+// 목표 편집 영역
+.goal-edit-area {
+  display: none;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.875rem;
+
+  &.show { display: flex; }
+}
+
+.goal-edit-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: $global-text-muted;
+  white-space: nowrap;
+}
+
+.goal-edit-area input {
+  width: 6.25rem;
+  border: 1.5px solid $global-border-color;
+  border-radius: $global-border-radius-md;
+  padding: 0.45rem 0.75rem;
+  font-family: $global-font-main;
+  font-size: 0.9rem;
+  color: $global-text-color;
+  background: $global-white;
+  outline: none;
+  transition: border-color 0.15s;
+  text-align: center;
+
+  &:focus { border-color: $global-color-primary; }
+}
+
+.goal-save-btn {
+  background: $global-color-primary-dark;
+  border: none;
+  border-radius: $global-border-radius-pill;
+  padding: 0.45rem 1.25rem;
+  font-family: $global-font-main;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: $global-white;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: $global-color-primary; }
+}
+
+// 일지 작성 카드
+.write-card {
+  background: $global-white;
+  border: 1px solid $global-border-color;
+  border-radius: $global-border-radius-md;
+  padding: 1.75rem;
+  box-shadow: $global-shadow-sm;
+}
+
+.write-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $global-text-color;
+  margin-bottom: 1.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  svg { color: $global-color-primary; }
+}
+
+// 폼 공통
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  &.full { grid-column: 1 / -1; }
+
+  &--slider { margin-bottom: 1rem; }
+}
+
+.form-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: $global-text-muted;
+}
+
+.required {
+  color: $global-color-invalid;
+  margin-left: 2px;
+}
+
+%form-control-base {
+  border: 1.5px solid $global-border-color;
+  border-radius: $global-border-radius-md;
+  padding: 0.6rem 0.875rem;
+  font-family: $global-font-main;
+  font-size: 0.9rem;
+  color: $global-text-color;
+  background: $global-white;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 80%;
+
+  &::placeholder { color: $global-text-placeholder; }
+
+  &:focus {
+    border-color: $global-color-primary;
+    box-shadow: 0 0 0 3px rgba($global-color-primary, 0.1);
+  }
+}
+
+.form-input  { @extend %form-control-base; }
+
+.form-select {
+  @extend %form-control-base;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+}
+
+.form-textarea {
+  @extend %form-control-base;
+  resize: vertical;
+  min-height: 8.75rem;
+  line-height: 1.75;
+}
+
+// 별점
+.star-group {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: $global-border-color;
+  transition: color 0.12s, transform 0.12s;
+  padding: 0.1rem;
+
+  &:hover,
+  &.active { color: #f5b731; }
+
+  &:hover { transform: scale(1.15); }
+}
+
+// 페이지 슬라이더
+.page-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.page-slider {
+  flex: 1;
+  accent-color: $global-color-primary;
+  cursor: pointer;
+  height: 4px;
+}
+
+.page-slider-val {
+  min-width: 3rem;
+  text-align: right;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $global-color-primary-dark;
+}
+
+// 폼 하단 버튼
+.form-bottom {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid $global-border-color;
+}
+
+.btn-cancel {
+  background: $global-white;
+  border: 1.5px solid $global-border-color;
+  border-radius: $global-border-radius-md;
+  padding: 0.65rem 1.5rem;
+  font-family: $global-font-main;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $global-text-muted;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: $global-color-primary;
+    color: $global-color-primary;
+  }
+}
+
+.btn-submit {
+  background: $global-color-primary-dark;
+  border: none;
+  border-radius: $global-border-radius-md;
+  padding: 0.65rem 1.75rem;
+  font-family: $global-font-main;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $global-white;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: $global-color-primary; }
+}
+
+// 일지 상세 뷰
+.detail-view {
+  display: none;
+  background: $global-white;
+  border: 1px solid $global-border-color;
+  border-radius: $global-border-radius-md;
+  padding: 1.75rem;
+  box-shadow: $global-shadow-sm;
+  animation: fadeIn 0.2s ease;
+
+  &.show { display: block; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.detail-top {
+  @include flex-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid $global-border-color;
+}
+
+.detail-journal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: $global-text-color;
+  margin-bottom: 0.3rem;
+}
+
+.detail-meta {
+  font-size: 0.8rem;
+  color: $global-text-muted;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.detail-btn {
+  background: none;
+  border: 1.5px solid $global-border-color;
+  border-radius: $global-border-radius-md;
+  padding: 0.4rem 0.875rem;
+  font-family: $global-font-main;
+  font-size: 0.8rem;
+  color: $global-text-muted;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: $global-color-primary;
+    color: $global-color-primary;
+  }
+
+  &.del:hover {
+    border-color: $global-color-warning;
+    color: $global-color-warning;
+  }
+}
+
+.detail-book-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: rgba($global-color-primary-light, 0.2);
+  color: $global-color-primary-dark;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.3rem 0.875rem;
+  border-radius: $global-border-radius-pill;
+  margin-bottom: 1rem;
+}
+
+.detail-stars {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.detail-progress {
+  font-size: 0.82rem;
+  color: $global-text-muted;
+  margin-bottom: 1rem;
+}
+
+.detail-content {
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: $global-text-color;
+  white-space: pre-wrap;
+}
+
+.detail-new-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1.5px dashed $global-border-color;
+  border-radius: $global-border-radius-md;
+  padding: 0.75rem 1.25rem;
+  font-family: $global-font-main;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: $global-text-muted;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1.25rem;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+
+  &:hover {
+    border-color: $global-color-primary;
+    color: $global-color-primary;
+    background: rgba($global-color-primary-light, 0.15);
+  }
+}
+
+// 반응형
+@media (max-width: 40rem) {
+  $sidebar-w: 17.5rem;
+
+  .sidebar { width: $sidebar-w; }
+  .sidebar-toggle { left: $sidebar-w; }
+  .main {
+    margin-left: $sidebar-w;
+    max-width: calc(100% - #{$sidebar-w});
+    padding: 1.5rem 1rem 3rem;
+  }
+  .form-row { grid-template-columns: 1fr; }
+}
