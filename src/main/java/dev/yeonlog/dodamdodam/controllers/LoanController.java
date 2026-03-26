@@ -22,11 +22,19 @@ public class LoanController {
     // 예약 신청
     @RequestMapping(value = "/reserve", method = RequestMethod.POST)
     public String reserve(@RequestParam long bookId,
+                          @RequestParam(defaultValue = "/search") String redirect,
                           @AuthenticationPrincipal UserDetails userDetails,
                           RedirectAttributes redirectAttributes) {
         // 로그인 확인
         if (userDetails == null) {
             return "redirect:/login";
+        }
+
+        // 중복 예약 체크
+        int duplicateCount = loanMapper.countPendingOrActiveLoan(userDetails.getUsername(), bookId);
+        if (duplicateCount > 0) {
+            redirectAttributes.addFlashAttribute("errorMsg", "이미 예약하거나 대출 중인 도서예요.");
+            return "redirect:" + redirect;
         }
 
         // 대출 가능한 사본 찾기
@@ -45,6 +53,6 @@ public class LoanController {
         loanMapper.insertLoan(loan);
 
         redirectAttributes.addFlashAttribute("successMsg", "예약이 완료됐어요! 관리자 승인 후 대출이 시작 돼요.");
-        return "redirect:/search";
+        return "redirect:" + redirect;
     }
 }

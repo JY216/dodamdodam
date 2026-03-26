@@ -35,13 +35,14 @@ public class BestsellerController {
     public ResponseEntity<?> getBestseller(
             @RequestParam(defaultValue = "Bestseller") String queryType,
             @RequestParam(defaultValue = "0") int categoryId,
-            @RequestParam(defaultValue = "20") int maxResults) throws Exception {
+            @RequestParam(defaultValue = "12") int maxResults,
+            @RequestParam(defaultValue = "1") int page) throws Exception {
 
         String url = "http://www.aladin.co.kr/ttb/api/ItemList.aspx"
                 + "?ttbkey=" + aladinApiKey
                 + "&QueryType=" + queryType
                 + "&MaxResults=" + maxResults
-                + "&start=1"
+                + "&start=" + page
                 + "&SearchTarget=Book"
                 + "&CategoryId=" + categoryId
                 + "&output=js"
@@ -75,6 +76,10 @@ public class BestsellerController {
             ));
         }
 
-        return ResponseEntity.ok(Map.of("result", "SUCCESS", "books", books));
+        return ResponseEntity.ok(Map.of(
+                "result", "SUCCESS",
+                "books", books,
+                "totalCount", root.path("totalResults").asInt() // ← 추가
+        ));
     }
 }

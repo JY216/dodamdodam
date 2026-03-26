@@ -16,6 +16,9 @@ public interface BookMapper {
     // 도서 등록
     int insertBook(BookEntity book);
 
+    // 카테고리 매핑 insert
+    void insertBookCategory(@Param("bookId") long bookId, @Param("categoryId") int categoryId);
+
     // 도서 사본 등록 (수량 만큼 반복 insert)
     int insertBookCopy(BookCopyEntity bookCopy);
 
@@ -43,4 +46,24 @@ public interface BookMapper {
     BookCopyEntity selectAvailableCopy(@Param("bookId") long bookId);
 
     int countSearchBooks(@Param("keyword") String keyword, @Param("type") String type);
+
+    List<BookEntity> searchBooksByCategory(int categoryId, int pageSize, int offset);
+    int countBooksByCategory(int categoryId);
+
+    int countAllBooks();
+
+    List<BookEntity> selectAllBooksWithPage(@Param("pageSize") int pageSize,
+                                            @Param("offset") int offset);
+
+    void updateCoverImage(@Param("id") Long id, @Param("coverImage") String coverImage);
+
+    List<BookEntity> selectNewBooks(@Param("categoryId") Integer categoryId,
+                                    @Param("month") Integer month,
+                                    @Param("week") Integer week,
+                                    @Param("pageSize") int pageSize,
+                                    @Param("offset") int offset);
+
+    int countNewBooks(@Param("categoryId") Integer categoryId,
+                      @Param("month") Integer month,
+                      @Param("week") Integer week);
 }

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>새로 들어온 책 - 도담도담</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/new-books/styles/new-books.css">
+</head>
+<body>
+<header th:replace="~{fragment/common :: nav}"></header>
+
+<main class="new-books-main">
+    <div class="new-books-container">
+
+        <!-- 헤더 -->
+        <div class="new-books-header">
+            <h1 class="new-books-title">새로 들어온 책</h1>
+            <p class="new-books-desc">새로 들어온 책을 확인 해보세요!</p>
+        </div>
+
+        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
+        <div class="alert alert--error" th:if="${errorMsg}" th:text="${errorMsg}"></div>
+
+        <!-- 필터 -->
+        <form class="new-books-filters" action="/new-books" method="get">
+            <div class="filter-group">
+                <span class="filter-label">분야</span>
+                <div class="filter-select-wrap">
+                    <select name="category" class="filter-select">
+                        <option value="">선택</option>
+                        <option value="1"  th:selected="${category == 1}">소설</option>
+                        <option value="2"  th:selected="${category == 2}">시/에세이</option>
+                        <option value="3"  th:selected="${category == 3}">자기계발</option>
+                        <option value="4"  th:selected="${category == 4}">경제/경영</option>
+                        <option value="5"  th:selected="${category == 5}">과학</option>
+                        <option value="6"  th:selected="${category == 6}">역사</option>
+                        <option value="7"  th:selected="${category == 7}">철학</option>
+                        <option value="8"  th:selected="${category == 8}">사회</option>
+                        <option value="9"  th:selected="${category == 9}">IT/기술</option>
+                        <option value="10" th:selected="${category == 10}">예술</option>
+                        <option value="11" th:selected="${category == 11}">여행</option>
+                        <option value="12" th:selected="${category == 12}">요리</option>
+                        <option value="13" th:selected="${category == 13}">건강</option>
+                        <option value="14" th:selected="${category == 14}">아동</option>
+                        <option value="15" th:selected="${category == 15}">청소년</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">기간</span>
+                <div class="filter-select-wrap">
+                    <select name="month" class="filter-select">
+                        <option value="">선택</option>
+                        <option value="1"  th:selected="${month == 1}">1월</option>
+                        <option value="2"  th:selected="${month == 2}">2월</option>
+                        <option value="3"  th:selected="${month == 3}">3월</option>
+                        <option value="4"  th:selected="${month == 4}">4월</option>
+                        <option value="5"  th:selected="${month == 5}">5월</option>
+                        <option value="6"  th:selected="${month == 6}">6월</option>
+                        <option value="7"  th:selected="${month == 7}">7월</option>
+                        <option value="8"  th:selected="${month == 8}">8월</option>
+                        <option value="9"  th:selected="${month == 9}">9월</option>
+                        <option value="10" th:selected="${month == 10}">10월</option>
+                        <option value="11" th:selected="${month == 11}">11월</option>
+                        <option value="12" th:selected="${month == 12}">12월</option>
+                    </select>
+                </div>
+                <div class="filter-select-wrap">
+                    <select name="week" class="filter-select">
+                        <option value="">선택</option>
+                        <option value="1" th:selected="${week == 1}">1주</option>
+                        <option value="2" th:selected="${week == 2}">2주</option>
+                        <option value="3" th:selected="${week == 3}">3주</option>
+                        <option value="4" th:selected="${week == 4}">4주</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="filter-search-btn">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+                    <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </form>
+
+        <!-- 도서 목록 -->
+        <ul class="new-books-list" th:if="${books != null and !#lists.isEmpty(books)}">
+            <li class="new-book-item" th:each="book : ${books}">
+                <div class="new-book-cover">
+                    <img th:src="${book.coverImage}" th:alt="${book.title}"
+                         onerror="this.style.display='none'">
+                </div>
+                <div class="new-book-info">
+                    <h3 class="new-book-title" th:text="${book.title}"></h3>
+                    <p class="new-book-desc" th:text="${book.recommendReason}"></p>
+                    <p class="new-book-meta">
+                        <span th:text="${book.author}"></span>
+                        <span th:if="${book.author != null}"> (옮긴 이) </span>
+                        <span class="meta-sep">|</span>
+                        <span th:text="${book.publisher}"></span>
+                        <span class="meta-sep">|</span>
+                        <span th:text="${book.publishDate}"></span>
+                        <span class="meta-sep">|</span>
+                        <span th:text="${book.isbn}"></span>
+                    </p>
+                </div>
+
+                <div class="book-action">
+                    <form th:if="${book.availableQuantity > 0}"
+                          th:action="@{/reserve}" method="post" style="display:inline;">
+                        <input type="hidden" name="bookId" th:value="${book.id}">
+                        <input type="hidden" name="redirect" value="/new-books">
+                        <button type="submit" class="btn-reserve btn-reserve--available">예약</button>
+                    </form>
+                    <button th:if="${book.availableQuantity == 0}"
+                            class="btn-reserve btn-reserve--unavailable" disabled>
+                        예약불가
+                    </button>
+                </div>
+            </li>
+        </ul>
+
+        <!-- 결과 없음 -->
+        <div class="new-books-empty" th:if="${books == null or #lists.isEmpty(books)}">
+            <p>등록된 도서가 없습니다.</p>
+        </div>
+
+        <!-- 페이지네이션 -->
+        <div class="pagination" th:if="${pageVo != null and pageVo.maxPage > 1}">
+            <div class="page-group" th:if="${pageVo.requestPage > pageVo.minPage}">
+                <a class="page-link" th:href="@{/new-books(category=${category}, month=${month}, week=${week}, page=${pageVo.minPage})}">&lt;&lt;</a>
+                <a class="page-link" th:href="@{/new-books(category=${category}, month=${month}, week=${week}, page=${pageVo.requestPage - 1})}">&lt;</a>
+            </div>
+            <div class="page-group">
+                <a th:each="p : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}"
+                   th:text="${p}"
+                   th:href="@{/new-books(category=${category}, month=${month}, week=${week}, page=${p})}"
+                   th:class="${p == pageVo.requestPage} ? 'page-link page-link--active' : 'page-link'">
+                </a>
+            </div>
+            <div class="page-group" th:if="${pageVo.requestPage < pageVo.maxPage}">
+                <a class="page-link" th:href="@{/new-books(category=${category}, month=${month}, week=${week}, page=${pageVo.requestPage + 1})}">&gt;</a>
+                <a class="page-link" th:href="@{/new-books(category=${category}, month=${month}, week=${week}, page=${pageVo.maxPage})}">&gt;&gt;</a>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{fragment/common :: footer}"></footer>
+</body>
+</html>

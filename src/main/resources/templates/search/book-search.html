@@ -24,6 +24,9 @@
             <p class="search-desc">도서를 검색하여 찾아보세요!</p>
         </div>
 
+        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
+        <div class="alert alert--error" th:if="${errorMsg}" th:text="${errorMsg}"></div>
+
         <!-- 검색 바 -->
         <form class="search-bar-wrap" action="/search" method="get">
             <div class="search-bar">
@@ -80,6 +83,14 @@
                     </div>
 
                     <div class="book-action">
+                        <!-- DB에 있는 책만 하트 버튼 표시 -->
+                        <button th:if="${book.id != null}"
+                                class="btn-like"
+                                th:classappend="${likedBookIds != null and #lists.contains(likedBookIds, book.id)} ? ' btn-like--active' : ''"
+                                th:data-book-id="${book.id}"
+                                sec:authorize="isAuthenticated()">
+                            ♥
+                        </button>
                         <!-- DB에 있고 대출 가능한 책 -->
                         <form th:if="${book.availableQuantity > 0}"
                               th:action="@{/reserve}" method="post" style="display:inline;">

@@ -7,7 +7,7 @@
                `name`
         FROM `dodamdodam`.`categories`
     </select>
-<!--    도서 목록-->
+    <!--    도서 목록-->
     <select id="selectAllBooks" resultType="dev.yeonlog.dodamdodam.entities.BookEntity">
         SELECT b.`id`,
                b.`isbn`,
@@ -15,16 +15,19 @@
                b.`author`,
                b.`publisher`,
                b.`publish_date`,
-               b.`category_id`,
                b.`total_quantity`,
                b.`status`,
                b.`is_recommended`,
                b.`recommend_reason`,
                b.`price`,
-               b.created_at,
-               c.`name` AS `category_name`
-        FROM `dodamdodam`.`books` AS `b`
-        LEFT JOIN `dodamdodam`.`categories` c ON b.`category_id` = c.`id`
+               b.`created_at`,
+               GROUP_CONCAT(c.`name` SEPARATOR ', ') AS `category_name`
+        FROM `dodamdodam`.`books` AS b
+                 LEFT JOIN `dodamdodam`.`book_categories` bc ON b.`id` = bc.`book_id`
+                 LEFT JOIN `dodamdodam`.`categories` c ON bc.`category_id` = c.`id`
+        GROUP BY b.`id`, b.`isbn`, b.`title`, b.`author`, b.`publisher`,
+                 b.`publish_date`, b.`total_quantity`, b.`status`, b.`is_recommended`,
+                 b.`recommend_reason`, b.`price`, b.`created_at`
         ORDER BY b.`created_at` DESC
     </select>
     <select id="selectAllBooksWithStatus" resultType="dev.yeonlog.dodamdodam.entities.BookEntity">
@@ -34,7 +37,7 @@
                b.`total_quantity`,
                COUNT(CASE WHEN bc.`status` = 'AVAILABLE' THEN 1 END) AS `available_quantity`
         FROM `dodamdodam`.`books` AS b
-        LEFT JOIN `dodamdodam`.`book_copies` bc ON b.`id` = bc.`book_id`
+                 LEFT JOIN `dodamdodam`.`book_copies` bc ON b.`id` = bc.`book_id`
         GROUP BY b.`id`, b.`title`, b.`author`, b.`total_quantity`, b.`created_at`
         ORDER BY b.`created_at` DESC
     </select>
@@ -46,7 +49,6 @@
                                           `author`,
                                           `publisher`,
                                           `publish_date`,
-                                          `category_id`,
                                           `total_quantity`,
                                           `status`,
                                           `is_recommended`,
@@ -58,7 +60,6 @@
                 #{author},
                 #{publisher},
                 #{publishDate},
-                #{categoryId},
                 #{totalQuantity},
                 'AVAILABLE',
                 0,
@@ -66,7 +67,7 @@
                 #{price},
                 #{coverImage})
     </insert>
-<!--    도서 사본 등록-->
+    <!--    도서 사본 등록-->
     <insert id="insertBookCopy" parameterType="dev.yeonlog.dodamdodam.entities.BookCopyEntity">
         INSERT INTO `dodamdodam`.`book_copies` (book_id, status)
         VALUES (#{bookId}, 'AVAILABLE')
@@ -75,12 +76,16 @@
         INSERT INTO `dodamdodam`.`book_copies` (`book_id`, `status`)
         VALUES (#{bookId}, 'AVAILABLE')
     </insert>
+    <insert id="insertBookCategory">
+        INSERT INTO `dodamdodam`.`book_categories` (`book_id`, `category_id`)
+        VALUES (#{bookId}, #{categoryId})
+    </insert>
     <update id="updateTotalQuantity">
         UPDATE `dodamdodam`.`books`
         SET `total_quantity` = #{quantity}
         WHERE `id` = #{id}
     </update>
-<!-- 사본 보기-->
+    <!-- 사본 보기-->
     <select id="selectCopiesByBookId" resultType="dev.yeonlog.dodamdodam.entities.BookCopyEntity">
         SELECT `id`,
                `book_id`,
@@ -98,24 +103,27 @@
         SET `status` = #{status}
         WHERE `id` = #{id}
     </update>
-<!--    도서 검색-->
+    <update id="updateCoverImage">
+        UPDATE `dodamdodam`.`books` SET `cover_image` = #{coverImage} WHERE `id` = #{id}
+    </update>
+    <!--    도서 검색-->
     <select id="searchBooks" resultType="dev.yeonlog.dodamdodam.entities.BookEntity">
         SELECT b.`id`,
-               b.`isbn`,
-               b.`title`,
-               b.`author`,
-               b.`publisher`,
-               b.`publish_date`,
-               b.`category_id`,
-               b.`total_quantity`,
-               b.`status`,
-               b.`created_at`,
-               b.`cover_image`,
-               c.`name` AS `category_name`,
-               COUNT(CASE WHEN bc.`status` = 'AVAILABLE' THEN 1 END) AS `available_quantity`
+        b.`isbn`,
+        b.`title`,
+        b.`author`,
+        b.`publisher`,
+        b.`publish_date`,
+        b.`total_quantity`,
+        b.`status`,
+        b.`created_at`,
+        b.`cover_image`,
+        GROUP_CONCAT(c.`name` SEPARATOR ', ') AS `category_name`,
+        COUNT(CASE WHEN bcp.`status` = 'AVAILABLE' THEN 1 END) AS `available_quantity`
         FROM `dodamdodam`.`books` AS b
-        LEFT JOIN `dodamdodam`.`categories` AS c ON b.`category_id` = c.`id`
-        LEFT JOIN `dodamdodam`.`book_copies` AS bc ON b.`id` = bc.`book_id`
+        LEFT JOIN `dodamdodam`.`book_categories` bc ON b.`id` = bc.`book_id`
+        LEFT JOIN `dodamdodam`.`categories` AS c ON bc.`category_id` = c.`id`
+        LEFT JOIN `dodamdodam`.`book_copies` AS bcp ON b.`id` = bcp.`book_id`
         <where>
             <choose>
                 <when test="type == 'title'">
@@ -136,8 +144,7 @@
             </choose>
         </where>
         GROUP BY b.`id`, b.`isbn`, b.`title`, b.`author`, b.`publisher`,
-        b.`publish_date`, b.`category_id`, b.`total_quantity`,
-        b.`status`, b.`created_at`, b.`cover_image`, c.`name`
+        b.`publish_date`, b.`total_quantity`, b.`status`, b.`created_at`, b.`cover_image`
         ORDER BY b.`created_at` DESC
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
@@ -145,13 +152,14 @@
         SELECT *
         FROM `dodamdodam`.`book_copies`
         WHERE `book_id` = #{bookId}
-        AND `status` = 'AVAILABLE'
+          AND `status` = 'AVAILABLE'
         LIMIT 1
     </select>
     <select id="countSearchBooks" resultType="int">
-        SELECT COUNT(*)
+        SELECT COUNT(DISTINCT b.`id`)
         FROM `dodamdodam`.`books` AS b
-        LEFT JOIN `dodamdodam`.`categories` AS c ON b.`category_id` = c.`id`
+        LEFT JOIN `dodamdodam`.`book_categories` bc ON b.`id` = bc.`book_id`
+        LEFT JOIN `dodamdodam`.`categories` AS c ON bc.`category_id` = c.`id`
         <where>
             <choose>
                 <when test="type == 'title'">
@@ -164,12 +172,91 @@
                     b.`isbn` LIKE CONCAT('%', #{keyword}, '%')
                 </when>
                 <otherwise>
-                    b.`title` LIKE CONCAT('%', #{keyword}, '%')
-                    OR b.`author` LIKE CONCAT('%', #{keyword}, '%')
-                    OR b.`isbn` LIKE CONCAT('%', #{keyword}, '%')
+                    b.`title`    LIKE CONCAT('%', #{keyword}, '%')
+                    OR b.`author`    LIKE CONCAT('%', #{keyword}, '%')
+                    OR b.`isbn`      LIKE CONCAT('%', #{keyword}, '%')
                     OR b.`publisher` LIKE CONCAT('%', #{keyword}, '%')
                 </otherwise>
             </choose>
         </where>
+    </select>
+    <select id="countAllBooks" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `dodamdodam`.`books`
+    </select>
+    <select id="selectAllBooksWithPage" resultType="dev.yeonlog.dodamdodam.entities.BookEntity">
+        SELECT b.`id`,
+               b.`isbn`,
+               b.`title`,
+               b.`author`,
+               b.`publisher`,
+               b.`publish_date`,
+               b.`total_quantity`,
+               b.`status`,
+               b.`is_recommended`,
+               b.`recommend_reason`,
+               b.`price`,
+               b.`created_at`,
+               GROUP_CONCAT(c.`name` SEPARATOR ', ') AS `category_name`
+        FROM `dodamdodam`.`books` AS b
+                 LEFT JOIN `dodamdodam`.`book_categories` bc ON b.`id` = bc.`book_id`
+                 LEFT JOIN `dodamdodam`.`categories` c ON bc.`category_id` = c.`id`
+        GROUP BY b.`id`, b.`isbn`, b.`title`, b.`author`, b.`publisher`,
+                 b.`publish_date`, b.`total_quantity`, b.`status`, b.`is_recommended`,
+                 b.`recommend_reason`, b.`price`, b.`created_at`
+        ORDER BY b.`created_at` DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+    <select id="searchBooksByCategory" resultType="dev.yeonlog.dodamdodam.entities.BookEntity">
+        SELECT b.*, GROUP_CONCAT(c.name) AS categoryName,
+               COUNT(bc2.book_id) AS availableQuantity
+        FROM `dodamdodam`.`books` b
+                 LEFT JOIN `dodamdodam`.`book_categories` AS bc ON b.`id` = bc.`book_id`
+                 LEFT JOIN  `dodamdodam`.`categories` AS c ON bc.`category_id` = c.`id`
+                 LEFT JOIN  `dodamdodam`.`book_copies` AS bc2 ON b.`id` = bc2.`book_id` AND bc2.`status` = 'AVAILABLE'
+        WHERE bc.`category_id` = #{categoryId}
+        GROUP BY b.`id`
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+    <select id="countBooksByCategory" resultType="int">
+        SELECT COUNT(DISTINCT b.`id`)
+        FROM `dodamdodam`.`books` b
+                 LEFT JOIN `dodamdodam`.`book_categories` AS bc ON b.`id` = bc.`book_id`
+        WHERE bc.`category_id` = #{categoryId}
+    </select>
+    <select id="selectNewBooks" resultType="dev.yeonlog.dodamdodam.entities.BookEntity">
+        SELECT b.*, GROUP_CONCAT(c.name) AS categoryName,
+        COUNT(bc2.id) AS availableQuantity
+        FROM books b
+        LEFT JOIN book_categories bc ON b.id = bc.book_id
+        LEFT JOIN categories c ON bc.category_id = c.id
+        LEFT JOIN book_copies bc2 ON b.id = bc2.book_id AND bc2.status = 'AVAILABLE'
+        WHERE 1=1
+        <if test="categoryId != null">
+            AND bc.category_id = #{categoryId}
+        </if>
+        <if test="month != null">
+            AND MONTH(b.created_at) = #{month}
+        </if>
+        <if test="week != null">
+            AND CEIL(DAY(b.created_at) / 7.0) = #{week}
+        </if>
+        GROUP BY b.id
+        ORDER BY b.created_at DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+    <select id="countNewBooks" resultType="int">
+        SELECT COUNT(DISTINCT b.id)
+        FROM books b
+        LEFT JOIN book_categories bc ON b.id = bc.book_id
+        WHERE 1=1
+        <if test="categoryId != null">
+            AND bc.category_id = #{categoryId}
+        </if>
+        <if test="month != null">
+            AND MONTH(b.created_at) = #{month}
+        </if>
+        <if test="week != null">
+            AND CEIL(DAY(b.created_at) / 7.0) = #{week}
+        </if>
     </select>
 </mapper>

@@ -68,6 +68,14 @@
         SELECT *
         FROM `dodamdodam`.`loans` WHERE `id` = #{id}
     </select>
+    <select id="countPendingOrActiveLoan" resultType="int">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`loans` l
+                 JOIN `dodamdodam`.`book_copies` bc ON l.`copy_id` = bc.`id`
+        WHERE l.`user_id` = #{userId}
+          AND bc.`book_id` = #{bookId}
+          AND l.`status` IN ('PENDING', 'LOANED')
+    </select>
 
     <delete id="cancelLoan">
         UPDATE `dodamdodam`.`loans`

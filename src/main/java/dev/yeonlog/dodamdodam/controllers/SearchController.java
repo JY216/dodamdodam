@@ -3,6 +3,7 @@ package dev.yeonlog.dodamdodam.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.yeonlog.dodamdodam.entities.BookEntity;
+import dev.yeonlog.dodamdodam.mappers.BookLikeMapper;
 import dev.yeonlog.dodamdodam.mappers.BookMapper;
 import dev.yeonlog.dodamdodam.vos.PageVo;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import java.util.List;
 public class SearchController {
 
     private final BookMapper bookMapper;
+    private final BookLikeMapper bookLikeMapper;
 
     @Value("${kakao.api.key}")
     private String kakaoApiKey;

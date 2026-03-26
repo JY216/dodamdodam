@@ -2,157 +2,116 @@
 @import "../../assets/styles/common";
 @import "../../assets/styles/fragments";
 
-.search-main {
+.new-books-main {
   @include container;
   padding-top: 2.5rem;
   padding-bottom: 5rem;
 }
 
-.search-container {
+.new-books-container {
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 1.5rem;
 }
 
 // 헤더
-.search-header {
+.new-books-header {
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
 }
 
-.search-title {
+.new-books-title {
   font-size: 1.75rem;
   font-weight: 700;
   color: $global-text-color;
   letter-spacing: -0.02em;
 }
 
-.search-desc {
+.new-books-desc {
   font-size: 0.9rem;
   color: $global-text-muted;
 }
 
-// 검색 바
-.search-bar-wrap {
-  width: 100%;
-}
-
-.search-bar {
+// 필터
+.new-books-filters {
   display: flex;
   align-items: center;
-  background-color: $global-white;
-  border: 0.0625rem solid $global-border-color;
-  border-radius: 0.5rem;
-  padding: 0 0.5rem 0 0;
-  box-shadow: $global-shadow-sm;
-  overflow: hidden;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-
-  &:focus-within {
-    border-color: $global-color-primary;
-    box-shadow: 0 0 0 0.2rem rgba($global-color-primary, 0.12);
-  }
+  gap: 1.5rem;
+  justify-content: flex-end;
 }
 
-.search-type {
-  height: 3.25rem;
-  padding: 0 1.25rem 0 1.75rem;
-  border: none;
-  background-color: transparent;
-  font-family: $global-font-main;
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-label {
   font-size: 0.9rem;
   font-weight: 600;
   color: $global-text-color;
-  outline: none;
-  cursor: pointer;
-  border-radius: 0.5rem 0 0 0.5rem;
-  appearance: none;
-  min-width: 5rem;
-
-  option {
-    background-color: $global-white;
-    color: $global-text-color;
-  }
+  white-space: nowrap;
 }
 
-.search-divider {
-  width: 0.0625rem;
-  height: 1.5rem;
-  background-color: $global-border-color;
-  margin: 0 0.5rem;
+.filter-select-wrap {
+  position: relative;
 }
 
-.search-input {
-  flex: 1;
-  height: 3.25rem;
-  padding: 0 1rem;
-  border: none;
-  outline: none;
+.filter-select {
+  height: 2.5rem;
+  padding: 0 2rem 0 1rem;
+  border: 0.0625rem solid $global-border-color;
+  border-radius: 0.5rem;
   font-family: $global-font-main;
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: $global-text-color;
-  background-color: transparent;
+  background-color: $global-white;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  transition: border-color 0.2s ease;
 
-  &::placeholder {
-    color: $global-text-placeholder;
+  &:focus {
+    border-color: $global-color-primary;
   }
 }
 
-.search-btn {
-  @include flex-center;
-  width: 2.75rem;
-  height: 2.75rem;
-  background-color: transparent;
+.filter-search-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: $global-color-primary;
   border: none;
-  border-radius: 50%;
+  border-radius: 0.5rem;
   cursor: pointer;
-  color: $global-color-primary;
-  flex-shrink: 0;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  color: $global-white;
+  transition: background-color 0.2s ease;
 
   svg {
-    width: 1.1rem;
-    height: 1.1rem;
+    width: 1rem;
+    height: 1rem;
   }
 
   &:hover {
     background-color: $global-color-primary-dark;
-    color: $global-white;
-  }
-
-  &:active {
-    transform: scale(0.95);
   }
 }
 
-// 검색 결과
-.search-results {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+// 구분선
+.new-books-divider {
+  border: none;
+  border-top: 0.0625rem solid $global-border-color;
+  margin: 0;
 }
 
-// 결과 없음
-.search-empty {
-  text-align: center;
-  padding: 4rem 0;
-  color: $global-text-muted;
-
-  p {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  &-sub {
-    font-size: 0.875rem;
-    font-weight: 400 !important;
-  }
-}
-
-// 책 목록
-.book-list {
+// 도서 목록
+.new-books-list {
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -165,8 +124,7 @@
   overflow: hidden;
 }
 
-// 책 아이템
-.book-item {
+.new-book-item {
   display: flex;
   align-items: center;
   gap: 1.25rem;
@@ -183,8 +141,8 @@
   }
 }
 
-// 책 표지
-.book-cover {
+// 표지
+.new-book-cover {
   flex-shrink: 0;
   width: 5rem;
   height: 5.5rem;
@@ -200,8 +158,8 @@
   }
 }
 
-// 책 정보
-.book-info {
+// 도서 정보
+.new-book-info {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -209,7 +167,7 @@
   min-width: 0;
 }
 
-.book-title {
+.new-book-title {
   font-size: 1rem;
   font-weight: 700;
   color: $global-text-color;
@@ -219,7 +177,17 @@
   text-overflow: ellipsis;
 }
 
-.book-meta {
+.new-book-desc {
+  font-size: 0.875rem;
+  color: $global-text-muted;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.new-book-meta {
   font-size: 0.82rem;
   color: $global-text-muted;
   display: flex;
@@ -228,22 +196,10 @@
   gap: 0.25rem;
 }
 
-.meta-divider {
+.meta-sep {
   color: $global-border-color;
 }
 
-.book-category {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: $global-color-primary-dark;
-  background-color: rgba($global-color-primary, 0.1);
-  padding: 0.2rem 0.6rem;
-  border-radius: 1rem;
-  width: fit-content;
-}
-
-// 예약 버튼
 .book-action {
   flex-shrink: 0;
 }
@@ -275,58 +231,21 @@
   &--unavailable {
     background-color: $global-background-color;
     color: $global-text-muted;
-    cursor: not-allowed;
+    cursor: default;
     border: 0.0625rem solid $global-border-color;
   }
 }
 
-.btn-like {
-  background: none;
-  border: none;
-  font-size: 1.25rem;
-  color: $global-border-color;
-  cursor: pointer;
-  padding: 0.25rem;
-  transition: color 0.2s ease, transform 0.1s ease;
-  line-height: 1;
-
-  &:hover {
-    color: #e53e3e;
-    transform: scale(1.1);
-  }
-
-  &--active {
-    color: #e53e3e;
-  }
+// 결과 없음
+.new-books-empty {
+  text-align: center;
+  padding: 4rem 0;
+  color: $global-text-muted;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
-.book-action {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.btn-reserve--wish {
-  background-color: transparent;
-  color: $global-color-primary;
-  border: 0.0625rem solid $global-color-primary;
-  display: inline-flex;
-  align-items: center;
-  height: 2.5rem;
-  padding: 0 1rem;
-  border-radius: $global-border-radius-pill;
-  font-size: 0.85rem;
-  font-weight: 700;
-  white-space: nowrap;
-  transition: background-color 0.2s ease, color 0.2s ease;
-
-  &:hover {
-    background-color: $global-color-primary;
-    color: $global-white;
-  }
-}
-
+// 페이지네이션
 .pagination {
   display: flex;
   align-items: center;
@@ -367,6 +286,7 @@
   }
 }
 
+// 일단은 모달
 .alert {
   padding: 0.875rem 1.25rem;
   border-radius: $global-border-radius-md;

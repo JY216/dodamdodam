@@ -28,4 +28,6 @@ public interface LoanMapper {
     LoanEntity selectById(@Param("id") long id);
 
     void cancelLoan(@Param("id") long id);
+
+    int countPendingOrActiveLoan(@Param("userId") String userId, @Param("bookId") long bookId );
 }
