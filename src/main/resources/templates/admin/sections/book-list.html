@@ -13,9 +13,13 @@
         </div>
 
         <!-- 검색 바 -->
-        <div class="list-search">
-            <input type="text" id="searchInput" placeholder="도서명, 저자, ISBN으로 검색">
-        </div>
+        <form class="list-search" action="/admin" method="get">
+            <input type="hidden" name="menu" value="book-list">
+            <input type="text" name="searchKeyword"
+                   placeholder="도서명, 저자, ISBN으로 검색"
+                   th:value="${searchKeyword}">
+            <button type="submit" class="btn-search-submit">검색</button>
+        </form>
 
         <!-- 테이블 -->
         <div class="table-wrap">
@@ -53,19 +57,19 @@
         </div>
         <div class="pagination" th:if="${pageVo != null and pageVo.maxPage > 1}">
             <div class="page-group" th:if="${pageVo.requestPage > pageVo.minPage}">
-                <a class="page-link" th:href="@{/admin(menu='book-list', page=${pageVo.minPage})}">&lt;&lt;</a>
-                <a class="page-link" th:href="@{/admin(menu='book-list', page=${pageVo.requestPage - 1})}">&lt;</a>
+                <a class="page-link" th:href="@{/admin(menu='book-list', page=${pageVo.minPage}, searchKeyword=${searchKeyword})}">&lt;&lt;</a>
+                <a class="page-link" th:href="@{/admin(menu='book-list', page=${pageVo.requestPage - 1}, searchKeyword=${searchKeyword})}">&lt;</a>
             </div>
             <div class="page-group">
                 <a th:each="p : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}"
                    th:text="${p}"
-                   th:href="@{/admin(menu='book-list', page=${p})}"
+                   th:href="@{/admin(menu='book-list', page=${p}, searchKeyword=${searchKeyword})}"
                    th:class="${p == pageVo.requestPage} ? 'page-link page-link--active' : 'page-link'">
                 </a>
             </div>
             <div class="page-group" th:if="${pageVo.requestPage < pageVo.maxPage}">
-                <a class="page-link" th:href="@{/admin(menu='book-list', page=${pageVo.requestPage + 1})}">&gt;</a>
-                <a class="page-link" th:href="@{/admin(menu='book-list', page=${pageVo.maxPage})}">&gt;&gt;</a>
+                <a class="page-link" th:href="@{/admin(menu='book-list', page=${pageVo.requestPage + 1}, searchKeyword=${searchKeyword})}">&gt;</a>
+                <a class="page-link" th:href="@{/admin(menu='book-list', page=${pageVo.maxPage}, searchKeyword=${searchKeyword})}">&gt;&gt;</a>
             </div>
         </div>
     </div>

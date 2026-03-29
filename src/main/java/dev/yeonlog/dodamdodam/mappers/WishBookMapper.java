@@ -19,4 +19,7 @@ public interface WishBookMapper {
 
     // 관리자 - 상태 변경
     void updateStatus(@Param("id") long id, @Param("status") String status);
+
+    List<WishBookEntity> selectAllWishBooksWithPage(@Param("pageSize") int pageSize, @Param("offset") int offset);
+    int countAllWishBooks();
 }

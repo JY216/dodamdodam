@@ -1,17 +1,16 @@
 package dev.yeonlog.dodamdodam.controllers;
 
+import dev.yeonlog.dodamdodam.entities.*;
+import dev.yeonlog.dodamdodam.mappers.BookLikeMapper;
 import dev.yeonlog.dodamdodam.mappers.LoanMapper;
+import dev.yeonlog.dodamdodam.mappers.WishBookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
-import dev.yeonlog.dodamdodam.entities.EmailTokenEntity;
-import dev.yeonlog.dodamdodam.entities.LoanEntity;
-import dev.yeonlog.dodamdodam.entities.UserEntity;
 import dev.yeonlog.dodamdodam.mappers.UserMapper;
 import dev.yeonlog.dodamdodam.services.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -29,6 +28,8 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
     private final LoanMapper loanMapper;
+    private final BookLikeMapper bookLikeMapper;
+    private final WishBookMapper wishBookMapper;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLogin() {
@@ -109,6 +110,8 @@ public class UserController {
 
         long loanCount = loans.stream().filter(l -> l.getStatus().equals("LOANED")).count();
         long pendingCount = loans.stream().filter(l -> l.getStatus().equals("PENDING")).count();
+        long likeCount = bookLikeMapper.selectLikedBookIds(userId).size();
+        long wishCount = wishBookMapper.selectByUserId(userId).size();
 
         // 유저 이름 가져오기
         UserEntity user = userMapper.selectByUserId(userId);
@@ -116,8 +119,10 @@ public class UserController {
         model.addAttribute("userName", user.getName());
         model.addAttribute("loanCount", loanCount);
         model.addAttribute("pendingCount", pendingCount);
+        model.addAttribute("likeCount", likeCount);
+        model.addAttribute("wishCount", wishCount);
 
-        return "user/mypage";
+        return "user/mypage/mypage";
     }
 
     // 도서 대출 현황
@@ -142,7 +147,7 @@ public class UserController {
         model.addAttribute("userName", user.getName());
         model.addAttribute("loans", loans);
 
-        return "user/mypage-loans";
+        return "user/mypage/mypage-loans";
     }
 
     // 도서 예약 현황
@@ -157,7 +162,7 @@ public class UserController {
         model.addAttribute("userName", user.getName());
         model.addAttribute("loans", loans);
 
-        return "user/mypage-reservations.html";
+        return "user/mypage/mypage-reservations";
     }
 
     // 예약 취소
@@ -167,5 +172,33 @@ public class UserController {
         loanMapper.cancelLoan(loanId);
         redirectAttributes.addFlashAttribute("successMsg", "예약이 취소됐어요.");
         return "redirect:/mypage/reservations";
+    }
+
+    @RequestMapping(value = "/mypage/likes", method = RequestMethod.GET)
+    public String myLikes(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (userDetails == null) return "redirect:/login";
+
+        String userId = userDetails.getUsername();
+        UserEntity user = userMapper.selectByUserId(userId);
+        List<BookEntity> likedBooks = bookLikeMapper.selectLikedBooks(userId);
+
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("likedBooks", likedBooks);
+
+        return "user/mypage/mypage-likes";
+    }
+
+    @RequestMapping(value = "/mypage/wish-books", method = RequestMethod.GET)
+    public String myWishBooks(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (userDetails == null) return "redirect:/login";
+
+        String userId = userDetails.getUsername();
+        UserEntity user = userMapper.selectByUserId(userId);
+        List<WishBookEntity> wishBooks = wishBookMapper.selectByUserId(userId);
+
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("wishBooks", wishBooks);
+
+        return "user/mypage/mypage-wish-books";
     }
 }

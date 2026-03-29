@@ -137,7 +137,7 @@ ul, li {
   margin-top: 0.25rem;
 }
 
-.new-books-main {
+.loans-main {
   width: 100%;
   max-width: 80rem;
   margin: 0 auto;
@@ -146,146 +146,78 @@ ul, li {
   padding-bottom: 5rem;
 }
 
-.new-books-container {
+.loans-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.75rem;
 }
 
-.new-books-header {
+.loans-header {
   display: flex;
   flex-direction: column;
-  gap: 0.375rem;
+  gap: 0.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 0.0625rem solid rgb(243.5, 232, 232);
 }
 
-.new-books-title {
+.loans-title {
   font-size: 1.75rem;
   font-weight: 700;
   color: #212121;
   letter-spacing: -0.02em;
 }
 
-.new-books-desc {
-  font-size: 0.9rem;
-  color: #888888;
+.loans-username {
+  color: #459C3F;
 }
 
-.new-books-filters {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  justify-content: flex-end;
-}
-
-.filter-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.filter-label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #212121;
-  white-space: nowrap;
-}
-
-.filter-select-wrap {
-  position: relative;
-}
-
-.filter-select {
-  height: 2.5rem;
-  padding: 0 2rem 0 1rem;
-  border: 0.0625rem solid rgb(243.5, 232, 232);
-  border-radius: 0.5rem;
-  font-family: "Noto Sans KR", sans-serif;
+.loans-desc {
   font-size: 0.875rem;
-  color: #212121;
-  background-color: #ffffff;
-  outline: none;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  transition: border-color 0.2s ease;
-}
-.filter-select:focus {
-  border-color: #55B14E;
+  color: #888888;
+  line-height: 1.6;
 }
 
-.filter-search-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  background-color: #55B14E;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  color: #ffffff;
-  transition: background-color 0.2s ease;
-}
-.filter-search-btn svg {
-  width: 1rem;
-  height: 1rem;
-}
-.filter-search-btn:hover {
-  background-color: #459C3F;
-}
-
-.new-books-divider {
-  border: none;
-  border-top: 0.0625rem solid rgb(243.5, 232, 232);
-  margin: 0;
-}
-
-.new-books-list {
+.loans-list {
   display: flex;
   flex-direction: column;
   gap: 0;
-  list-style: none;
-  padding: 0;
-  margin: 0;
   background-color: #ffffff;
   border-radius: 1rem;
   box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
 
-.new-book-item {
+.loan-item {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1.5rem;
   padding: 1.25rem 1.5rem;
   border-bottom: 0.0625rem solid rgb(243.5, 232, 232);
   transition: background-color 0.15s ease;
 }
-.new-book-item:last-child {
+.loan-item:last-child {
   border-bottom: none;
 }
-.new-book-item:hover {
-  background-color: rgba(85, 177, 78, 0.03);
+.loan-item:hover {
+  background-color: rgba(85, 177, 78, 0.02);
 }
 
-.new-book-cover {
+.loan-cover {
   flex-shrink: 0;
-  width: 5rem;
-  height: 5.5rem;
+  width: 4.5rem;
+  height: 6rem;
   background-color: #98D095;
   border-radius: 0.375rem;
   overflow: hidden;
 }
-.new-book-cover img {
+.loan-cover img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.new-book-info {
+.loan-info {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -293,7 +225,7 @@ ul, li {
   min-width: 0;
 }
 
-.new-book-title {
+.loan-title {
   font-size: 1rem;
   font-weight: 700;
   color: #212121;
@@ -303,17 +235,7 @@ ul, li {
   text-overflow: ellipsis;
 }
 
-.new-book-desc {
-  font-size: 0.875rem;
-  color: #888888;
-  line-height: 1.6;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.new-book-meta {
+.loan-meta {
   font-size: 0.82rem;
   color: #888888;
   display: flex;
@@ -322,101 +244,121 @@ ul, li {
   gap: 0.25rem;
 }
 
-.meta-sep {
+.loan-meta-divider {
   color: rgb(243.5, 232, 232);
 }
 
-.book-action {
+.loan-dday {
+  font-weight: 700;
+}
+.loan-dday--ok {
+  color: #459C3F;
+}
+.loan-dday--overdue {
+  color: #ff6467;
+}
+
+.loan-status-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  width: fit-content;
+}
+.loan-status-badge--pending {
+  background-color: rgba(243, 156, 18, 0.12);
+  color: #f39c12;
+}
+.loan-status-badge--loaned {
+  background-color: rgba(85, 177, 78, 0.12);
+  color: #459C3F;
+}
+.loan-status-badge--returned {
+  background-color: rgba(136, 136, 136, 0.12);
+  color: #888888;
+}
+
+.loan-action {
   flex-shrink: 0;
 }
 
-.btn-reserve {
+.btn-extend {
   height: 2.5rem;
   padding: 0 1.5rem;
+  background-color: #55B14E;
+  color: #ffffff;
   border: none;
   border-radius: 3.125rem;
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
-.btn-reserve--available {
-  background-color: #55B14E;
-  color: #ffffff;
-}
-.btn-reserve--available:hover {
+.btn-extend:hover {
   background-color: #459C3F;
 }
-.btn-reserve--available:active {
+.btn-extend:active {
   transform: scale(0.97);
 }
-.btn-reserve--unavailable {
+.btn-extend--disabled {
   background-color: #FCF9F9;
   color: #888888;
-  cursor: default;
+  cursor: not-allowed;
   border: 0.0625rem solid rgb(243.5, 232, 232);
 }
+.btn-extend--disabled:hover {
+  background-color: #FCF9F9;
+}
 
-.new-books-empty {
-  text-align: center;
+.loans-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
   padding: 4rem 0;
   color: #888888;
+}
+.loans-empty p {
   font-size: 1rem;
   font-weight: 600;
 }
 
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  padding-top: 1.5rem;
-}
-
-.page-group {
-  display: flex;
-  gap: 0.25rem;
-}
-
-.page-link {
+.btn-search {
+  height: 2.5rem;
+  padding: 0 1.5rem;
+  background-color: #55B14E;
+  color: #ffffff;
+  border-radius: 3.125rem;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border: 0.0625rem solid rgb(243.5, 232, 232);
-  border-radius: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+.btn-search:hover {
+  background-color: #459C3F;
+}
+
+.btn-cancel-reserve {
+  height: 2.5rem;
+  padding: 0 1.5rem;
+  background-color: transparent;
+  color: #ff6467;
+  border: 0.0625rem solid #ff6467;
+  border-radius: 3.125rem;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 0.875rem;
-  color: #888888;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  background-color: #ffffff;
-}
-.page-link:hover {
-  border-color: #55B14E;
-  color: #55B14E;
-}
-.page-link--active {
-  background-color: #55B14E;
-  border-color: #55B14E;
-  color: #ffffff;
   font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.btn-cancel-reserve:hover {
+  background-color: #ff6467;
+  color: #ffffff;
 }
 
-.alert {
-  padding: 0.875rem 1.25rem;
-  border-radius: 1rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-.alert--success {
-  background-color: rgba(85, 177, 78, 0.12);
-  color: #459C3F;
-}
-.alert--error {
-  background-color: rgba(229, 62, 62, 0.1);
-  color: #c53030;
-}
-
-/*# sourceMappingURL=new-books.css.map */
+/*# sourceMappingURL=mypage-loans.css.map */

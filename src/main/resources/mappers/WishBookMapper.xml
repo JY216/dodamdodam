@@ -55,10 +55,21 @@
         LEFT JOIN `dodamdodam`.`users` AS u ON w.`user_id` = u.`user_id`
         ORDER BY w.`created_at` DESC
     </select>
-<!--    관리자 - 상태 변경-->
+    <!--    관리자 - 상태 변경-->
     <update id="updateStatus">
         UPDATE `dodamdodam`.`wish_books`
         SET `status` = #{status}
         WHERE `id` = #{id}
     </update>
+
+    <select id="selectAllWishBooksWithPage" resultType="dev.yeonlog.dodamdodam.entities.WishBookEntity">
+        SELECT w.*, u.`name` AS `user_name`
+        FROM `dodamdodam`.`wish_books` w
+                 LEFT JOIN `dodamdodam`.`users` u ON w.`user_id` = u.`user_id`
+        ORDER BY w.`created_at` DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+    <select id="countAllWishBooks" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `dodamdodam`.`wish_books`
+    </select>
 </mapper>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>관심 도서 - 도담도담</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/user/styles/mypage/mypage-likes.css">
+</head>
+<body>
+
+<header th:replace="~{fragment/common :: nav}"></header>
+
+<main class="likes-main">
+    <div class="likes-container">
+
+        <!-- 헤더 -->
+        <div class="likes-header">
+            <h1 class="likes-title">
+                <span class="likes-username" th:text="${userName}">이용자</span>
+                님의 관심 도서
+            </h1>
+            <p class="likes-desc">찜한 도서 목록이에요.</p>
+        </div>
+
+        <!-- 도서 목록 -->
+        <div class="likes-list" th:if="${not #lists.isEmpty(likedBooks)}">
+            <div class="like-item" th:each="book : ${likedBooks}">
+
+                <!-- 책 표지 -->
+                <div class="like-cover">
+                    <img th:src="${book.coverImage}" th:alt="${book.title}"
+                         onerror="this.style.display='none'">
+                </div>
+
+                <!-- 책 정보 -->
+                <div class="like-info">
+                    <h3 class="like-title" th:text="${book.title}"></h3>
+                    <p class="like-meta">
+                        <span th:text="${book.author}"></span>
+                        <span class="like-meta-divider">|</span>
+                        <span th:text="${book.publisher}"></span>
+                    </p>
+                    <p class="like-category" th:text="${book.categoryName}"></p>
+                </div>
+
+                <!-- 액션 버튼 -->
+                <div class="like-action">
+                    <form th:if="${book.availableQuantity > 0}"
+                          th:action="@{/reserve}" method="post" style="display:inline;">
+                        <input type="hidden" name="bookId" th:value="${book.id}">
+                        <input type="hidden" name="redirect" value="/mypage/likes">
+                        <button type="submit" class="btn-reserve btn-reserve--available">예약</button>
+                    </form>
+                    <button th:if="${book.availableQuantity == 0}"
+                            class="btn-reserve btn-reserve--unavailable" disabled>예약불가</button>
+
+                    <!-- 찜 취소 버튼 -->
+                    <form th:action="@{/books/unlike}" method="post" style="display:inline;">
+                        <input type="hidden" name="bookId" th:value="${book.id}">
+                        <button type="submit" class="btn-unlike">♥ 찜 취소</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 관심 도서 없음 -->
+        <div class="likes-empty" th:if="${#lists.isEmpty(likedBooks)}">
+            <p>찜한 도서가 없어요.</p>
+            <a href="/search" class="btn-search">도서 검색하러 가기</a>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{fragment/common :: footer}"></footer>
+</body>
+</html>

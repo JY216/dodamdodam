@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="bookEditSection">
+
+    <div class="admin-register">
+        <h2 class="admin-register-title">도서 정보 수정</h2>
+        <p class="admin-register-subtitle">도서 정보를 수정할 수 있어요.</p>
+
+        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
+        <div class="alert alert--error" th:if="${errorMsg}" th:text="${errorMsg}"></div>
+
+        <form class="register-form" action="/admin/books/update" method="post">
+            <input type="hidden" name="id" th:value="${book.id}">
+
+            <hr class="form-divider">
+
+            <div class="form-grid">
+                <div class="form-field form-grid-full">
+                    <label>도서명 <span class="required">*</span></label>
+                    <input type="text" name="title" th:value="${book.title}" placeholder="도서명을 입력하세요">
+                </div>
+                <div class="form-field">
+                    <label>저자 <span class="required">*</span></label>
+                    <input type="text" name="author" th:value="${book.author}" placeholder="저자명">
+                </div>
+                <div class="form-field">
+                    <label>출판사 <span class="required">*</span></label>
+                    <input type="text" name="publisher" th:value="${book.publisher}" placeholder="출판사명">
+                </div>
+                <div class="form-field">
+                    <label>출판일</label>
+                    <input type="date" name="publishDate" th:value="${book.publishDate}">
+                </div>
+                <div class="form-field">
+                    <label>카테고리</label>
+                    <select name="categoryId">
+                        <option value="">카테고리 선택</option>
+                        <option th:each="category : ${categories}"
+                                th:value="${category.id}"
+                                th:text="${category.name}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label>수량</label>
+                    <input type="number" name="totalQuantity" th:value="${book.totalQuantity}" min="1">
+                </div>
+                <div class="form-field">
+                    <label>가격</label>
+                    <input type="number" name="price" th:value="${book.price}" min="0" placeholder="0">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="/admin?menu=book-list" class="btn-cancel">취소</a>
+                <button type="submit" class="btn-submit">수정하기</button>
+            </div>
+
+            <input type="hidden" name="coverImage" th:value="${book.coverImage}">
+        </form>
+    </div>
+
+</th:block>
+</body>
+</html>

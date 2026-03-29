@@ -69,6 +69,21 @@ ul, li {
   display: flex;
   justify-content: flex-end;
 }
+.nav .auth-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.nav .nav-mypage {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #888888;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.nav .nav-mypage:hover {
+  color: #212121;
+}
 .nav .nav-login {
   font-size: 1rem;
   font-weight: 400;
@@ -169,6 +184,9 @@ ul, li {
 
 .list-search {
   margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 .list-search input {
   width: 100%;
@@ -191,6 +209,24 @@ ul, li {
   border-color: #55B14E;
 }
 
+.btn-search-submit {
+  height: 2.75rem;
+  padding: 0 1.25rem;
+  background-color: #55B14E;
+  color: #ffffff;
+  border: none;
+  border-radius: 3.125rem;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+.btn-search-submit:hover {
+  background-color: #459C3F;
+}
+
 .table-wrap {
   width: 100%;
   overflow-x: auto;
@@ -203,6 +239,7 @@ ul, li {
   border-collapse: collapse;
   background-color: #ffffff;
   font-size: 0.9rem;
+  table-layout: fixed;
 }
 .book-table thead {
   background-color: #98D095;
@@ -229,22 +266,71 @@ ul, li {
   color: #212121;
   vertical-align: middle;
   text-align: center;
+  white-space: nowrap;
+}
+.book-table tbody td:first-child {
+  text-align: center;
 }
 .book-table tbody td.text-muted {
   color: #888888;
 }
-.book-table .table-empty {
+.book-table tbody td.col-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.875rem 1rem;
+}
+.book-table tbody .table-empty {
   text-align: center;
   padding: 3rem;
   color: #888888;
   font-size: 0.95rem;
 }
 
+.wish-table th:nth-child(1) {
+  width: 5%;
+}
+.wish-table th:nth-child(2) {
+  width: 8%;
+}
+.wish-table th:nth-child(3) {
+  width: 15%;
+}
+.wish-table th:nth-child(4) {
+  width: 10%;
+}
+.wish-table th:nth-child(5) {
+  width: 10%;
+}
+.wish-table th:nth-child(6) {
+  width: 12%;
+}
+.wish-table th:nth-child(7) {
+  width: 8%;
+}
+.wish-table th:nth-child(8) {
+  width: 10%;
+}
+.wish-table th:nth-child(9) {
+  width: 8%;
+}
+.wish-table th:nth-child(10) {
+  width: 12%;
+}
+
+.wish-actions {
+  display: flex;
+  gap: 0.375rem;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
 .col-ellipsis {
-  max-width: 8rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  max-width: 0;
 }
 
 .btn-edit {
@@ -318,7 +404,8 @@ ul, li {
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
-  margin-left: 0.5rem;
+  margin-left: 0;
+  margin-top: 0.375rem;
   transition: background-color 0.2s ease;
 }
 .btn-add-copy:hover {

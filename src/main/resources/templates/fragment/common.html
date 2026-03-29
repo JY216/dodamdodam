@@ -24,7 +24,10 @@
         </ul>
         <div class="auth">
             <a href="/login" class="nav-login" sec:authorize="isAnonymous()">login</a>
-            <a href="/logout" class="nav-login" sec:authorize="isAuthenticated()">logout</a>
+            <div class="auth-user" sec:authorize="isAuthenticated()">
+                <a href="/mypage" class="nav-mypage">My page</a>
+                <a href="/logout" class="nav-login">logout</a>
+            </div>
         </div>
     </nav>
 </header>

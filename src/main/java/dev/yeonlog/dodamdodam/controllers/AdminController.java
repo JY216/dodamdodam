@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.yeonlog.dodamdodam.entities.BookCopyEntity;
 import dev.yeonlog.dodamdodam.entities.BookEntity;
 import dev.yeonlog.dodamdodam.entities.LoanEntity;
+import dev.yeonlog.dodamdodam.entities.WishBookEntity;
 import dev.yeonlog.dodamdodam.mappers.BookMapper;
 import dev.yeonlog.dodamdodam.mappers.LoanMapper;
 import dev.yeonlog.dodamdodam.mappers.WishBookMapper;
+import dev.yeonlog.dodamdodam.vos.PageVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
@@ -37,20 +39,48 @@ public class AdminController {
     private final WishBookMapper wishBookMapper;
     @Value("${kakao.api.key}")
     private String kakaoApiKey;
+    @Value("${aladin.api.key}")
+    private String aladinApiKey;
     private final LoanMapper loanMapper;
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String adminPage(@RequestParam(defaultValue = "dashboard") String menu,
                             @RequestParam(required = false) Long id,
+                            @RequestParam(defaultValue = "1") int page,
+                            @RequestParam(required = false) String searchKeyword,
                             Model model) {
         model.addAttribute("currentMenu", menu);
+        model.addAttribute("searchKeyword", searchKeyword);
+        int pageSize = 10;
+        int offset = (page - 1) * pageSize;
+
         switch (menu) {
             case "book-register" ->
                     model.addAttribute("categories", bookMapper.selectAllCategories());
-            case "book-list" ->
-                    model.addAttribute("books", bookMapper.selectAllBooks());
-            case "book-status" ->
-                    model.addAttribute("books", bookMapper.selectAllBooksWithStatus());
+            case "book-list" -> {
+                if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+                    // 검색어 있을 때
+                    List<BookEntity> books = bookMapper.searchBooks(searchKeyword.trim(), "all", pageSize, offset);
+                    int totalCount = bookMapper.countSearchBooks(searchKeyword.trim(), "all");
+                    PageVo pageVo = new PageVo(page, totalCount, pageSize, 5);
+                    model.addAttribute("books", books);
+                    model.addAttribute("pageVo", pageVo);
+                } else {
+                    // 검색어 없을 때
+                    List<BookEntity> books = bookMapper.selectAllBooksWithPage(pageSize, offset);
+                    int totalCount = bookMapper.countAllBooks();
+                    PageVo pageVo = new PageVo(page, totalCount, pageSize, 5);
+                    model.addAttribute("books", books);
+                    model.addAttribute("pageVo", pageVo);
+                }
+            }
+            case "book-status" -> {
+                List<BookEntity> books = bookMapper.selectAllBooksWithStatusPage(pageSize, offset);
+                int totalCount = bookMapper.countAllBooksWithStatus();
+                PageVo pageVo = new PageVo(page, totalCount, pageSize, 5);
+                model.addAttribute("books", books);
+                model.addAttribute("pageVo", pageVo);
+            }
             case "book-copies" -> {
                 model.addAttribute("book", bookMapper.selectById(id));
                 model.addAttribute("copies", bookMapper.selectCopiesByBookId(id));
@@ -71,8 +101,17 @@ public class AdminController {
             }
             case "circulation-history" ->
                     model.addAttribute("loans", loanMapper.selectAllLoans());
-            case "wish-book-list" ->
-                    model.addAttribute("wishBooks", wishBookMapper.selectAllWishBooks());
+            case "wish-book-list" -> {
+                List<WishBookEntity> wishBooks = wishBookMapper.selectAllWishBooksWithPage(pageSize, offset);
+                int totalCount = wishBookMapper.countAllWishBooks();
+                PageVo pageVo = new PageVo(page, totalCount, pageSize, 5);
+                model.addAttribute("wishBooks", wishBooks);
+                model.addAttribute("pageVo", pageVo);
+            }
+            case "book-edit" -> {
+                model.addAttribute("book", bookMapper.selectById(id));
+                model.addAttribute("categories", bookMapper.selectAllCategories());
+            }
         }
         return "admin/admin-page";
     }
@@ -81,8 +120,23 @@ public class AdminController {
     @RequestMapping(value = "/books/search-isbn", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> searchByIsbn(@RequestParam String isbn) throws Exception {
-        String url = "https://dapi.kakao.com/v3/search/book?query=" + isbn + "&target=isbn";
+        // 1차: 카카오 API
+        Map<String, Object> kakaoResult = searchByIsbnFromKakao(isbn);
+        if (kakaoResult != null) {
+            return ResponseEntity.ok(kakaoResult);
+        }
 
+        // 2차: 알라딘 API
+        Map<String, Object> aladinResult = searchByIsbnFromAladin(isbn);
+        if (aladinResult != null) {
+            return ResponseEntity.ok(aladinResult);
+        }
+
+        return ResponseEntity.ok(Map.of("result", "FAIL"));
+    }
+
+    private Map<String, Object> searchByIsbnFromKakao(String isbn) throws Exception {
+        String url = "https://dapi.kakao.com/v3/search/book?query=" + isbn + "&target=isbn";
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Authorization", "KakaoAK " + kakaoApiKey);
@@ -93,26 +147,59 @@ public class AdminController {
         while ((line = br.readLine()) != null) sb.append(line);
         br.close();
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root = mapper.readTree(sb.toString());
+        JsonNode root = new ObjectMapper().readTree(sb.toString());
         JsonNode documents = root.path("documents");
 
-        if (documents.isEmpty()) {
-            return ResponseEntity.ok(Map.of("result", "FAIL"));
-        }
+        if (documents.isEmpty()) return null;
 
         JsonNode book = documents.get(0);
         String publishDate = book.path("datetime").asText();
         if (publishDate.length() >= 10) publishDate = publishDate.substring(0, 10);
 
-        return ResponseEntity.ok(Map.of(
+        return Map.of(
                 "result", "SUCCESS",
                 "title", book.path("title").asText(),
-                "author", book.path("authors").get(0).asText(),
+                "author", book.path("authors").size() > 0 ? book.path("authors").get(0).asText() : "",
                 "publisher", book.path("publisher").asText(),
                 "publishDate", publishDate,
                 "coverImage", book.path("thumbnail").asText()
-        ));
+        );
+    }
+
+    private Map<String, Object> searchByIsbnFromAladin(String isbn) throws Exception {
+        String url = "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx"
+                + "?ttbkey=" + aladinApiKey
+                + "&itemIdType=ISBN13"
+                + "&ItemId=" + isbn
+                + "&output=js"
+                + "&Version=20131101"
+                + "&Cover=Big";
+
+        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+        conn.setRequestMethod("GET");
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) sb.append(line);
+        br.close();
+
+        JsonNode root = new ObjectMapper().readTree(sb.toString());
+        JsonNode items = root.path("item");
+
+        if (items.isEmpty()) return null;
+
+        JsonNode book = items.get(0);
+        String publishDate = book.path("pubDate").asText(); // yyyy-mm-dd 형식
+
+        return Map.of(
+                "result", "SUCCESS",
+                "title", book.path("title").asText(),
+                "author", book.path("author").asText().replaceAll("\\(지은이\\)", "").trim(),
+                "publisher", book.path("publisher").asText(),
+                "publishDate", publishDate,
+                "coverImage", book.path("cover").asText()
+        );
     }
 
     @RequestMapping(value = "/books/register", method = RequestMethod.POST)
@@ -121,6 +208,7 @@ public class AdminController {
         // 수량만큼 book_copies insert
         try {
             // 도서 insert
+            book.setAdminRegistered(true);
             bookMapper.insertBook(book);
 
             for (int i = 0; i < book.getTotalQuantity(); i++) {
@@ -188,5 +276,32 @@ public class AdminController {
         wishBookMapper.updateStatus(id, status);
         redirectAttributes.addFlashAttribute("successMsg", "상태가 변경됐어요!");
         return "redirect:/admin?menu=wish-book-list";
+    }
+
+    @RequestMapping(value = "/books/update", method = RequestMethod.POST)
+    public String updateBook(BookEntity book,
+                             @RequestParam(required = false) Integer categoryId,
+                             RedirectAttributes redirectAttributes) {
+        bookMapper.updateBook(book);
+
+        // 카테고리 수정
+        if (categoryId != null && categoryId > 0) {
+            bookMapper.deleteBookCategories(book.getId());
+            bookMapper.insertBookCategory(book.getId(), categoryId);
+        }
+
+        // 수량 변경 시 book_copies 동기화
+        BookEntity existing = bookMapper.selectById(book.getId());
+        int currentCopies = existing.getTotalQuantity();
+        int newQuantity = book.getTotalQuantity();
+
+        if (newQuantity > currentCopies) {
+            for (int i = 0; i < newQuantity - currentCopies; i++) {
+                bookMapper.addBookCopy(book.getId());
+            }
+        }
+
+        redirectAttributes.addFlashAttribute("successMsg", "도서 정보가 수정됐어요!");
+        return "redirect:/admin?menu=book-list";
     }
 }

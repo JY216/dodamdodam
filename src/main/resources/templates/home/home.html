@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="/assets/styles/home.css">
     <link rel="stylesheet" href="/ai/assets/styles/chatbot.css">
     <script defer src="/assets/scripts/home.js"></script>
+    <link rel="stylesheet"
+          href="../../../../../../OneDrive/바탕 화면/dodamdodam/dodamdodam/src/main/resources/static/assets/styles/home.css">
+    <link rel="stylesheet"
+          href="../../../../../../OneDrive/바탕 화면/dodamdodam/dodamdodam/src/main/resources/static/assets/styles/home.scss">
 </head>
 <body>
 <!--chatbot-floating-->
@@ -32,24 +36,21 @@
             </div>
         </div>
     </section>
-    <!-- 검색 -->
-    <section class="search">
-        <div class="search-bar">
-            <label class="">
-                <input
-                        class="search input"
-                        type="text"
-                        placeholder="검색어를 입력해 주세요."
-                >
-                <button class="search-btn" type="button" aria-label="검색">
-                    <!--          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"-->
-                    <!--            fill="none" stroke="currentColor" stroke-width="2.2"-->
-                    <!--            stroke-linecap="round" stroke-linejoin="round">-->
-                    <!--            <circle cx="11" cy="11" r="8"/>-->
-                    <!--            <line x1="21" y1="21" x2="16.65" y2="16.65"/>-->
-                    <!--          </svg>-->
-                </button>
-            </label>
+    <!--    빌린 도서 D-Day-->
+    <section class="loan-banner" sec:authorize="isAuthenticated()">
+        <div class="loan-slider" id="loanSlider">
+            <!-- 빌린 책 없을 때 -->
+            <div class="loan-slide active" th:if="${activeLoans == null or #lists.isEmpty(activeLoans)}">
+                <span class="loan-title">빌린 도서가 없습니다.</span>
+                <a href="/mypage/loans" class="loan-diary">+ 독서 일지 쓰기</a>
+            </div>
+            <!-- 빌린 책 있을 때 -->
+            <div class="loan-slide" th:each="loan : ${activeLoans}">
+            <span class="loan-title">
+                <span th:text="'「' + ${loan.bookTitle} + '」 반납 예정일 : ' + (${loan.dday} >= 0 ? 'D - ' + ${loan.dday} : 'D + ' + (-${loan.dday}))"></span>
+            </span>
+                <a href="/mypage/loans" class="loan-diary">+ 독서 일지 쓰기</a>
+            </div>
         </div>
     </section>
 

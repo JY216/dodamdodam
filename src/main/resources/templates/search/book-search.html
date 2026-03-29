@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/assets/styles/common.css">
     <link rel="stylesheet" href="/search/styles/book-search.css">
     <script defer src="/search/scripts/book-detail.js"></script>
+    <script defer src="/search/scripts/book-search.js"></script>
 </head>
 <body>
 
@@ -83,32 +84,41 @@
                     </div>
 
                     <div class="book-action">
-                        <!-- DB에 있는 책만 하트 버튼 표시 -->
-                        <button th:if="${book.id != null}"
-                                class="btn-like"
-                                th:classappend="${likedBookIds != null and #lists.contains(likedBookIds, book.id)} ? ' btn-like--active' : ''"
-                                th:data-book-id="${book.id}"
-                                sec:authorize="isAuthenticated()">
-                            ♥
-                        </button>
-                        <!-- DB에 있고 대출 가능한 책 -->
-                        <form th:if="${book.availableQuantity > 0}"
-                              th:action="@{/reserve}" method="post" style="display:inline;">
-                            <input type="hidden" name="bookId" th:value="${book.id}">
-                            <button type="submit" class="btn-reserve btn-reserve--available">예약</button>
-                        </form>
+                        <!-- DB에 있는 책 -->
+                        <th:block th:if="${book.id != null}">
+                            <button class="btn-like"
+                                    th:classappend="${likedBookIds != null and #lists.contains(likedBookIds, book.id)} ? ' btn-like--active' : ''"
+                                    th:data-book-id="${book.id}"
+                                    sec:authorize="isAuthenticated()">♥</button>
+                            <form th:if="${book.availableQuantity > 0}" th:action="@{/reserve}" method="post" style="display:inline;">
+                                <input type="hidden" name="bookId" th:value="${book.id}">
+                                <input type="hidden" name="redirect" value="/search">
+                                <button type="submit" class="btn-reserve btn-reserve--available">예약</button>
+                            </form>
+                            <button th:if="${book.availableQuantity == 0}"
+                                    class="btn-reserve btn-reserve--unavailable" disabled>예약불가</button>
+                        </th:block>
 
-                        <!-- DB에 있지만 대출 불가 -->
-                        <button th:if="${book.availableQuantity == 0}"
-                                class="btn-reserve btn-reserve--unavailable" disabled>
-                            예약불가
-                        </button>
+                        <!-- API에만 있는 책 (자동 저장 후 예약/찜) -->
+                        <th:block th:if="${book.id == null}">
+                            <button class="btn-like btn-like--api"
+                                    th:data-isbn="${book.isbn}"
+                                    th:data-title="${book.title}"
+                                    th:data-author="${book.author}"
+                                    th:data-publisher="${book.publisher}"
+                                    th:data-cover="${book.coverImage}"
+                                    sec:authorize="isAuthenticated()">♥</button>
+                            <button class="btn-reserve btn-reserve--available btn-reserve--api"
+                                    th:data-isbn="${book.isbn}"
+                                    th:data-title="${book.title}"
+                                    th:data-author="${book.author}"
+                                    th:data-publisher="${book.publisher}"
+                                    th:data-cover="${book.coverImage}">예약</button>
+                        </th:block>
 
-                        <!-- DB에 없는 책 (카카오 API) -->
-                        <a th:if="${book.availableQuantity == -1}"
-                           href="/wish-book" class="btn-reserve btn-reserve--wish">
-                            희망도서 신청
-                        </a>
+                        <!-- 아무데도 없는 책 -->
+                        <a th:if="${book.availableQuantity == -2}"
+                           href="/wish-book" class="btn-reserve btn-reserve--wish">희망도서 신청</a>
                     </div>
                 </li>
             </ul>

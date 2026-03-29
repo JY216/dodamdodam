@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>희망 도서 신청 현황 - 도담도담</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/user/styles/mypage/mypage-wish-books.css">
+</head>
+<body>
+
+<header th:replace="~{fragment/common :: nav}"></header>
+
+<main class="wish-main">
+    <div class="wish-container">
+
+        <!-- 헤더 -->
+        <div class="wish-header">
+            <h1 class="wish-title">
+                <span class="wish-username" th:text="${userName}">이용자</span>
+                님의 희망 도서 신청 현황
+            </h1>
+            <p class="wish-desc">신청한 희망 도서의 처리 현황을 확인하세요.</p>
+        </div>
+
+        <!-- 신청 목록 -->
+        <div class="wish-list" th:if="${not #lists.isEmpty(wishBooks)}">
+            <div class="wish-item" th:each="wish : ${wishBooks}">
+
+                <!-- 책 정보 -->
+                <div class="wish-info">
+                    <h3 class="wish-book-title" th:text="${wish.title}"></h3>
+                    <p class="wish-meta">
+                        <span th:text="${wish.author}"></span>
+                        <span class="wish-meta-divider" th:if="${wish.author != null}">|</span>
+                        <span th:text="${wish.publisher}"></span>
+                        <span class="wish-meta-divider" th:if="${wish.publisher != null}">|</span>
+                        <span th:text="${wish.publishYear}"></span>
+                    </p>
+                    <p class="wish-reason" th:if="${wish.reason != null}"
+                       th:text="'신청 사유: ' + ${wish.reason}"></p>
+                    <p class="wish-date" th:text="'신청일: ' + ${#temporals.format(wish.createdAt, 'yyyy-MM-dd')}"></p>
+                </div>
+
+                <!-- 상태 뱃지 -->
+                <div class="wish-status">
+                    <span class="wish-status-badge"
+                          th:classappend="${wish.status == 'PENDING'} ? 'wish-status-badge--pending' :
+                                         (${wish.status == 'APPROVED'} ? 'wish-status-badge--approved' : 'wish-status-badge--rejected')"
+                          th:text="${wish.status == 'PENDING'} ? '검토 중' :
+                                   (${wish.status == 'APPROVED'} ? '승인됨' : '반려됨')">
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 신청 내역 없음 -->
+        <div class="wish-empty" th:if="${#lists.isEmpty(wishBooks)}">
+            <p>희망 도서 신청 내역이 없어요.</p>
+            <a href="/wish-book" class="btn-wish">희망 도서 신청하기</a>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{fragment/common :: footer}"></footer>
+</body>
+</html>

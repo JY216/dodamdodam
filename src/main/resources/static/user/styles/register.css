@@ -72,12 +72,13 @@ ul, li {
 .nav .auth-user {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
 }
 .nav .nav-mypage {
   font-size: 1rem;
   font-weight: 400;
   color: #888888;
+  text-decoration: none;
   transition: color 0.2s ease;
 }
 .nav .nav-mypage:hover {

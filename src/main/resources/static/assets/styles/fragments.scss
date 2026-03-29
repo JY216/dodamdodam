@@ -52,6 +52,24 @@
     justify-content: flex-end;
   }
 
+  .auth-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .nav-mypage {
+    font-size: 1rem;
+    font-weight: 400;
+    color: $global-text-muted;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $global-text-color;
+    }
+  }
+
   .nav-login {
     font-size: 1rem;
     font-weight: 400;

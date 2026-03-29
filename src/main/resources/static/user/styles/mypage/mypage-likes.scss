@@ -1,21 +1,21 @@
-@import "../../assets/styles/def";
-@import "../../assets/styles/common";
-@import "../../assets/styles/fragments";
+@import "../../../assets/styles/def";
+@import "../../../assets/styles/common";
+@import "../../../assets/styles/fragments";
 
-.loans-main {
+.likes-main {
   @include container;
   padding-top: 2.5rem;
   padding-bottom: 5rem;
 }
 
-.loans-container {
+.likes-container {
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
 }
 
 // 헤더
-.loans-header {
+.likes-header {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -23,25 +23,24 @@
   border-bottom: 0.0625rem solid $global-border-color;
 }
 
-.loans-title {
+.likes-title {
   font-size: 1.75rem;
   font-weight: 700;
   color: $global-text-color;
   letter-spacing: -0.02em;
 }
 
-.loans-username {
+.likes-username {
   color: $global-color-primary-dark;
 }
 
-.loans-desc {
+.likes-desc {
   font-size: 0.875rem;
   color: $global-text-muted;
-  line-height: 1.6;
 }
 
-// 대출 목록
-.loans-list {
+// 도서 목록
+.likes-list {
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -51,8 +50,8 @@
   overflow: hidden;
 }
 
-// 대출 아이템
-.loan-item {
+// 도서 아이템
+.like-item {
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -70,7 +69,7 @@
 }
 
 // 책 표지
-.loan-cover {
+.like-cover {
   flex-shrink: 0;
   width: 4.5rem;
   height: 6rem;
@@ -87,7 +86,7 @@
 }
 
 // 책 정보
-.loan-info {
+.like-info {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -95,7 +94,7 @@
   min-width: 0;
 }
 
-.loan-title {
+.like-title {
   font-size: 1rem;
   font-weight: 700;
   color: $global-text-color;
@@ -105,7 +104,7 @@
   text-overflow: ellipsis;
 }
 
-.loan-meta {
+.like-meta {
   font-size: 0.82rem;
   color: $global-text-muted;
   display: flex;
@@ -114,88 +113,78 @@
   gap: 0.25rem;
 }
 
-.loan-meta-divider {
+.like-meta-divider {
   color: $global-border-color;
 }
 
-// D-day
-.loan-dday {
-  font-weight: 700;
-
-  &--ok {
-    color: $global-color-primary-dark;
-  }
-
-  &--overdue {
-    color: $global-color-invalid;
-  }
-}
-
-// 상태 뱃지
-.loan-status-badge {
+.like-category {
   display: inline-block;
   font-size: 0.75rem;
   font-weight: 600;
+  color: $global-color-primary-dark;
+  background-color: rgba($global-color-primary, 0.1);
   padding: 0.2rem 0.6rem;
   border-radius: 1rem;
   width: fit-content;
-
-  &--pending {
-    background-color: rgba(#f39c12, 0.12);
-    color: #f39c12;
-  }
-
-  &--loaned {
-    background-color: rgba($global-color-primary, 0.12);
-    color: $global-color-primary-dark;
-  }
-
-  &--returned {
-    background-color: rgba($global-text-muted, 0.12);
-    color: $global-text-muted;
-  }
 }
 
-// 기한 연장 버튼
-.loan-action {
+// 액션 버튼
+.like-action {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.btn-extend {
+.btn-reserve {
   height: 2.5rem;
   padding: 0 1.5rem;
-  background-color: $global-color-primary;
-  color: $global-white;
   border: none;
   border-radius: $global-border-radius-pill;
   font-family: $global-font-main;
   font-size: 0.875rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: background-color 0.2s ease;
 
-  &:hover {
-    background-color: $global-color-primary-dark;
+  &--available {
+    background-color: $global-color-primary;
+    color: $global-white;
+
+    &:hover {
+      background-color: $global-color-primary-dark;
+    }
   }
 
-  &:active {
-    transform: scale(0.97);
-  }
-
-  &--disabled {
+  &--unavailable {
     background-color: $global-background-color;
     color: $global-text-muted;
     cursor: not-allowed;
     border: 0.0625rem solid $global-border-color;
-
-    &:hover {
-      background-color: $global-background-color;
-    }
   }
 }
 
-// 대출 없음
-.loans-empty {
+.btn-unlike {
+  height: 2.5rem;
+  padding: 0 1.25rem;
+  background-color: transparent;
+  color: #e53e3e;
+  border: 0.0625rem solid #e53e3e;
+  border-radius: $global-border-radius-pill;
+  font-family: $global-font-main;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background-color: #e53e3e;
+    color: $global-white;
+  }
+}
+
+// 관심 도서 없음
+.likes-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -225,25 +214,5 @@
 
   &:hover {
     background-color: $global-color-primary-dark;
-  }
-}
-
-// 예약 취소 버튼
-.btn-cancel-reserve {
-  height: 2.5rem;
-  padding: 0 1.5rem;
-  background-color: transparent;
-  color: $global-color-invalid;
-  border: 0.0625rem solid $global-color-invalid;
-  border-radius: $global-border-radius-pill;
-  font-family: $global-font-main;
-  font-size: 0.875rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
-
-  &:hover {
-    background-color: $global-color-invalid;
-    color: $global-white;
   }
 }

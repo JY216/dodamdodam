@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @EqualsAndHashCode
 public class BookEntity {
-    private long id;
+    private Long id;
     private String isbn;
     private String title;
     private String author;
@@ -27,7 +27,9 @@ public class BookEntity {
     private LocalDateTime createdAt;
 
     private String categoryName;
-    private int availableQuantity;
+    private Integer availableQuantity;
 
     private String coverImage;
+
+    private boolean isAdminRegistered;
 }

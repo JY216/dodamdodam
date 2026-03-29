@@ -44,28 +44,11 @@
     <!--    도서 등록-->
     <insert id="insertBook" parameterType="dev.yeonlog.dodamdodam.entities.BookEntity"
             useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `dodamdodam`.`books` (`isbn`,
-                                          `title`,
-                                          `author`,
-                                          `publisher`,
-                                          `publish_date`,
-                                          `total_quantity`,
-                                          `status`,
-                                          `is_recommended`,
-                                          `recommend_reason`,
-                                          `price`,
-                                          `cover_image`)
-        VALUES (#{isbn},
-                #{title},
-                #{author},
-                #{publisher},
-                #{publishDate},
-                #{totalQuantity},
-                'AVAILABLE',
-                0,
-                #{recommendReason},
-                #{price},
-                #{coverImage})
+        INSERT INTO `dodamdodam`.`books` (`isbn`, `title`, `author`, `publisher`, `publish_date`,
+                                          `total_quantity`, `status`, `is_recommended`,
+                                          `recommend_reason`, `price`, `cover_image`, `is_admin_registered`)
+        VALUES (#{isbn}, #{title}, #{author}, #{publisher}, #{publishDate},
+                #{totalQuantity}, 'AVAILABLE', 0, #{recommendReason}, #{price}, #{coverImage}, #{adminRegistered})
     </insert>
     <!--    도서 사본 등록-->
     <insert id="insertBookCopy" parameterType="dev.yeonlog.dodamdodam.entities.BookCopyEntity">
@@ -106,6 +89,21 @@
     <update id="updateCoverImage">
         UPDATE `dodamdodam`.`books` SET `cover_image` = #{coverImage} WHERE `id` = #{id}
     </update>
+    <update id="updateBook" parameterType="dev.yeonlog.dodamdodam.entities.BookEntity">
+        UPDATE `dodamdodam`.`books`
+        SET `title`          = #{title},
+            `author`         = #{author},
+            `publisher`      = #{publisher},
+            `publish_date`   = #{publishDate},
+            `price`          = #{price},
+            `cover_image`    = #{coverImage},
+            `total_quantity` = #{totalQuantity}
+        WHERE `id` = #{id}
+    </update>
+    <delete id="deleteBookCategories">
+        DELETE FROM `dodamdodam`.`book_categories`
+        WHERE `book_id` = #{bookId}
+    </delete>
     <!--    도서 검색-->
     <select id="searchBooks" resultType="dev.yeonlog.dodamdodam.entities.BookEntity">
         SELECT b.`id`,
@@ -231,6 +229,7 @@
         LEFT JOIN categories c ON bc.category_id = c.id
         LEFT JOIN book_copies bc2 ON b.id = bc2.book_id AND bc2.status = 'AVAILABLE'
         WHERE 1=1
+        AND b.`is_admin_registered` = 1
         <if test="categoryId != null">
             AND bc.category_id = #{categoryId}
         </if>
@@ -249,6 +248,7 @@
         FROM books b
         LEFT JOIN book_categories bc ON b.id = bc.book_id
         WHERE 1=1
+        AND b.`is_admin_registered` = 1
         <if test="categoryId != null">
             AND bc.category_id = #{categoryId}
         </if>
@@ -258,5 +258,47 @@
         <if test="week != null">
             AND CEIL(DAY(b.created_at) / 7.0) = #{week}
         </if>
+    </select>
+    <select id="findBookIdByIsbn" resultType="java.lang.Long">
+        SELECT `id`
+        FROM `dodamdodam`.`books`
+        WHERE `isbn` = #{isbn}
+    </select>
+    <insert id="insertBookAuto" parameterType="dev.yeonlog.dodamdodam.entities.BookEntity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `dodamdodam`.`books`
+        (`isbn`,
+         `title`,
+         `author`,
+         `publisher`,
+         `publish_date`,
+         `total_quantity`,
+         `status`,
+         `is_recommended`,
+         `price`, `cover_image`)
+        VALUES (#{isbn},
+                #{title},
+                #{author},
+                #{publisher},
+                #{publishDate},
+                1,
+                'AVAILABLE',
+                0,
+                0,
+                #{coverImage})
+    </insert>
+    <select id="countAllBooksWithStatus" resultType="int">
+        SELECT COUNT(*) FROM `dodamdodam`.`books`
+    </select>
+    <select id="selectAllBooksWithStatusPage" resultType="dev.yeonlog.dodamdodam.entities.BookEntity">
+        SELECT b.`id`,
+               b.`title`,
+               b.`author`,
+               b.`total_quantity`,
+               COUNT(CASE WHEN bc.`status` = 'AVAILABLE' THEN 1 END) AS `available_quantity`
+        FROM `dodamdodam`.`books` AS b
+                 LEFT JOIN `dodamdodam`.`book_copies` bc ON b.`id` = bc.`book_id`
+        GROUP BY b.`id`, b.`title`, b.`author`, b.`total_quantity`, b.`created_at`
+        ORDER BY b.`created_at` DESC
+        LIMIT #{pageSize} OFFSET #{offset}
     </select>
 </mapper>

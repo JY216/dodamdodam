@@ -3,6 +3,7 @@ package dev.yeonlog.dodamdodam.mappers;
 import dev.yeonlog.dodamdodam.entities.BookCopyEntity;
 import dev.yeonlog.dodamdodam.entities.BookEntity;
 import dev.yeonlog.dodamdodam.entities.CategoryEntity;
+import dev.yeonlog.dodamdodam.entities.WishBookEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -66,4 +67,15 @@ public interface BookMapper {
     int countNewBooks(@Param("categoryId") Integer categoryId,
                       @Param("month") Integer month,
                       @Param("week") Integer week);
+
+    Long findBookIdByIsbn(@Param("isbn") String isbn);
+
+    void insertBookAuto(BookEntity book);
+
+    List<BookEntity> selectAllBooksWithStatusPage(@Param("pageSize") int pageSize, @Param("offset") int offset);
+    int countAllBooksWithStatus();
+
+    void updateBook(BookEntity book);
+
+    void deleteBookCategories(@Param("bookId") Long bookId);
 }

@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>마이페이지 - 도담도담</title>
     <link rel="stylesheet" href="/assets/styles/common.css">
-    <link rel="stylesheet" href="/user/styles/mypage.css">
+    <link rel="stylesheet" href="/user/styles/mypage/mypage.css">
 </head>
 <body>
 
@@ -63,7 +63,7 @@
             </a>
 
             <!-- 나의 관심 도서 -->
-            <a href="#" class="mypage-card">
+            <a th:href="@{/mypage/likes}" class="mypage-card">
                 <div class="mypage-card-icon">
                     <svg viewBox="0 0 24 24" fill="none">
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
@@ -71,12 +71,12 @@
                 </div>
                 <div class="mypage-card-body">
                     <p class="mypage-card-label">나의 관심 도서</p>
-                    <p class="mypage-card-count">0</p>
+                    <p class="mypage-card-count" th:text="${likeCount}">0</p>
                 </div>
             </a>
 
             <!-- 희망 도서 신청 현황 -->
-            <a href="#" class="mypage-card">
+            <a th:href="@{/mypage/wish-books}" class="mypage-card">
                 <div class="mypage-card-icon">
                     <svg viewBox="0 0 24 24" fill="none">
                         <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="mypage-card-body">
                     <p class="mypage-card-label">희망 도서 신청 현황</p>
-                    <p class="mypage-card-count">0</p>
+                    <p class="mypage-card-count" th:text="${wishCount}">0</p>
                 </div>
             </a>
 

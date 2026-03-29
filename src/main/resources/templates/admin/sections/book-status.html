@@ -39,9 +39,9 @@
                               th:text="${book.availableQuantity > 0} ? '대출 가능' : '대출 불가'">
                         </span>
                     </td>
-                    <td>
+                    <td class="col-actions">
                         <button class="btn-edit" th:onclick="|location.href='/admin?menu=book-copies&id=${book.id}'|">사본 보기</button>
-                        <form th:action="@{/admin/books/add-copy}" method="post" style="display:inline;">
+                        <form th:action="@{/admin/books/add-copy}" method="post">
                             <input type="hidden" name="bookId" th:value="${book.id}">
                             <input type="hidden" name="totalQuantity" th:value="${book.totalQuantity}">
                             <button type="submit" class="btn-add-copy">+ 수량 추가</button>
@@ -53,6 +53,23 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="pagination" th:if="${pageVo != null and pageVo.maxPage > 1}">
+            <div class="page-group" th:if="${pageVo.requestPage > pageVo.minPage}">
+                <a class="page-link" th:href="@{/admin(menu='book-status', page=${pageVo.minPage})}">&lt;&lt;</a>
+                <a class="page-link" th:href="@{/admin(menu='book-status', page=${pageVo.requestPage - 1})}">&lt;</a>
+            </div>
+            <div class="page-group">
+                <a th:each="p : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}"
+                   th:text="${p}"
+                   th:href="@{/admin(menu='book-status', page=${p})}"
+                   th:class="${p == pageVo.requestPage} ? 'page-link page-link--active' : 'page-link'">
+                </a>
+            </div>
+            <div class="page-group" th:if="${pageVo.requestPage < pageVo.maxPage}">
+                <a class="page-link" th:href="@{/admin(menu='book-status', page=${pageVo.requestPage + 1})}">&gt;</a>
+                <a class="page-link" th:href="@{/admin(menu='book-status', page=${pageVo.maxPage})}">&gt;&gt;</a>
+            </div>
         </div>
     </div>
 

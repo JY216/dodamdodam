@@ -69,6 +69,21 @@ ul, li {
   display: flex;
   justify-content: flex-end;
 }
+.nav .auth-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.nav .nav-mypage {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #888888;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.nav .nav-mypage:hover {
+  color: #212121;
+}
 .nav .nav-login {
   font-size: 1rem;
   font-weight: 400;
@@ -156,42 +171,40 @@ ul, li {
   display: block;
 }
 
-.search {
+.loan-banner {
+  background-color: rgba(85, 177, 78, 0.25);
+  border-radius: 1rem;
   width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  overflow: hidden;
 }
-.search .search-bar {
-  display: flex;
+
+.loan-slide {
+  display: none;
   align-items: center;
-  background-color: #98D095;
-  border-radius: 3.125rem;
-  padding: 0.875rem 1.25rem;
-  gap: 0.75rem;
+  justify-content: space-between;
+  padding: 0.875rem 1.5rem;
 }
-.search input {
-  flex: 1;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  font-family: "Noto Sans KR", sans-serif;
+.loan-slide.active {
+  display: flex;
+}
+
+.loan-title {
   font-size: 1rem;
-  color: #212121;
-}
-.search input::placeholder {
-  color: #aaaaaa;
-}
-.search .search-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  color: #888888;
-  padding: 0;
-  transition: color 0.2s ease;
-}
-.search .search-btn:hover {
+  font-weight: 700;
   color: #459C3F;
+}
+
+.loan-diary {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #459C3F;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+.loan-diary:hover {
+  opacity: 0.7;
 }
 
 .cards {

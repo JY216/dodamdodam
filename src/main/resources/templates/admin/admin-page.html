@@ -45,6 +45,9 @@
             <div th:case="'book-recommend'">
                 <th:block th:replace="~{admin/sections/book-recommend :: bookRecommendSection}"></th:block>
             </div>
+            <div th:case="'book-edit'">
+                <th:block th:replace="~{admin/sections/book-edit :: bookEditSection}"></th:block>
+            </div>
 
             <!-- 회원 관리 -->
             <div th:case="'user-list'">

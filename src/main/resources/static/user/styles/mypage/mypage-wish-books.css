@@ -69,6 +69,21 @@ ul, li {
   display: flex;
   justify-content: flex-end;
 }
+.nav .auth-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.nav .nav-mypage {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #888888;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.nav .nav-mypage:hover {
+  color: #212121;
+}
 .nav .nav-login {
   font-size: 1rem;
   font-weight: 400;
@@ -122,7 +137,7 @@ ul, li {
   margin-top: 0.25rem;
 }
 
-.loans-main {
+.wish-main {
   width: 100%;
   max-width: 80rem;
   margin: 0 auto;
@@ -131,13 +146,13 @@ ul, li {
   padding-bottom: 5rem;
 }
 
-.loans-container {
+.wish-container {
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
 }
 
-.loans-header {
+.wish-header {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -145,24 +160,23 @@ ul, li {
   border-bottom: 0.0625rem solid rgb(243.5, 232, 232);
 }
 
-.loans-title {
+.wish-title {
   font-size: 1.75rem;
   font-weight: 700;
   color: #212121;
   letter-spacing: -0.02em;
 }
 
-.loans-username {
+.wish-username {
   color: #459C3F;
 }
 
-.loans-desc {
+.wish-desc {
   font-size: 0.875rem;
   color: #888888;
-  line-height: 1.6;
 }
 
-.loans-list {
+.wish-list {
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -172,37 +186,23 @@ ul, li {
   overflow: hidden;
 }
 
-.loan-item {
+.wish-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1.5rem;
   padding: 1.25rem 1.5rem;
   border-bottom: 0.0625rem solid rgb(243.5, 232, 232);
   transition: background-color 0.15s ease;
 }
-.loan-item:last-child {
+.wish-item:last-child {
   border-bottom: none;
 }
-.loan-item:hover {
+.wish-item:hover {
   background-color: rgba(85, 177, 78, 0.02);
 }
 
-.loan-cover {
-  flex-shrink: 0;
-  width: 4.5rem;
-  height: 6rem;
-  background-color: #98D095;
-  border-radius: 0.375rem;
-  overflow: hidden;
-}
-.loan-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.loan-info {
+.wish-info {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -210,17 +210,14 @@ ul, li {
   min-width: 0;
 }
 
-.loan-title {
+.wish-book-title {
   font-size: 1rem;
   font-weight: 700;
   color: #212121;
   letter-spacing: -0.01em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.loan-meta {
+.wish-meta {
   font-size: 0.82rem;
   color: #888888;
   display: flex;
@@ -229,75 +226,46 @@ ul, li {
   gap: 0.25rem;
 }
 
-.loan-meta-divider {
+.wish-meta-divider {
   color: rgb(243.5, 232, 232);
 }
 
-.loan-dday {
-  font-weight: 700;
-}
-.loan-dday--ok {
-  color: #459C3F;
-}
-.loan-dday--overdue {
-  color: #ff6467;
-}
-
-.loan-status-badge {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.2rem 0.6rem;
-  border-radius: 1rem;
-  width: fit-content;
-}
-.loan-status-badge--pending {
-  background-color: rgba(243, 156, 18, 0.12);
-  color: #f39c12;
-}
-.loan-status-badge--loaned {
-  background-color: rgba(85, 177, 78, 0.12);
-  color: #459C3F;
-}
-.loan-status-badge--returned {
-  background-color: rgba(136, 136, 136, 0.12);
+.wish-reason {
+  font-size: 0.82rem;
   color: #888888;
+  font-style: italic;
 }
 
-.loan-action {
+.wish-date {
+  font-size: 0.78rem;
+  color: #aaaaaa;
+}
+
+.wish-status {
   flex-shrink: 0;
 }
 
-.btn-extend {
-  height: 2.5rem;
-  padding: 0 1.5rem;
-  background-color: #55B14E;
-  color: #ffffff;
-  border: none;
-  border-radius: 3.125rem;
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.875rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+.wish-status-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.3rem 0.875rem;
+  border-radius: 1rem;
 }
-.btn-extend:hover {
-  background-color: #459C3F;
+.wish-status-badge--pending {
+  background-color: rgba(243, 156, 18, 0.12);
+  color: #f39c12;
 }
-.btn-extend:active {
-  transform: scale(0.97);
+.wish-status-badge--approved {
+  background-color: rgba(85, 177, 78, 0.12);
+  color: #459C3F;
 }
-.btn-extend--disabled {
-  background-color: #FCF9F9;
-  color: #888888;
-  cursor: not-allowed;
-  border: 0.0625rem solid rgb(243.5, 232, 232);
-}
-.btn-extend--disabled:hover {
-  background-color: #FCF9F9;
+.wish-status-badge--rejected {
+  background-color: rgba(229, 62, 62, 0.1);
+  color: #c53030;
 }
 
-.loans-empty {
+.wish-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -305,12 +273,12 @@ ul, li {
   padding: 4rem 0;
   color: #888888;
 }
-.loans-empty p {
+.wish-empty p {
   font-size: 1rem;
   font-weight: 600;
 }
 
-.btn-search {
+.btn-wish {
   height: 2.5rem;
   padding: 0 1.5rem;
   background-color: #55B14E;
@@ -324,26 +292,8 @@ ul, li {
   align-items: center;
   transition: background-color 0.2s ease;
 }
-.btn-search:hover {
+.btn-wish:hover {
   background-color: #459C3F;
 }
 
-.btn-cancel-reserve {
-  height: 2.5rem;
-  padding: 0 1.5rem;
-  background-color: transparent;
-  color: #ff6467;
-  border: 0.0625rem solid #ff6467;
-  border-radius: 3.125rem;
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 0.875rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-.btn-cancel-reserve:hover {
-  background-color: #ff6467;
-  color: #ffffff;
-}
-
-/*# sourceMappingURL=mypage-loans.css.map */
+/*# sourceMappingURL=mypage-wish-books.css.map */

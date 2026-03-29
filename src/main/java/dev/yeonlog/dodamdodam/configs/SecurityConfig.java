@@ -19,7 +19,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")  // 관리자만
-                        .requestMatchers("/", "/login", "/register", "/search", "/bestseller", "/assets/**", "/user/**", "/ai/**", "/mypage/**", "/wish-book", "/wish-book/**", "/books/like").permitAll() // 누구나
+                        .requestMatchers("/", "/login", "/register", "/search", "/bestseller", "/assets/**", "/user/**", "/ai/**", "/mypage/**", "/wish-book", "/wish-book/**", "/books/like", "/books/ensure", "/mypage/likes", "/books/unlike", "/mypage/wish-books").permitAll() // 누구나
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form

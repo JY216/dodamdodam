@@ -15,7 +15,7 @@
         <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
 
         <div class="table-wrap">
-            <table class="book-table">
+            <table class="book-table wish-table">
                 <thead>
                 <tr>
                     <th>번호</th>
@@ -52,7 +52,7 @@
                         </span>
                     </td>
                     <td>
-                        <div style="display:flex; gap:0.375rem; justify-content:center;">
+                        <div class="wish-book-actions">
                             <!-- 승인 -->
                             <form th:if="${wish.status == 'PENDING'}"
                                   th:action="@{/admin/wish-books/status}" method="post" style="display:inline;">
@@ -84,6 +84,23 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="pagination" th:if="${pageVo != null and pageVo.maxPage > 1}">
+            <div class="page-group" th:if="${pageVo.requestPage > pageVo.minPage}">
+                <a class="page-link" th:href="@{/admin(menu='wish-book-list', page=${pageVo.minPage})}">&lt;&lt;</a>
+                <a class="page-link" th:href="@{/admin(menu='wish-book-list', page=${pageVo.requestPage - 1})}">&lt;</a>
+            </div>
+            <div class="page-group">
+                <a th:each="p : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}"
+                   th:text="${p}"
+                   th:href="@{/admin(menu='wish-book-list', page=${p})}"
+                   th:class="${p == pageVo.requestPage} ? 'page-link page-link--active' : 'page-link'">
+                </a>
+            </div>
+            <div class="page-group" th:if="${pageVo.requestPage < pageVo.maxPage}">
+                <a class="page-link" th:href="@{/admin(menu='wish-book-list', page=${pageVo.requestPage + 1})}">&gt;</a>
+                <a class="page-link" th:href="@{/admin(menu='wish-book-list', page=${pageVo.maxPage})}">&gt;&gt;</a>
+            </div>
         </div>
     </div>
 
