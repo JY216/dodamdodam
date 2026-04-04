@@ -146,6 +146,27 @@
         ORDER BY b.`created_at` DESC
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
+    <select id="searchBooksWithStatus" resultType="dev.yeonlog.dodamdodam.entities.BookEntity">
+        SELECT b.`id`,
+               b.`title`,
+               b.`author`,
+               b.`total_quantity`,
+               COUNT(CASE WHEN bc.`status` = 'AVAILABLE' THEN 1 END) AS `available_quantity`
+        FROM `dodamdodam`.`books` AS b
+                 LEFT JOIN `dodamdodam`.`book_copies` bc ON b.`id` = bc.`book_id`
+        WHERE REPLACE(b.`title`, ' ', '') LIKE CONCAT('%', REPLACE(#{keyword}, ' ', ''), '%')
+           OR REPLACE(b.`author`, ' ', '') LIKE CONCAT('%', REPLACE(#{keyword}, ' ', ''), '%')
+        GROUP BY b.`id`, b.`title`, b.`author`, b.`total_quantity`, b.`created_at`
+        ORDER BY b.`created_at` DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="countBooksWithStatus" resultType="int">
+        SELECT COUNT(DISTINCT b.`id`)
+        FROM `dodamdodam`.`books` AS b
+        WHERE REPLACE(b.`title`, ' ', '') LIKE CONCAT('%', REPLACE(#{keyword}, ' ', ''), '%')
+           OR REPLACE(b.`author`, ' ', '') LIKE CONCAT('%', REPLACE(#{keyword}, ' ', ''), '%')
+    </select>
     <select id="selectAvailableCopy" resultType="dev.yeonlog.dodamdodam.entities.BookCopyEntity">
         SELECT *
         FROM `dodamdodam`.`book_copies`

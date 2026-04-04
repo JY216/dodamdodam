@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dev.yeonlog.dodamdodam.mappers.EventMapper">
+    <insert id="insertEvent" parameterType="dev.yeonlog.dodamdodam.entities.EventEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `dodamdodam`.`events`
+        (`title`, `description`, `target`, `capacity`,
+         `event_start_at`, `event_end_at`, `apply_start_at`, `apply_end_at`, `poster_image`)
+        VALUES
+            (#{title}, #{description}, #{target}, #{capacity},
+             #{eventStartAt}, #{eventEndAt}, #{applyStartAt}, #{applyEndAt}, #{posterImage})
+    </insert>
+
+    <select id="selectAllEvents" resultType="dev.yeonlog.dodamdodam.entities.EventEntity">
+        SELECT e.*,
+               COUNT(ea.`id`) AS application_count
+        FROM `dodamdodam`.`events` e
+                 LEFT JOIN `dodamdodam`.`event_applications` AS ea ON e.`id` = ea.`event_id`
+        GROUP BY e.`id`, e.`created_at`
+        ORDER BY e.`created_at` DESC
+    </select>
+
+    <select id="selectEventById" resultType="dev.yeonlog.dodamdodam.entities.EventEntity">
+        SELECT e.`id`,
+               e.`title`,
+               e.`description`,
+               e.`target`,
+               e.`capacity`,
+               e.`event_start_at`,
+               e.`event_end_at`,
+               e.`apply_start_at`,
+               e.`apply_end_at`,
+               e.`status`,
+               e.`poster_image`,
+               e.`created_at`,
+               COUNT(ea.id) AS application_count
+        FROM `dodamdodam`.`events` e
+                 LEFT JOIN `dodamdodam`.`event_applications` ea ON e.id = ea.event_id
+        WHERE e.id = #{id}
+        GROUP BY e.id
+    </select>
+
+    <update id="updateEvent" parameterType="dev.yeonlog.dodamdodam.entities.EventEntity">
+        UPDATE `dodamdodam`.`events`
+        SET `title`          = #{title},
+            `description`    = #{description},
+            `target`         = #{target},
+            `capacity`       = #{capacity},
+            `event_start_at` = #{eventStartAt},
+            `event_end_at`   = #{eventEndAt},
+            `apply_start_at` = #{applyStartAt},
+            `apply_end_at`   = #{applyEndAt},
+            `status`         = #{status}
+        WHERE `id` = #{id}
+    </update>
+
+    <delete id="deleteEvent">
+        DELETE
+        FROM `dodamdodam`.`events`
+        WHERE `id` = #{id}
+    </delete>
+
+    <insert id="insertApplication" parameterType="dev.yeonlog.dodamdodam.entities.EventApplicationEntity">
+        INSERT INTO `dodamdodam`.`event_applications` (`event_id`, `user_id`)
+        VALUES (#{eventId}, #{userId})
+    </insert>
+
+    <delete id="deleteApplication">
+        DELETE
+        FROM `dodamdodam`.`event_applications`
+        WHERE `event_id` = #{eventId}
+          AND `user_id` = #{userId}
+    </delete>
+
+    <select id="countApplication" resultType="int">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`event_applications`
+        WHERE `event_id` = #{eventId}
+          AND `user_id` = #{userId}
+    </select>
+
+    <select id="countApplicationsByEventId" resultType="int">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`event_applications`
+        WHERE `event_id` = #{eventId}
+    </select>
+
+    <select id="selectApplicationsByEventId" resultType="dev.yeonlog.dodamdodam.entities.EventApplicationEntity">
+        SELECT ea.*, u.`name` AS user_name
+        FROM `dodamdodam`.`event_applications` ea
+                 LEFT JOIN `dodamdodam`.`users` u ON ea.user_id = u.user_id
+        WHERE ea.event_id = #{eventId}
+        ORDER BY ea.created_at ASC
+    </select>
+
+    <select id="selectApplicationsByUserId" resultType="dev.yeonlog.dodamdodam.entities.EventApplicationEntity">
+        SELECT ea.`id`,
+               ea.`event_id`,
+               ea.`user_id`,
+               ea.`status`,
+               ea.`created_at`,
+               e.`title` AS event_title,
+               e.`event_start_at`,
+               e.`event_end_at`,
+               e.`status` AS event_status
+        FROM `dodamdodam`.`event_applications` ea
+                 LEFT JOIN `dodamdodam`.`events` e ON ea.`event_id` = e.`id`
+        WHERE ea.`user_id` = #{userId}
+        ORDER BY ea.`created_at` DESC
+    </select>
+</mapper>

@@ -91,7 +91,7 @@
             </a>
 
             <!-- 프로그램 신청 현황 -->
-            <a href="#" class="mypage-card">
+            <a th:href="@{/mypage/events}" class="mypage-card">
                 <div class="mypage-card-icon">
                     <svg viewBox="0 0 24 24" fill="none">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="mypage-card-body">
                     <p class="mypage-card-label">프로그램 신청 현황</p>
-                    <p class="mypage-card-count">0</p>
+                    <p class="mypage-card-count" th:text="${eventCount}">0</p>
                 </div>
             </a>
 

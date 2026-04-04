@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title th:text="${event.title} + ' - 도담도담'">문화 행사 - 도담도담</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/event/styles/event-detail.css">
+</head>
+<body>
+
+<header th:replace="~{fragment/common :: nav}"></header>
+
+<main class="event-main">
+    <div class="event-container">
+
+        <!-- 포스터 + 기본 정보 -->
+        <div class="event-hero">
+
+            <!-- 포스터 이미지 -->
+            <div class="event-poster">
+                <img th:if="${event.posterImage != null}"
+                     th:src="${event.posterImage}"
+                     th:alt="${event.title}">
+                <div class="event-poster-placeholder" th:if="${event.posterImage == null}">
+                    <span>포스터 없음</span>
+                </div>
+            </div>
+
+            <!-- 기본 정보 -->
+            <div class="event-info">
+                <!-- 상태 뱃지 -->
+                <span class="event-badge"
+                      th:classappend="${event.status == 'CLOSED'} ? ' event-badge--closed' :
+                                      (${event.status == 'CANCELLED'} ? ' event-badge--cancelled' : '')"
+                      th:text="${event.status == 'OPEN'} ? '신청중' :
+                               (${event.status == 'CLOSED'} ? '마감' : '취소')">
+                </span>
+
+                <!-- 제목 -->
+                <h1 class="event-title" th:text="${event.title}"></h1>
+
+                <!-- 정보 테이블 -->
+                <dl class="event-meta">
+                    <div class="event-meta-row">
+                        <dt>신청 대상</dt>
+                        <dd th:text="${event.target}"></dd>
+                    </div>
+                    <div class="event-meta-row">
+                        <dt>교육 일정</dt>
+                        <dd th:text="${#temporals.format(event.eventStartAt, 'yyyy-MM-dd HH:mm')}
+                                    + ' ~ ' +
+                                    ${#temporals.format(event.eventEndAt, 'yyyy-MM-dd HH:mm')}">
+                        </dd>
+                    </div>
+                    <div class="event-meta-row">
+                        <dt>접수 기간</dt>
+                        <dd th:text="${#temporals.format(event.applyStartAt, 'yyyy-MM-dd HH:mm')}
+                                    + ' ~ ' +
+                                    ${#temporals.format(event.applyEndAt, 'yyyy-MM-dd HH:mm')}">
+                        </dd>
+                    </div>
+                    <div class="event-meta-row">
+                        <dt>신청 현황</dt>
+                        <dd>
+                            <span class="event-capacity"
+                                  th:text="${event.applicationCount} + '/' + ${event.capacity}">
+                            </span>
+                            <span class="event-capacity-label">명 신청</span>
+                        </dd>
+                    </div>
+                </dl>
+
+                <!-- 신청 버튼 -->
+                <div class="event-actions" sec:authorize="isAuthenticated()">
+                    <!-- 신청하기 -->
+                    <form th:if="${!isApplied and event.status == 'OPEN' and event.applicationCount < event.capacity}"
+                          th:action="@{/events/{id}/apply(id=${event.id})}" method="post">
+                        <button type="submit" class="btn-apply">신청하기</button>
+                    </form>
+
+                    <!-- 신청 취소 -->
+                    <form th:if="${isApplied}"
+                          th:action="@{/events/{id}/cancel(id=${event.id})}" method="post">
+                        <button type="submit" class="btn-apply btn-apply--cancel"
+                                onclick="return confirm('신청을 취소하시겠어요?')">
+                            신청 취소
+                        </button>
+                    </form>
+
+                    <!-- 마감 -->
+                    <button th:if="${!isApplied and (event.status == 'CLOSED' or event.applicationCount >= event.capacity)}"
+                            class="btn-apply btn-apply--disabled" disabled>
+                        신청 마감
+                    </button>
+                </div>
+
+                <!-- 비로그인 -->
+                <div class="event-login-btn" sec:authorize="isAnonymous()">
+                    <a href="/login" class="btn-apply">로그인 후 신청</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 상세 내용 -->
+        <div class="event-description">
+            <h2 class="event-description-title">행사 상세 내용</h2>
+            <div class="event-description-body" th:text="${event.description}"></div>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{fragment/common :: footer}"></footer>
+</body>
+</html>

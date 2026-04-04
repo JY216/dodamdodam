@@ -82,4 +82,86 @@
         SET `status` = 'CANCELLED'
         WHERE `id` = #{id}
     </delete>
+
+    <select id="searchLoans" resultType="dev.yeonlog.dodamdodam.entities.LoanEntity">
+        SELECT l.`id`,
+               l.`user_id`,
+               l.`copy_id`,
+               l.`loan_date`,
+               l.`due_date`,
+               l.`return_date`,
+               l.`status`,
+               l.`created_at`,
+               u.`name` AS user_name,
+               b.`title` AS book_title,
+               b.`author` AS book_author,
+               bc.`id` AS copy_id
+        FROM `dodamdodam`.`loans` l
+                 LEFT JOIN `dodamdodam`.`users` u ON l.`user_id` = u.`user_id`
+                 LEFT JOIN `dodamdodam`.`book_copies` bc ON l.`copy_id` = bc.`id`
+                 LEFT JOIN `dodamdodam`.`books` b ON bc.`book_id` = b.`id`
+        WHERE REPLACE(u.`name`, ' ', '') LIKE CONCAT('%', REPLACE(#{keyword}, ' ', ''), '%')
+           OR REPLACE(b.`title`, ' ', '') LIKE CONCAT('%', REPLACE(#{keyword}, ' ', ''), '%')
+        ORDER BY l.`created_at` DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="countSearchLoans" resultType="int">
+        SELECT COUNT(DISTINCT l.`id`)
+        FROM `dodamdodam`.`loans` l
+                 LEFT JOIN `dodamdodam`.`users` u ON l.`user_id` = u.`user_id`
+                 LEFT JOIN `dodamdodam`.`book_copies` bc ON l.`copy_id` = bc.`id`
+                 LEFT JOIN `dodamdodam`.`books` b ON bc.`book_id` = b.`id`
+        WHERE REPLACE(u.`name`, ' ', '') LIKE CONCAT('%', REPLACE(#{keyword}, ' ', ''), '%')
+           OR REPLACE(b.`title`, ' ', '') LIKE CONCAT('%', REPLACE(#{keyword}, ' ', ''), '%')
+    </select>
+
+    <select id="selectAllLoansWithPage" resultType="dev.yeonlog.dodamdodam.entities.LoanEntity">
+        SELECT l.`id`,
+               l.`user_id`,
+               l.`copy_id`,
+               l.`loan_date`,
+               l.`due_date`,
+               l.`return_date`,
+               l.`status`,
+               l.`created_at`,
+               u.`name` AS user_name,
+               b.`title` AS book_title,
+               b.`author` AS book_author
+        FROM `dodamdodam`.`loans` l
+                 LEFT JOIN `dodamdodam`.`users` u ON l.`user_id` = u.`user_id`
+                 LEFT JOIN `dodamdodam`.`book_copies` bc ON l.`copy_id` = bc.`id`
+                 LEFT JOIN `dodamdodam`.`books` b ON bc.`book_id` = b.`id`
+        ORDER BY l.`created_at` DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="countAllLoans" resultType="int">
+        SELECT COUNT(*) FROM `dodamdodam`.`loans`
+    </select>
+
+    <select id="selectLoanedWithPage" resultType="dev.yeonlog.dodamdodam.entities.LoanEntity">
+        SELECT l.`id`,
+               l.`user_id`,
+               l.`copy_id`,
+               l.`loan_date`,
+               l.`due_date`,
+               l.`return_date`,
+               l.`status`,
+               l.`created_at`,
+               u.`name` AS user_name,
+               b.`title` AS book_title,
+               b.`author` AS book_author
+        FROM `dodamdodam`.`loans` l
+                 LEFT JOIN `dodamdodam`.`users` u ON l.`user_id` = u.`user_id`
+                 LEFT JOIN `dodamdodam`.`book_copies` bc ON l.`copy_id` = bc.`id`
+                 LEFT JOIN `dodamdodam`.`books` b ON bc.`book_id` = b.`id`
+        WHERE l.`status` = 'LOANED'
+        ORDER BY l.`created_at` DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="countLoanedLoans" resultType="int">
+        SELECT COUNT(*) FROM `dodamdodam`.`loans` WHERE `status` = 'LOANED'
+    </select>
 </mapper>

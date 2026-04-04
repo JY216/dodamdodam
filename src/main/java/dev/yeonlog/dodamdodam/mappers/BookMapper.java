@@ -49,6 +49,12 @@ public interface BookMapper {
     int countSearchBooks(@Param("keyword") String keyword, @Param("type") String type);
 
     List<BookEntity> searchBooksByCategory(int categoryId, int pageSize, int offset);
+
+    List<BookEntity> searchBooksWithStatus(@Param("keyword") String keyword,
+                                           @Param("pageSize") int pageSize,
+                                           @Param("offset") int offset);
+    int countBooksWithStatus(@Param("keyword") String keyword);
+
     int countBooksByCategory(int categoryId);
 
     int countAllBooks();

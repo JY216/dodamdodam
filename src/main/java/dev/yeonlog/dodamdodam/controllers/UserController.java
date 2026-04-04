@@ -1,12 +1,9 @@
 package dev.yeonlog.dodamdodam.controllers;
 
 import dev.yeonlog.dodamdodam.entities.*;
-import dev.yeonlog.dodamdodam.mappers.BookLikeMapper;
-import dev.yeonlog.dodamdodam.mappers.LoanMapper;
-import dev.yeonlog.dodamdodam.mappers.WishBookMapper;
+import dev.yeonlog.dodamdodam.mappers.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
-import dev.yeonlog.dodamdodam.mappers.UserMapper;
 import dev.yeonlog.dodamdodam.services.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
@@ -30,6 +27,7 @@ public class UserController {
     private final LoanMapper loanMapper;
     private final BookLikeMapper bookLikeMapper;
     private final WishBookMapper wishBookMapper;
+    private final EventMapper eventMapper;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLogin() {
@@ -112,6 +110,7 @@ public class UserController {
         long pendingCount = loans.stream().filter(l -> l.getStatus().equals("PENDING")).count();
         long likeCount = bookLikeMapper.selectLikedBookIds(userId).size();
         long wishCount = wishBookMapper.selectByUserId(userId).size();
+        long eventCount = eventMapper.selectApplicationsByUserId(userId).size();
 
         // 유저 이름 가져오기
         UserEntity user = userMapper.selectByUserId(userId);
@@ -121,6 +120,7 @@ public class UserController {
         model.addAttribute("pendingCount", pendingCount);
         model.addAttribute("likeCount", likeCount);
         model.addAttribute("wishCount", wishCount);
+        model.addAttribute("eventCount", eventCount);
 
         return "user/mypage/mypage";
     }
@@ -200,5 +200,84 @@ public class UserController {
         model.addAttribute("wishBooks", wishBooks);
 
         return "user/mypage/mypage-wish-books";
+    }
+
+    // 아이디/비밀번호 찾기 페이지
+    @RequestMapping(value = "/find-account", method = RequestMethod.GET)
+    public String getFindAccount() {
+        return "user/find-account";
+    }
+
+    // 아이디 찾기
+    @RequestMapping(value = "/find-id", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> findId(@RequestParam String email) {
+        Map<String, Object> response = new HashMap<>();
+        String userId = userService.findUserId(email);
+        if (userId != null) {
+            response.put("result", "SUCCESS");
+            response.put("userId", userId);
+        } else {
+            response.put("result", "FAILURE");
+        }
+        return response;
+    }
+
+    // 비밀번호 재설정 인증번호 전송
+    @RequestMapping(value = "/reset-password/email", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> sendResetEmail(@RequestParam String email) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            EmailTokenEntity token = userService.sendPasswordResetEmail(email);
+            if (token == null) {
+                response.put("result", "FAILURE");
+                return response;
+            }
+            response.put("result", "SUCCESS");
+            response.put("salt", token.getSalt());
+        } catch (MessagingException e) {
+            response.put("result", "FAILURE");
+        }
+        return response;
+    }
+
+    // 비밀번호 재설정 인증번호 확인
+    @RequestMapping(value = "/reset-password/verify", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> verifyResetEmail(@RequestParam String email,
+                                                @RequestParam String code,
+                                                @RequestParam String salt) {
+        Map<String, Object> response = new HashMap<>();
+        boolean result = userService.verifyEmail(email, code, salt);
+        response.put("result", result ? "SUCCESS" : "FAILURE");
+        return response;
+    }
+
+    // 비밀번호 재설정
+    @RequestMapping(value = "/reset-password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> resetPassword(@RequestParam String email,
+                                             @RequestParam String code,
+                                             @RequestParam String salt,
+                                             @RequestParam String newPassword) {
+        Map<String, Object> response = new HashMap<>();
+        boolean result = userService.resetPassword(email, code, salt, newPassword);
+        response.put("result", result ? "SUCCESS" : "FAILURE");
+        return response;
+    }
+
+    @RequestMapping(value = "/mypage/events", method = RequestMethod.GET)
+    public String myEvents(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (userDetails == null) return "redirect:/login";
+
+        String userId = userDetails.getUsername();
+        UserEntity user = userMapper.selectByUserId(userId);
+        List<EventApplicationEntity> applications = eventMapper.selectApplicationsByUserId(userId);
+
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("applications", applications);
+
+        return "user/mypage/mypage-events";
     }
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="dev.yeonlog.dodamdodam.mappers.UserMapper">
     <insert id="insert" parameterType="dev.yeonlog.dodamdodam.entities.UserEntity">
-        INSERT INTO `users` (`user_id`, `password`, `name`, `email`, `birth`, `gender`, `role`, `status`, `address_primary`, `address_secondary`, `mobile_first`, `mobile_second`, `mobile_third`)
+        INSERT INTO `dodamdodam`.`users` (`user_id`, `password`, `name`, `email`, `birth`, `gender`, `role`, `status`, `address_primary`, `address_secondary`, `mobile_first`, `mobile_second`, `mobile_third`)
         VALUES (#{userId}, #{password}, #{name}, #{email}, #{birth}, #{gender},
                 #{role}, #{status}, #{addressPrimary}, #{addressSecondary}, #{mobileFirst}, #{mobileSecond}, #{mobileThird})
     </insert>
@@ -28,4 +28,15 @@
         WHERE `user_id` = #{userId}
         LIMIT 1
     </select>
+
+    <select id="selectByEmail" resultType="dev.yeonlog.dodamdodam.entities.UserEntity">
+        SELECT * FROM `dodamdodam`.`users`
+        WHERE `email` = #{email}
+    </select>
+
+    <update id="updatePassword">
+        UPDATE `dodamdodam`.`users`
+        SET `password` = #{password}
+        WHERE `user_id` = #{userId}
+    </update>
 </mapper>

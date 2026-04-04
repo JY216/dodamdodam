@@ -2,8 +2,86 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <body>
 <th:block th:fragment="eventRegisterSection">
-    <h2>행사 / 강좌 등록</h2>
-    <p>준비 중입니다.</p>
+
+    <div class="admin-register">
+        <h2 class="admin-register-title">문화 행사 등록</h2>
+        <p class="admin-register-subtitle">문화 행사 및 강좌를 등록해요.</p>
+
+        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
+        <div class="alert alert--error" th:if="${errorMsg}" th:text="${errorMsg}"></div>
+
+        <form class="register-form" action="/admin/events/register"
+              method="post" enctype="multipart/form-data">
+
+            <hr class="form-divider">
+
+            <div class="form-grid">
+                <!-- 포스터 이미지 -->
+                <div class="form-field form-grid-full">
+                    <label>포스터 이미지</label>
+                    <div class="file-input-wrap">
+                        <input type="text" class="file-name-display" id="fileNameDisplay" placeholder="선택된 파일 없음" readonly>
+                        <label class="btn-file-select" for="posterFile">파일 선택</label>
+                        <input type="file" name="posterFile" id="posterFile" accept="image/*" style="display:none;">
+                    </div>
+                </div>
+
+                <!-- 행사 제목 -->
+                <div class="form-field form-grid-full">
+                    <label>행사 제목 <span class="required">*</span></label>
+                    <input type="text" name="title" placeholder="행사 제목을 입력하세요">
+                </div>
+
+                <!-- 상세 내용 -->
+                <div class="form-field form-grid-full">
+                    <label>상세 내용 <span class="required">*</span></label>
+                    <textarea name="description" placeholder="행사 상세 내용을 입력하세요" rows="5"></textarea>
+                </div>
+
+                <!-- 신청 대상 -->
+                <div class="form-field">
+                    <label>신청 대상 <span class="required">*</span></label>
+                    <input type="text" name="target" placeholder="예: 청소년 및 성인, 누구나">
+                </div>
+
+                <!-- 모집 인원 -->
+                <div class="form-field">
+                    <label>모집 인원 <span class="required">*</span></label>
+                    <input type="number" name="capacity" min="1" placeholder="0">
+                </div>
+
+                <!-- 교육 시작일 -->
+                <div class="form-field">
+                    <label>교육 시작일 <span class="required">*</span></label>
+                    <input type="datetime-local" name="eventStartAt">
+                </div>
+
+                <!-- 교육 종료일 -->
+                <div class="form-field">
+                    <label>교육 종료일 <span class="required">*</span></label>
+                    <input type="datetime-local" name="eventEndAt">
+                </div>
+
+                <!-- 접수 시작일 -->
+                <div class="form-field">
+                    <label>접수 시작일 <span class="required">*</span></label>
+                    <input type="datetime-local" name="applyStartAt">
+                </div>
+
+                <!-- 접수 종료일 -->
+                <div class="form-field">
+                    <label>접수 종료일 <span class="required">*</span></label>
+                    <input type="datetime-local" name="applyEndAt">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="history.back()">취소</button>
+                <button type="submit" class="btn-submit">등록하기</button>
+            </div>
+        </form>
+    </div>
+    <script th:src="@{/admin/scripts/sections/event-register.js}"></script>
 </th:block>
 </body>
 </html>

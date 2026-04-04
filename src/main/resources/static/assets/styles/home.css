@@ -162,7 +162,7 @@ ul, li {
 }
 .banner-slide {
   flex: 0 0 100%;
-  height: 18.75rem;
+  height: 25rem;
 }
 .banner-slide img {
   width: 100%;
@@ -254,12 +254,17 @@ ul, li {
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  padding: 0 1.5rem;
 }
 .programs-slider {
   flex: 1;
+  overflow: hidden;
+  padding: 0.5rem 0.25rem;
+}
+.programs .programs-track {
   display: flex;
   gap: 1.25rem;
-  overflow: hidden;
+  transition: transform 0.4s ease;
 }
 .programs-nav {
   display: flex;

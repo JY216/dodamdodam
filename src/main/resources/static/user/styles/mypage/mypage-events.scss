@@ -1,0 +1,192 @@
+@import "../../../assets/styles/def";
+@import "../../../assets/styles/common";
+@import "../../../assets/styles/fragments";
+
+.events-main {
+  @include container;
+  padding-top: 2.5rem;
+  padding-bottom: 5rem;
+}
+
+.events-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+// 헤더
+.events-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 0.0625rem solid $global-border-color;
+}
+
+.events-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $global-text-color;
+  letter-spacing: -0.02em;
+}
+
+.events-username {
+  color: $global-color-primary-dark;
+}
+
+.events-desc {
+  font-size: 0.875rem;
+  color: $global-text-muted;
+}
+
+// 신청 목록
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background-color: $global-white;
+  border-radius: $global-border-radius-md;
+  box-shadow: $global-shadow-sm;
+  overflow: hidden;
+}
+
+// 신청 아이템
+.event-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 0.0625rem solid $global-border-color;
+  transition: background-color 0.15s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: rgba($global-color-primary, 0.02);
+  }
+}
+
+// 상태 뱃지 영역
+.event-item-badge {
+  flex-shrink: 0;
+}
+
+.event-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.875rem;
+  border-radius: 1.25rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background-color: rgba($global-color-primary, 0.12);
+  color: $global-color-primary-dark;
+  white-space: nowrap;
+
+  &--closed {
+    background-color: rgba($global-text-muted, 0.12);
+    color: $global-text-muted;
+  }
+
+  &--cancelled {
+    background-color: rgba($global-color-invalid, 0.1);
+    color: $global-color-invalid;
+  }
+}
+
+// 행사 정보
+.event-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.event-item-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $global-text-color;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-item-meta {
+  font-size: 0.82rem;
+  color: $global-text-muted;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.event-item-meta-label {
+  font-weight: 700;
+  color: $global-text-muted;
+  flex-shrink: 0;
+}
+
+// 액션 버튼
+.event-item-action {
+  flex-shrink: 0;
+}
+
+.btn-cancel-event {
+  height: 2.5rem;
+  padding: 0 1.25rem;
+  background-color: transparent;
+  color: $global-color-invalid;
+  border: 0.0625rem solid $global-color-invalid;
+  border-radius: $global-border-radius-pill;
+  font-family: $global-font-main;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background-color: $global-color-invalid;
+    color: $global-white;
+  }
+}
+
+.text-muted {
+  color: $global-text-muted;
+  font-size: 0.875rem;
+}
+
+// 신청 내역 없음
+.events-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem 0;
+  color: $global-text-muted;
+
+  p {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}
+
+.btn-go-home {
+  height: 2.5rem;
+  padding: 0 1.5rem;
+  background-color: $global-color-primary;
+  color: $global-white;
+  border-radius: $global-border-radius-pill;
+  font-family: $global-font-main;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: $global-color-primary-dark;
+  }
+}

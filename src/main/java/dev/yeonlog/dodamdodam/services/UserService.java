@@ -126,4 +126,71 @@ public class UserService {
 
         return dbUser;
     }
+
+    // 아이디 찾기
+    public String findUserId(String email) {
+        if (email == null || email.isBlank()) return null;
+        UserEntity user = userMapper.selectByEmail(email);
+        if (user == null) return null;
+        return user.getUserId();
+    }
+
+    // 비밀번호 재설정용 이메일 인증 전송
+    public EmailTokenEntity sendPasswordResetEmail(String email) throws MessagingException {
+        if (email == null || email.isBlank()) return null;
+
+        // 해당 이메일로 가입된 유저 확인
+        UserEntity user = userMapper.selectByEmail(email);
+        if (user == null) return null;
+
+        String code = RandomStringUtils.randomNumeric(6);
+        String salt = new BCryptPasswordEncoder().encode(
+                String.format("%s%s%f%f", email, code, Math.random(), Math.random())
+        );
+
+        EmailTokenEntity emailToken = new EmailTokenEntity();
+        emailToken.setEmail(email);
+        emailToken.setCode(code);
+        emailToken.setSalt(salt);
+        emailToken.setVerified(false);
+        emailToken.setUsed(false);
+        emailToken.setCreatedAt(LocalDateTime.now());
+        emailToken.setExpiresAt(LocalDateTime.now().plusMinutes(10L));
+
+        if (emailTokenMapper.insert(emailToken) < 1) return null;
+
+        Context context = new Context();
+        context.setVariable("type", "비밀번호 재설정");
+        context.setVariable("code", code);
+        String body = templateEngine.process("user/sendEmail", context);
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
+        helper.setFrom("ljh5898123@gmail.com");
+        helper.setTo(email);
+        helper.setSubject("[도담도담] 비밀번호 재설정 인증번호 안내");
+        helper.setText(body, true);
+
+        mailSender.send(message);
+        return emailToken;
+    }
+
+    // 비밀번호 재설정
+    public boolean resetPassword(String email, String code, String salt, String newPassword) {
+        if (email == null || code == null || salt == null || newPassword == null) return false;
+
+        EmailTokenEntity dbEmailToken = emailTokenMapper.select(email, code, salt);
+        if (dbEmailToken == null || !dbEmailToken.isVerified() || dbEmailToken.isUsed()) return false;
+        if (dbEmailToken.getExpiresAt().isBefore(LocalDateTime.now())) return false;
+
+        dbEmailToken.setUsed(true);
+        if (emailTokenMapper.update(dbEmailToken) < 1) return false;
+
+        UserEntity user = userMapper.selectByEmail(email);
+        if (user == null) return false;
+
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        userMapper.updatePassword(user.getUserId(), encodedPassword);
+        return true;
+    }
 }

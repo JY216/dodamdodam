@@ -30,4 +30,18 @@ public interface LoanMapper {
     void cancelLoan(@Param("id") long id);
 
     int countPendingOrActiveLoan(@Param("userId") String userId, @Param("bookId") long bookId );
+
+    List<LoanEntity> searchLoans(@Param("keyword") String keyword,
+                                 @Param("pageSize") int pageSize,
+                                 @Param("offset") int offset);
+
+    int countSearchLoans(@Param("keyword") String keyword);
+
+    List<LoanEntity> selectAllLoansWithPage(@Param("pageSize") int pageSize, @Param("offset") int offset);
+
+    int countAllLoans();
+
+    List<LoanEntity> selectLoanedWithPage(@Param("pageSize") int pageSize, @Param("offset") int offset);
+
+    int countLoanedLoans();
 }

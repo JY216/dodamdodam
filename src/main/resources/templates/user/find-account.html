@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>아이디/비밀번호 찾기 - 도담도담</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/user/styles/find-account.css">
+    <script defer src="/user/scripts/find-account.js"></script>
+</head>
+<body>
+<header th:replace="~{fragment/common :: nav}"></header>
+
+<main class="find-main">
+    <div class="find-box">
+
+        <!-- 탭 -->
+        <div class="find-tabs">
+            <button class="find-tab find-tab--active" data-tab="find-id">아이디 찾기</button>
+            <button class="find-tab" data-tab="find-pw">비밀번호 찾기</button>
+        </div>
+
+        <!-- 아이디 찾기 -->
+        <div class="find-content" id="find-id">
+            <p class="find-desc">가입 시 등록한 이메일을 입력하면 아이디를 확인할 수 있어요.</p>
+
+            <div class="form-field">
+                <label class="form-label">
+                    <span class="form-caption">이메일</span>
+                    <input class="form-input" type="email" id="findIdEmail" placeholder="이메일을 입력해 주세요.">
+                </label>
+            </div>
+
+            <div class="find-result" id="findIdResult" style="display:none;">
+                <p class="find-result-label">회원님의 아이디는</p>
+                <p class="find-result-value" id="findIdValue"></p>
+                <p class="find-result-label">입니다.</p>
+            </div>
+
+            <div class="find-error" id="findIdError" style="display:none;">
+                <p>해당 이메일로 가입된 계정을 찾을 수 없어요.</p>
+            </div>
+
+            <button class="btn-find" id="findIdBtn" type="button">아이디 찾기</button>
+
+            <div class="find-links">
+                <a href="/login" class="find-link">로그인</a>
+                <span class="find-link-divider">|</span>
+                <a href="/register" class="find-link">회원가입</a>
+            </div>
+        </div>
+
+        <!-- 비밀번호 찾기 -->
+        <div class="find-content" id="find-pw" style="display:none;">
+            <p class="find-desc">가입 시 등록한 이메일로 인증번호를 전송해 비밀번호를 재설정할 수 있어요.</p>
+
+            <!-- 1단계: 이메일 입력 -->
+            <div class="pw-step" id="pw-step-1">
+                <div class="form-field">
+                    <label class="form-label">
+                        <span class="form-caption">이메일</span>
+                        <span class="label-row">
+                            <input class="form-input -flex-stretch" type="email" id="resetEmail" placeholder="이메일을 입력해 주세요.">
+                            <button class="btn-send" id="sendCodeBtn" type="button">인증번호 전송</button>
+                        </span>
+                    </label>
+                    <label class="form-label" id="codeField" style="display:none;">
+                        <span class="form-caption">인증번호</span>
+                        <span class="label-row">
+                            <input class="form-input -flex-stretch" type="text" id="resetCode" maxlength="6" placeholder="인증번호 6자리를 입력해 주세요.">
+                            <button class="btn-send" id="verifyCodeBtn" type="button">인증번호 확인</button>
+                        </span>
+                    </label>
+                </div>
+                <div class="find-error" id="resetEmailError" style="display:none;">
+                    <p>해당 이메일로 가입된 계정을 찾을 수 없어요.</p>
+                </div>
+            </div>
+
+            <!-- 2단계: 비밀번호 재설정 -->
+            <div class="pw-step" id="pw-step-2" style="display:none;">
+                <div class="form-field">
+                    <label class="form-label">
+                        <span class="form-caption">새 비밀번호</span>
+                        <input class="form-input" type="password" id="newPassword" placeholder="새 비밀번호를 입력해 주세요.">
+                    </label>
+                    <label class="form-label">
+                        <span class="form-caption">새 비밀번호 확인</span>
+                        <input class="form-input" type="password" id="newPasswordCheck" placeholder="새 비밀번호를 한 번 더 입력해 주세요.">
+                    </label>
+                </div>
+                <div class="find-error" id="resetPwError" style="display:none;">
+                    <p id="resetPwErrorMsg"></p>
+                </div>
+                <button class="btn-find" id="resetPwBtn" type="button">비밀번호 재설정</button>
+            </div>
+
+            <!-- 3단계: 완료 -->
+            <div class="pw-step" id="pw-step-3" style="display:none;">
+                <div class="find-success">
+                    <p class="find-success-msg">비밀번호가 재설정됐어요!</p>
+                    <a href="/login" class="btn-find">로그인하러 가기</a>
+                </div>
+            </div>
+
+            <input type="hidden" id="resetSalt">
+
+            <div class="find-links" id="pw-links">
+                <a href="/login" class="find-link">로그인</a>
+                <span class="find-link-divider">|</span>
+                <a href="/register" class="find-link">회원가입</a>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{fragment/common :: footer}"></footer>
+</body>
+</html>

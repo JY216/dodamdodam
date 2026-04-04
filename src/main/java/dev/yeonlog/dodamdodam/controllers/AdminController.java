@@ -2,11 +2,9 @@ package dev.yeonlog.dodamdodam.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.yeonlog.dodamdodam.entities.BookCopyEntity;
-import dev.yeonlog.dodamdodam.entities.BookEntity;
-import dev.yeonlog.dodamdodam.entities.LoanEntity;
-import dev.yeonlog.dodamdodam.entities.WishBookEntity;
+import dev.yeonlog.dodamdodam.entities.*;
 import dev.yeonlog.dodamdodam.mappers.BookMapper;
+import dev.yeonlog.dodamdodam.mappers.EventMapper;
 import dev.yeonlog.dodamdodam.mappers.LoanMapper;
 import dev.yeonlog.dodamdodam.mappers.WishBookMapper;
 import dev.yeonlog.dodamdodam.vos.PageVo;
@@ -21,14 +19,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -42,15 +43,20 @@ public class AdminController {
     @Value("${aladin.api.key}")
     private String aladinApiKey;
     private final LoanMapper loanMapper;
+    private final EventMapper eventMapper;
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String adminPage(@RequestParam(defaultValue = "dashboard") String menu,
                             @RequestParam(required = false) Long id,
                             @RequestParam(defaultValue = "1") int page,
                             @RequestParam(required = false) String searchKeyword,
+                            @RequestParam(required = false) String statusKeyword,
+                            @RequestParam(required = false) String loanKeyword,
                             Model model) {
         model.addAttribute("currentMenu", menu);
         model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("statusKeyword", statusKeyword);
+        model.addAttribute("loanKeyword", loanKeyword);
         int pageSize = 10;
         int offset = (page - 1) * pageSize;
 
@@ -75,32 +81,84 @@ public class AdminController {
                 }
             }
             case "book-status" -> {
-                List<BookEntity> books = bookMapper.selectAllBooksWithStatusPage(pageSize, offset);
-                int totalCount = bookMapper.countAllBooksWithStatus();
-                PageVo pageVo = new PageVo(page, totalCount, pageSize, 5);
-                model.addAttribute("books", books);
-                model.addAttribute("pageVo", pageVo);
+                if (statusKeyword != null && !statusKeyword.trim().isEmpty()) {
+                    List<BookEntity> books = bookMapper.searchBooksWithStatus(statusKeyword.trim(), pageSize, offset);
+                    int totalCount = bookMapper.countBooksWithStatus(statusKeyword.trim());
+                    PageVo pageVo = new PageVo(page, totalCount, pageSize, 5);
+                    model.addAttribute("books", books);
+                    model.addAttribute("pageVo", pageVo);
+                } else {
+                    List<BookEntity> books = bookMapper.selectAllBooksWithStatusPage(pageSize, offset);
+                    int totalCount = bookMapper.countAllBooksWithStatus();
+                    PageVo pageVo = new PageVo(page, totalCount, pageSize, 5);
+                    model.addAttribute("books", books);
+                    model.addAttribute("pageVo", pageVo);
+                }
             }
             case "book-copies" -> {
                 model.addAttribute("book", bookMapper.selectById(id));
                 model.addAttribute("copies", bookMapper.selectCopiesByBookId(id));
             }
-            case "circulation-process" ->
-                    model.addAttribute("loans", loanMapper.selectAllLoans());
-            case "circulation-status" -> {
-                List<LoanEntity> loans = loanMapper.selectAllLoans();
-                loans.forEach(loan -> {
-                    if (loan.getDueDate() != null && loan.getStatus().equals("LOANED")) {
-                        long diff = java.time.temporal.ChronoUnit.DAYS.between(
-                                java.time.LocalDate.now(), loan.getDueDate()
-                        );
-                        loan.setDday(diff);
-                    }
-                });
-                model.addAttribute("loans", loans);
+            case "circulation-process" -> {
+                if (loanKeyword != null && !loanKeyword.trim().isEmpty()) {
+                    List<LoanEntity> loans = loanMapper.searchLoans(loanKeyword.trim(), pageSize, offset);
+                    int totalCount = loanMapper.countSearchLoans(loanKeyword.trim());
+                    PageVo pageVo = new PageVo(page, totalCount, pageSize, 5);
+                    model.addAttribute("loans", loans);
+                    model.addAttribute("pageVo", pageVo);
+                } else {
+                    List<LoanEntity> loans = loanMapper.selectAllLoansWithPage(pageSize, offset);
+                    int totalCount = loanMapper.countAllLoans();
+                    PageVo pageVo = new PageVo(page, totalCount, pageSize, 5);
+                    model.addAttribute("loans", loans);
+                    model.addAttribute("pageVo", pageVo);
+                }
             }
-            case "circulation-history" ->
-                    model.addAttribute("loans", loanMapper.selectAllLoans());
+            case "circulation-status" -> {
+                if (loanKeyword != null && !loanKeyword.trim().isEmpty()) {
+                    List<LoanEntity> loans = loanMapper.searchLoans(loanKeyword.trim(), pageSize, offset);
+                    int totalCount = loanMapper.countSearchLoans(loanKeyword.trim());
+                    loans = loans.stream().filter(l -> l.getStatus().equals("LOANED")).toList();
+                    loans.forEach(loan -> {
+                        if (loan.getDueDate() != null) {
+                            long diff = java.time.temporal.ChronoUnit.DAYS.between(
+                                    java.time.LocalDate.now(), loan.getDueDate());
+                            loan.setDday(diff);
+                        }
+                    });
+                    PageVo pageVo = new PageVo(page, totalCount, pageSize, 5);
+                    model.addAttribute("loans", loans);
+                    model.addAttribute("pageVo", pageVo);
+                } else {
+                    List<LoanEntity> loans = loanMapper.selectLoanedWithPage(pageSize, offset);
+                    int totalCount = loanMapper.countLoanedLoans();
+                    loans.forEach(loan -> {
+                        if (loan.getDueDate() != null) {
+                            long diff = java.time.temporal.ChronoUnit.DAYS.between(
+                                    java.time.LocalDate.now(), loan.getDueDate());
+                            loan.setDday(diff);
+                        }
+                    });
+                    PageVo pageVo = new PageVo(page, totalCount, pageSize, 5);
+                    model.addAttribute("loans", loans);
+                    model.addAttribute("pageVo", pageVo);
+                }
+            }
+            case "circulation-history" -> {
+                if (loanKeyword != null && !loanKeyword.trim().isEmpty()) {
+                    List<LoanEntity> loans = loanMapper.searchLoans(loanKeyword.trim(), pageSize, offset);
+                    int totalCount = loanMapper.countSearchLoans(loanKeyword.trim());
+                    PageVo pageVo = new PageVo(page, totalCount, pageSize, 5);
+                    model.addAttribute("loans", loans);
+                    model.addAttribute("pageVo", pageVo);
+                } else {
+                    List<LoanEntity> loans = loanMapper.selectAllLoansWithPage(pageSize, offset);
+                    int totalCount = loanMapper.countAllLoans();
+                    PageVo pageVo = new PageVo(page, totalCount, pageSize, 5);
+                    model.addAttribute("loans", loans);
+                    model.addAttribute("pageVo", pageVo);
+                }
+            }
             case "wish-book-list" -> {
                 List<WishBookEntity> wishBooks = wishBookMapper.selectAllWishBooksWithPage(pageSize, offset);
                 int totalCount = wishBookMapper.countAllWishBooks();
@@ -112,6 +170,9 @@ public class AdminController {
                 model.addAttribute("book", bookMapper.selectById(id));
                 model.addAttribute("categories", bookMapper.selectAllCategories());
             }
+            case "event-register" -> {}
+            case "event-manage" ->
+                    model.addAttribute("events", eventMapper.selectAllEvents());
         }
         return "admin/admin-page";
     }
@@ -303,5 +364,39 @@ public class AdminController {
 
         redirectAttributes.addFlashAttribute("successMsg", "도서 정보가 수정됐어요!");
         return "redirect:/admin?menu=book-list";
+    }
+
+    // 행사 등록
+    @RequestMapping(value = "/events/register", method = RequestMethod.POST)
+    public String registerEvent(EventEntity event,
+                                @RequestParam(required = false) MultipartFile posterFile,
+                                RedirectAttributes redirectAttributes) throws Exception {
+        if (posterFile != null && !posterFile.isEmpty()) {
+            String uploadPath = "C:/upload/dodamdodam/uploads/events/";
+            File dir = new File(uploadPath);
+            if (!dir.exists()) dir.mkdirs();
+
+            // 확장자만 가져오고 파일명은 UUID로만 저장
+            String originalFilename = posterFile.getOriginalFilename();
+            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String fileName = UUID.randomUUID() + ext; // 한글 파일명 제거
+
+            File dest = new File(uploadPath + fileName);
+            posterFile.transferTo(dest);
+
+            event.setPosterImage("/uploads/events/" + fileName);
+        }
+
+        eventMapper.insertEvent(event);
+        redirectAttributes.addFlashAttribute("successMsg", "행사가 등록됐어요!");
+        return "redirect:/admin?menu=event-manage";
+    }
+
+    // 행사 삭제
+    @RequestMapping(value = "/events/delete", method = RequestMethod.POST)
+    public String deleteEvent(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+        eventMapper.deleteEvent(id);
+        redirectAttributes.addFlashAttribute("successMsg", "행사가 삭제됐어요!");
+        return "redirect:/admin?menu=event-manage";
     }
 }

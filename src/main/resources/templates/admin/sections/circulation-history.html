@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<link rel="stylesheet" href="../../../../../../../Downloads/circulation.scss">
 <body>
 <th:block th:fragment="circulationHistorySection">
 
@@ -11,6 +10,14 @@
                 <p class="admin-list-subtitle">전체 대출 기록을 조회해요.</p>
             </div>
         </div>
+
+        <form class="list-search" action="/admin" method="get">
+            <input type="hidden" name="menu" value="circulation-history">
+            <input type="text" name="loanKeyword"
+                   placeholder="회원명, 도서명으로 검색"
+                   th:value="${loanKeyword}">
+            <button type="submit" class="btn-search-submit">검색</button>
+        </form>
 
         <div class="table-wrap">
             <table class="book-table">
@@ -52,6 +59,24 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <div class="pagination" th:if="${pageVo != null and pageVo.maxPage > 1}">
+        <div class="page-group" th:if="${pageVo.requestPage > pageVo.minPage}">
+            <a class="page-link" th:href="@{/admin(menu='circulation-history', page=${pageVo.minPage}, loanKeyword=${loanKeyword})}">&lt;&lt;</a>
+            <a class="page-link" th:href="@{/admin(menu='circulation-history', page=${pageVo.requestPage - 1}, loanKeyword=${loanKeyword})}">&lt;</a>
+        </div>
+        <div class="page-group">
+            <a th:each="p : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}"
+               th:text="${p}"
+               th:href="@{/admin(menu='circulation-history', page=${p}, loanKeyword=${loanKeyword})}"
+               th:class="${p == pageVo.requestPage} ? 'page-link page-link--active' : 'page-link'">
+            </a>
+        </div>
+        <div class="page-group" th:if="${pageVo.requestPage < pageVo.maxPage}">
+            <a class="page-link" th:href="@{/admin(menu='circulation-history', page=${pageVo.requestPage + 1}, loanKeyword=${loanKeyword})}">&gt;</a>
+            <a class="page-link" th:href="@{/admin(menu='circulation-history', page=${pageVo.maxPage}, loanKeyword=${loanKeyword})}">&gt;&gt;</a>
         </div>
     </div>
 
