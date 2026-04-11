@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dev.yeonlog.dodamdodam.mappers.UserAdminMapper">
+
+    <sql id="memberSearchWhere">
+        <where>
+            <if test="name != null and name != ''">
+                AND u.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="birth != null and birth != ''">
+                AND u.birth = #{birth}
+            </if>
+            <!-- mobile_first, mobile_second, mobile_third 중 하나라도 포함되면 -->
+            <if test="mobile != null and mobile != ''">
+                AND CONCAT(u.mobile_first, u.mobile_second, u.mobile_third)
+                LIKE CONCAT('%', #{mobile}, '%')
+            </if>
+        </where>
+    </sql>
+
+    <select id="findAll" resultType="dev.yeonlog.dodamdodam.dtos.UserAdminDto">
+        SELECT `u`.`user_id` AS `userId`,
+               `u`.`name` AS `name`,
+               `u`.`email` AS `email`,
+               `u`.`birth` AS `birth`,
+               `u`.`gender` AS `gender`,
+               `u`.`mobile_first` AS `mobileFirst`,
+               `u`.`mobile_second` AS `mobileSecond`,
+               `u`.`mobile_third` AS `mobileThird`,
+               `u`.`role` AS `role`,
+               `u`.`status` AS `status`,
+               `u`.`created_at` AS `createdAt`,
+               (
+                   SELECT COUNT(*)
+                   FROM `dodamdodam`.`loans` AS `l`
+                   WHERE `l`.`user_id` = `u`.`user_id`
+                   AND `l`.`status` = 'PENDING'
+                   ) AS `loanCount`
+        FROM `dodamdodam`.`users` AS `u`
+        <include refid="memberSearchWhere"/>
+            ORDER BY `u`.`created_at` DESC
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="countAll" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`users` AS `u`
+        <include refid="memberSearchWhere"/>
+    </select>
+</mapper>

@@ -9,7 +9,9 @@
     <title>도담도담</title>
     <link rel="stylesheet" href="/assets/styles/home.css">
     <link rel="stylesheet" href="/ai/assets/styles/chatbot.css">
+    <link rel="stylesheet" href="/assets/styles/ai-recommend.css">
     <script defer src="/assets/scripts/home.js"></script>
+    <script defer src="/assets/scripts/ai-recommend.js"></script>
     <script defer src="/assets/scripts/common.js"></script>
 </head>
 <body>
@@ -56,8 +58,9 @@
     </section>
 
     <section class="cards">
-        <div class="card card-left">
-
+        <div id="ai-recommend-container" class="card"
+             th:data-logged-in="${isLoggedIn}"
+             th:data-has-history="${hasLoanHistory}">
         </div>
         <div class="card card-right">
             <div class="notice-card-header-wrap">

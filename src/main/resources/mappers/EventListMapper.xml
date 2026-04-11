@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dev.yeonlog.dodamdodam.mappers.EventListMapper">
+    <select id="findAll" resultType="dev.yeonlog.dodamdodam.dtos.EventListDto">
+        SELECT
+            `e`.`id`            AS `id`,
+            `e`.`title`          AS `title`,
+            `e`.`target`         AS `target`,
+            `e`.`capacity`      AS `capacity`,
+            DATE_FORMAT(`e`.`event_start_at`, '%Y년 %m월 %d일 %H : %i') AS `eventStartAt`,
+            DATE_FORMAT(`e`.`event_end_at`,   '%Y년 %m월 %d일 %H : %i') AS `eventEndAt`,
+            DATE_FORMAT(`e`.`apply_start_at`, '%Y년 %m월 %d일 %H : %i') AS `applyStartAt`,
+            DATE_FORMAT(`e`.`apply_end_at`,   '%Y년 %m월 %d일 %H : %i') AS `applyEndAt`,
+            `e`.`status`         AS `status`,
+            `e`.`poster_image`   AS `posterImage`,
+            (SELECT COUNT(*) FROM `dodamdodam`.`event_applications` AS `ea`
+             WHERE `ea`.`event_id` = `e`.`id`) AS `applicantCount`
+        FROM `dodamdodam`.`events` AS `e`
+        ORDER BY `e`.`event_start_at` DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <select id="findApplicantsByEventId" resultType="dev.yeonlog.dodamdodam.dtos.EventApplicantDto">
+        SELECT
+            `ea`.`id`         AS `applicationId`,
+            `ea`.`user_id`    AS `userId`,
+            `u`.`name`        AS `name`,
+            `u`.`mobile_first`  AS `mobileFirst`,
+            `u`.`mobile_second` AS `mobileSecond`,
+            `u`.`mobile_third`  AS `mobileThird`,
+            `ea`.`status`     AS `status`,
+            `ea`.`created_at` AS `createdAt`
+        FROM `dodamdodam`.`event_applications` AS `ea`
+                 JOIN `dodamdodam`.`users` AS `u` ON `ea`.`user_id` = `u`.`user_id`
+        WHERE `ea`.`event_id` = #{eventId}
+        ORDER BY `ea`.`created_at` ASC
+    </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`events`
+    </select>
+</mapper>

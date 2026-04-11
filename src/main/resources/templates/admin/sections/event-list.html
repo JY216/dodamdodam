@@ -2,8 +2,81 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <body>
 <th:block th:fragment="eventListSection">
-    <h2>행사 목록</h2>
-    <p>준비 중입니다.</p>
+
+    <div class="page-wrapper">
+
+        <div class="page-header">
+            <div>
+                <h1>행사 목록</h1>
+                <p>행사 정보와 신청 회원 목록을 확인할 수 있어요.</p>
+            </div>
+        </div>
+
+        <th:block th:if="${data != null}">
+
+            <div class="event-list">
+                <div class="empty-state" th:if="${#lists.isEmpty(data.events)}">
+                    등록된 행사가 없습니다.
+                </div>
+
+                <div class="event-item" th:each="event, stat : ${data.events}"
+                     th:data-id="${event.id}">
+
+                    <div class="event-row js-event-row">
+                        <div class="event-num" th:text="${(data.currentPage - 1) * 10 + stat.count}">1</div>
+                        <div class="event-info">
+                            <div class="event-title-row">
+                                <span class="event-title" th:text="${event.title}">행사명</span>
+                                <span class="badge"
+                                      th:classappend="${event.status == 'OPEN'} ? 'badge-open' : 'badge-closed'"
+                                      th:text="${event.status == 'OPEN'} ? '모집 중' : '마감'">모집 중</span>
+                            </div>
+                            <div class="event-meta">
+                                <span class="meta-item">
+                                    <span class="meta-label">대상</span>
+                                    <span th:text="${event.target}">-</span>
+                                </span>
+                                <span class="meta-item">
+                                    <span class="meta-label">정원</span>
+                                    <span th:text="${event.applicantCount} + '/' + ${event.capacity}">0/0</span>
+                                </span>
+                                <span class="meta-item">
+                                    <span class="meta-label">행사 기간</span>
+                                    <span th:text="${event.eventStartAt} + ' ~ ' + ${event.eventEndAt}">-</span>
+                                </span>
+                                <span class="meta-item apply-period">
+                                    <span class="meta-label">신청 기간</span>
+                                    <span th:text="${event.applyStartAt} + ' ~ ' + ${event.applyEndAt}">-</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="accordion-arrow">▾</div>
+                    </div>
+
+                    <div class="accordion-panel">
+                        <div class="applicant-loading">불러오는 중...</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="pagination" th:if="${data.totalPages > 1}">
+                <a th:href="@{/admin/event-list(page=1)}" th:if="${data.currentPage > 1}">&lt;&lt;</a>
+                <a th:href="@{/admin/event-list(page=${data.currentPage - 1})}" th:if="${data.currentPage > 1}">&lt;</a>
+                <th:block th:each="i : ${#numbers.sequence(1, data.totalPages)}">
+                    <span th:if="${i == data.currentPage}" class="active" th:text="${i}">1</span>
+                    <a th:unless="${i == data.currentPage}"
+                       th:href="@{/admin/event-list(page=${i})}"
+                       th:text="${i}">1</a>
+                </th:block>
+                <a th:href="@{/admin/event-list(page=${data.currentPage + 1})}" th:if="${data.currentPage < data.totalPages}">&gt;</a>
+                <a th:href="@{/admin/event-list(page=${data.totalPages})}" th:if="${data.currentPage < data.totalPages}">&gt;&gt;</a>
+            </div>
+
+        </th:block>
+
+    </div>
+
 </th:block>
 </body>
 </html>

@@ -2,8 +2,126 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <body>
 <th:block th:fragment="userStatusSection">
-    <h2>회원 상태 제어</h2>
-    <p>준비 중입니다.</p>
+
+    <div class="page-wrapper">
+
+        <div class="page-header">
+            <div>
+                <h1>회원 상태 제어</h1>
+                <p>회원의 이용 상태를 정지하거나 해제할 수 있어요.</p>
+            </div>
+        </div>
+
+        <form method="get" th:action="@{/admin/users/status}" class="search-bar">
+            <input type="text" name="name" th:value="${name}" placeholder="이름으로 검색" />
+            <input type="text" name="mobile" th:value="${mobile}" placeholder="전화번호로 검색" />
+            <button type="submit" class="btn-search">검색</button>
+        </form>
+
+        <th:block th:if="${data != null}">
+
+            <div class="user-status-list">
+
+                <div class="list-header">
+                    <span>번호</span>
+                    <span>회원명</span>
+                    <span>이메일</span>
+                    <span>연락처</span>
+                    <span>현재 상태</span>
+                    <span>가입일</span>
+                    <span>상태 변경</span>
+                </div>
+
+                <div class="empty-state" th:if="${#lists.isEmpty(data.members)}">
+                    등록된 회원이 없습니다.
+                </div>
+
+                <div class="user-item"
+                     th:each="user, stat : ${data.members}"
+                     th:data-userid="${user.userId}">
+
+                    <div class="user-row js-toggle-row">
+                        <span class="col-num" th:text="${(data.currentPage - 1) * 10 + stat.count}">1</span>
+                        <span class="col-name">
+                        <div class="user-cell">
+                            <span th:text="${user.name}">홍길동</span>
+                        </div>
+                    </span>
+                        <span class="col-email" th:text="${user.email}">-</span>
+                        <span class="col-mobile" th:text="${user.mobileFirst + '-' + user.mobileSecond + '-' + user.mobileThird}">-</span>
+                        <span class="col-status">
+                        <span class="badge"
+                              th:classappend="${user.status == 'NORMAL'} ? 'badge-normal' : 'badge-suspend'"
+                              th:text="${user.status == 'NORMAL'} ? '정상' : '정지'">정상</span>
+                    </span>
+                        <span class="col-date" th:text="${user.createdAt}">-</span>
+                        <span class="col-action js-stop-propagation">
+                        <button th:if="${user.status == 'NORMAL'}"
+                                class="btn-suspend js-status-btn"
+                                th:data-id="${user.userId}"
+                                th:data-name="${user.name}"
+                                th:data-action="SUSPENDED">정지</button>
+                        <button th:if="${user.status == 'SUSPENDED'}"
+                                class="btn-release js-status-btn"
+                                th:data-id="${user.userId}"
+                                th:data-name="${user.name}"
+                                th:data-action="NORMAL">해제</button>
+                    </span>
+                        <span class="accordion-arrow">▾</span>
+                    </div>
+
+                    <div class="user-accordion-panel">
+                        <div class="activity-wrap">
+                            <div class="activity-switch">
+                                <button class="switch-btn active" data-tab="loan">대출 · 연체 정보</button>
+                                <button class="switch-btn" data-tab="event">행사 참여 목록</button>
+                            </div>
+                            <div class="activity-tab tab-loan">
+                                <div class="activity-loading">불러오는 중...</div>
+                            </div>
+                            <div class="activity-tab tab-event" style="display:none;">
+                                <div class="activity-loading">불러오는 중...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="pagination" th:if="${data.totalPages > 1}">
+                <a th:href="@{/admin/users/status(page=1, name=${name}, mobile=${mobile})}"
+                   th:if="${data.currentPage > 1}">&lt;&lt;</a>
+                <a th:href="@{/admin/users/status(page=${data.currentPage - 1}, name=${name}, mobile=${mobile})}"
+                   th:if="${data.currentPage > 1}">&lt;</a>
+                <th:block th:each="i : ${#numbers.sequence(1, data.totalPages)}">
+                    <span th:if="${i == data.currentPage}" class="active" th:text="${i}">1</span>
+                    <a th:unless="${i == data.currentPage}"
+                       th:href="@{/admin/users/status(page=${i}, name=${name}, mobile=${mobile})}"
+                       th:text="${i}">1</a>
+                </th:block>
+                <a th:href="@{/admin/users/status(page=${data.currentPage + 1}, name=${name}, mobile=${mobile})}"
+                   th:if="${data.currentPage < data.totalPages}">&gt;</a>
+                <a th:href="@{/admin/users/status(page=${data.totalPages}, name=${name}, mobile=${mobile})}"
+                   th:if="${data.currentPage < data.totalPages}">&gt;&gt;</a>
+            </div>
+
+        </th:block>
+    </div>
+
+    <!-- 상태 변경 모달 -->
+    <div class="modal-overlay" id="statusModal">
+        <div class="modal">
+            <h3 class="modal-title" id="modalTitle">상태 변경</h3>
+            <p class="modal-desc" id="modalDesc"></p>
+            <div class="modal-actions">
+                <button class="modal-btn-cancel" id="modalCancelBtn">취소</button>
+                <form id="statusForm" method="post">
+                    <button type="submit" class="modal-btn-confirm" id="modalConfirmBtn">확인</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </th:block>
 </body>
 </html>

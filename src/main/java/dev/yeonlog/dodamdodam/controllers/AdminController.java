@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.yeonlog.dodamdodam.entities.*;
 import dev.yeonlog.dodamdodam.mappers.*;
+import dev.yeonlog.dodamdodam.services.UserService;
+import dev.yeonlog.dodamdodam.mappers.*;
 import dev.yeonlog.dodamdodam.vos.PageVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,12 +37,16 @@ public class AdminController {
 
     private final BookMapper bookMapper;
     private final WishBookMapper wishBookMapper;
+    private final UserService userService;
     @Value("${kakao.api.key}")
     private String kakaoApiKey;
     @Value("${aladin.api.key}")
     private String aladinApiKey;
     private final LoanMapper loanMapper;
     private final EventMapper eventMapper;
+    private final DashboardMapper dashboardMapper;
+
+
     private final NoticeMapper noticeMapper;
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
@@ -59,6 +65,16 @@ public class AdminController {
         int offset = (page - 1) * pageSize;
 
         switch (menu) {
+            case "dashboard" -> {
+                model.addAttribute("totalUsers",     dashboardMapper.countAllUsers());
+                model.addAttribute("todayUsers",     dashboardMapper.countTodayUsers());
+                model.addAttribute("monthlyUsers",   dashboardMapper.countMonthlyUsers());
+                model.addAttribute("suspendedUsers", dashboardMapper.countSuspendedUsers());
+                model.addAttribute("totalBooks",     dashboardMapper.countAllBooks());
+                model.addAttribute("newBooks",       dashboardMapper.countNewBooks());
+                model.addAttribute("activeLoans",    dashboardMapper.countActiveLoans());
+                model.addAttribute("activeEvents",   dashboardMapper.countActiveEvents());
+            }
             case "book-register" ->
                     model.addAttribute("categories", bookMapper.selectAllCategories());
             case "book-list" -> {

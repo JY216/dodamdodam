@@ -2,8 +2,128 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <body>
 <th:block th:fragment="eventManageSection">
-    <h2>행사 운영 관리</h2>
-    <p>준비 중입니다.</p>
+
+    <div class="page-wrapper">
+
+        <div class="page-header">
+            <div>
+                <h1>행사 운영 관리</h1>
+            </div>
+            <a th:href="@{/admin/event-register}" class="btn-register">+ 행사 등록</a>
+        </div>
+
+        <th:block th:if="${data != null}">
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>대상</th>
+                        <th>정원</th>
+                        <th>신청 인원</th>
+                        <th>행사 기간</th>
+                        <th>신청 기간</th>
+                        <th>상태</th>
+                        <th>관리</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="empty-row" th:if="${#lists.isEmpty(data.events)}">
+                        <td colspan="9">등록된 행사가 없습니다.</td>
+                    </tr>
+                    <tr th:each="event, stat : ${data.events}">
+                        <td th:text="${(data.currentPage - 1) * 10 + stat.count}">1</td>
+                        <td class="td-title" th:text="${event.title}">행사명</td>
+                        <td th:text="${event.target}">대상</td>
+                        <td th:text="${event.capacity}">0</td>
+                        <td>
+                            <span th:text="${event.applicantCount}">0</span>
+                            <span th:text="'/ ' + ${event.capacity}" class="td-capacity"></span>
+                        </td>
+                        <td class="td-date">
+                            <span th:text="${event.eventStartAt}">-</span>
+                            <br/>
+                            <span th:text="${event.eventEndAt}">-</span>
+                        </td>
+                        <td class="td-date apply-date-col">
+                            <span th:text="${event.applyStartAt}">-</span>
+                            <br/>
+                            <span th:text="${event.applyEndAt}">-</span>
+                        </td>
+                        <td>
+                            <span class="badge"
+                                  th:classappend="${event.status == 'OPEN'} ? 'badge-open' : 'badge-closed'"
+                                  th:text="${event.status == 'OPEN'} ? '모집 중' : '마감'">모집 중</span>
+                        </td>
+                        <td>
+                            <button class="btn-status js-status-btn"
+                                    th:classappend="${event.status == 'OPEN'} ? 'btn-close' : 'btn-reopen'"
+                                    th:data-id="${event.id}"
+                                    th:data-title="${event.title}"
+                                    th:data-status="${event.status}"
+                                    th:data-page="${data.currentPage}"
+                                    th:text="${event.status == 'OPEN'} ? '마감' : '재개'">
+                            </button>
+                            <button class="btn-delete-event js-delete-btn"
+                                    th:data-id="${event.id}"
+                                    th:data-title="${event.title}"
+                                    th:data-page="${data.currentPage}">삭제</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination" th:if="${data.totalPages > 1}">
+                <a th:href="@{/admin/events(page=1)}" th:if="${data.currentPage > 1}">&lt;&lt;</a>
+                <a th:href="@{/admin/events(page=${data.currentPage - 1})}" th:if="${data.currentPage > 1}">&lt;</a>
+                <th:block th:each="i : ${#numbers.sequence(1, data.totalPages)}">
+                    <span th:if="${i == data.currentPage}" class="active" th:text="${i}">1</span>
+                    <a th:unless="${i == data.currentPage}"
+                       th:href="@{/admin/events(page=${i})}"
+                       th:text="${i}">1</a>
+                </th:block>
+                <a th:href="@{/admin/events(page=${data.currentPage + 1})}" th:if="${data.currentPage < data.totalPages}">&gt;</a>
+                <a th:href="@{/admin/events(page=${data.totalPages})}" th:if="${data.currentPage < data.totalPages}">&gt;&gt;</a>
+            </div>
+
+        </th:block>
+
+    </div>
+
+    <!-- 상태 변경 모달 -->
+    <div class="modal-overlay" id="statusModal">
+        <div class="modal">
+            <h3 class="modal-title" id="statusModalTitle">상태 변경</h3>
+            <p class="modal-desc" id="statusModalDesc"></p>
+            <div class="modal-actions">
+                <button class="modal-btn-cancel" id="statusCancelBtn">취소</button>
+                <form id="statusForm" method="post">
+                    <input type="hidden" name="status" id="statusInput" />
+                    <input type="hidden" name="page" id="statusPageInput" />
+                    <button type="submit" class="modal-btn-confirm" id="statusConfirmBtn">확인</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 삭제 모달 -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <h3 class="modal-title">행사 삭제</h3>
+            <p class="modal-desc" id="deleteModalDesc"></p>
+            <div class="modal-actions">
+                <button class="modal-btn-cancel" id="deleteCancelBtn">취소</button>
+                <form id="deleteForm" method="post">
+                    <input type="hidden" name="page" id="deletePageInput" />
+                    <button type="submit" class="modal-btn-confirm danger">삭제</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </th:block>
 </body>
 </html>

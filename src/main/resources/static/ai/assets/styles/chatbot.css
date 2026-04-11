@@ -106,24 +106,6 @@ body {
   flex-direction: row-reverse;
 }
 
-.avatar {
-  width: 1.875rem;
-  height: 1.875rem;
-  border-radius: 50%;
-  background: #98D095;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  color: #459C3F;
-}
-.avatar.user-av {
-  background: rgb(243.5, 232, 232);
-  color: #888888;
-}
-
 .bubble {
   max-width: 70%;
   padding: 0.65rem 0.9rem;

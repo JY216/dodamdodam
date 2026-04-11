@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dev.yeonlog.dodamdodam.mappers.DashboardMapper">
+
+    <select id="countAllUsers" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`users`
+    </select>
+
+    <select id="countAllBooks" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`books`
+    </select>
+    <select id="countActiveLoans" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`loans`
+        WHERE `status` = 'LOANED'
+    </select>
+    <select id="contActiveEvents" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`events`
+        WHERE `event_end_at` >= CURDATE()
+    </select>
+    <select id="countTodayUsers" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`users`
+        WHERE DATE(`created_at`) = CURDATE()
+    </select>
+    <select id="countMonthlyUsers" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`users`
+        WHERE YEAR(`created_at`) = YEAR(NOW())
+        AND MONTH(`created_at`) = MONTH(NOW())
+    </select>
+    <select id="countSuspendedUsers" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`users`
+        WHERE `status` = 'SUSPENDED'
+    </select>
+    <select id="countNewBooks" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`books`
+        WHERE YEAR(`created_at`) = YEAR(NOW())
+        AND MONTH(`created_at`) = MONTH(NOW())
+    </select>
+    <select id="countActiveEvents" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`events`
+        WHERE `event_end_at` >= CURDATE();
+    </select>
+</mapper>

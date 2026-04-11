@@ -1,0 +1,255 @@
+.page-wrapper {
+  max-width: 68.75rem;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+  }
+
+  p {
+    font-size: 0.875rem;
+    color: #666666;
+  }
+}
+
+// 행사 목록
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #aaaaaa;
+  font-size: 0.9rem;
+  background: #ffffff;
+  border-radius: 0.75rem;
+}
+
+// 행사 아이템
+.event-item {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 0.0625rem solid #f0f0f0;
+  transition: border-color 0.15s;
+
+  &.open {
+    border-color: #4caf50;
+  }
+}
+
+// 행사 행
+.event-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  cursor: pointer;
+  transition: background 0.12s;
+
+  &:hover {
+    background: #f9fdf9;
+  }
+}
+
+.event-num {
+  font-size: 0.8rem;
+  color: #aaaaaa;
+  flex-shrink: 0;
+  width: 1.5rem;
+  text-align: center;
+}
+
+.event-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.event-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  .event-title {
+    font-size: 0.975rem;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+}
+
+// 메타 정보
+.event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: #666666;
+
+  .meta-label {
+    font-size: 0.75rem;
+    color: #aaaaaa;
+    background: #f5f5f5;
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.25rem;
+  }
+}
+
+// 신청 기간 강조
+.apply-period {
+  color: #2e7d32 !important;
+  font-weight: 600;
+
+  .meta-label {
+    background: #e8f5e9 !important;
+    color: #2e7d32 !important;
+  }
+}
+
+// 상태 배지
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 62.4375rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+
+  &.badge-open   { background: #e8f5e9; color: #2e7d32; }
+  &.badge-closed { background: #f5f5f5; color: #757575; }
+}
+
+// 아코디언 화살표
+.accordion-arrow {
+  font-size: 1rem;
+  color: #cccccc;
+  flex-shrink: 0;
+  transition: color 0.15s;
+
+  .event-item.open & {
+    color: #4caf50;
+  }
+}
+
+// 아코디언 패널
+.accordion-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  border-top: 0.0625rem solid transparent;
+
+  .event-item.open & {
+    border-top-color: #f0f0f0;
+  }
+}
+
+.applicant-loading,
+.no-applicants {
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #aaaaaa;
+}
+
+// 신청 회원 테이블
+.applicant-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+
+  thead tr {
+    background: #f9fdf9;
+  }
+
+  thead th {
+    padding: 0.65rem 1.25rem;
+    text-align: center;
+    font-weight: 600;
+    color: #666666;
+    font-size: 0.78rem;
+    border-bottom: 0.0625rem solid #f0f0f0;
+  }
+
+  tbody tr {
+    border-bottom: 0.0625rem solid #f9f9f9;
+
+    &:last-child { border-bottom: none; }
+    &:hover { background: #f9fdf9; }
+  }
+
+  tbody td {
+    padding: 0.75rem 1.25rem;
+    text-align: center;
+    color: #333333;
+    vertical-align: middle;
+  }
+}
+
+// 신청 상태 배지
+.app-badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 62.4375rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+
+  &.app-pending   { background: #fff3e0; color: #e65100; }
+  &.app-confirmed { background: #e8f5e9; color: #2e7d32; }
+}
+
+// 페이지네이션
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-top: 1.5rem;
+
+  a, span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.125rem;
+    height: 2.125rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    border: 0.0625rem solid #dddddd;
+    background: #ffffff;
+    color: #444444;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    background: #e8f5e9;
+    border-color: #4caf50;
+    color: #2e7d32;
+  }
+
+  .active {
+    background: #4caf50;
+    border-color: #4caf50;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: default;
+  }
+}

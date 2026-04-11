@@ -1,0 +1,215 @@
+@import "../../../assets/styles/def";
+
+.dashboard-wrapper {
+  max-width: 68.75rem;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  .dashboard-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+  }
+
+  .dashboard-sub {
+    font-size: 0.875rem;
+    color: #666666;
+  }
+
+  .dashboard-date {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #2e7d32;
+    background: #e8f5e9;
+    padding: 0.4rem 1rem;
+    border-radius: 62.4375rem;
+    white-space: nowrap;
+  }
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  .card-users  { grid-column: 1 / -1; }
+  .card-books  { grid-column: 1 / -1; }
+  .card-loans  { grid-column: 1 / 2; }
+  .card-events { grid-column: 2 / 3; }
+}
+
+.dash-card {
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: transform 0.15s;
+  position: relative;
+  overflow: hidden;
+
+  &:hover { transform: translateY(-0.125rem); }
+}
+
+// 아이콘
+.card-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg { width: 1.2rem; height: 1.2rem; }
+}
+
+.icon-users  { background: #e8f5e9; color: #2e7d32; }
+.icon-books  { background: #e3f2fd; color: #1565c0; }
+.icon-loans  { background: #fff3e0; color: #e65100; }
+.icon-events { background: #f3e5f5; color: #6a1b9a; }
+
+
+// 회원·도서 카드
+.card-wide {
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+
+    .card-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #444444;
+    }
+  }
+
+  .card-stats {
+    display: flex;
+    align-items: flex-end;
+    gap: 2.5rem;
+  }
+
+  .stat-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: #aaaaaa;
+    }
+
+    .stat-num {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1;
+    }
+
+    &.stat-block-sub {
+      .stat-num { font-size: 1.5rem; color: #333333; }
+    }
+
+    &.stat-block-warn {
+      .stat-label { color: #ef9a9a; }
+      .stat-num   { color: #e53935; }
+    }
+  }
+
+  .stat-divider {
+    width: 0.0625rem;
+    height: 3.5rem;
+    background: #f0f0f0;
+    flex-shrink: 0;
+    align-self: center;
+  }
+}
+
+// 대출·행사 카드
+.card-small {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .small-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .small-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+  }
+
+  .num-unit-wrap {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.35rem;
+    padding-left: 0.25rem;
+  }
+
+  .small-num {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1;
+  }
+
+  .small-unit {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #aaaaaa;
+    padding-bottom: 0.2rem;
+  }
+}
+
+// 바로가기
+.shortcut-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.shortcut-card {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  border: 0.0625rem solid #e8f5e9;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+
+  &:hover {
+    background: #f0faf0;
+    border-color: #4caf50;
+    transform: translateX(0.2rem);
+
+    .shortcut-arrow { color: #4caf50; }
+  }
+
+  .shortcut-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333333;
+  }
+
+  .shortcut-arrow {
+    font-size: 1rem;
+    color: #cccccc;
+    transition: color 0.15s;
+  }
+}

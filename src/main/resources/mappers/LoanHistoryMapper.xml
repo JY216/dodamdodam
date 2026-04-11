@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dev.yeonlog.dodamdodam.mappers.LoanHistoryMapper">
+    <select id="findLoanedBooksByUserId" resultType="dev.yeonlog.dodamdodam.dtos.LoanedBookDto">
+        SELECT *
+        FROM `dodamdodam`.`loans` AS `l`
+        JOIN `dodamdodam`.`book_copies` AS `bc` ON `l`.`copy_id` = `bc`.`id`
+        JOIN `dodamdodam`.`books` AS `b` ON `bc`.`book_id` = `b`.`id`
+        WHERE `l`.`user_id` = #{userId}
+        ORDER BY `l`.`loan_date` DESC
+        LIMIT 3
+    </select>
+</mapper>

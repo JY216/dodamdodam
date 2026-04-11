@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dev.yeonlog.dodamdodam.mappers.UserActivityMapper">
+    <select id="findLoansByUserId" resultType="dev.yeonlog.dodamdodam.dtos.UserLoanDto">
+        SELECT
+            `l`.`id` AS `loanId`,
+            `b`.`title` AS `bookTitle`,
+            DATE_FORMAT(`l`.`loan_date`, '%Y년 %m월 %d일') AS `loanDate`,
+            DATE_FORMAT(`l`.`due_date`,  '%Y년 %m월 %d일') AS `dueDate`,
+            DATE_FORMAT(`l`.`return_date`, '%Y년 %m월 %d일') AS `returnDate`,
+            `l`.`status` AS `status`
+        FROM `dodamdodam`.`loans` AS `l`
+                 JOIN `dodamdodam`.`book_copies` AS `bc` ON `l`.`copy_id` = `bc`.`id`
+                 JOIN `dodamdodam`.`books` AS `b` ON `bc`.`book_id` = `b`.`id`
+        WHERE `l`.`user_id` = #{userId}
+        ORDER BY `l`.`loan_date` DESC
+    </select>
+    <select id="findOverdueByUserId" resultType="dev.yeonlog.dodamdodam.dtos.UserOverdueDto">
+        SELECT `overdue`
+        FROM `dodamdodam`.`users`
+        WHERE `user_id` = #{userId}
+    </select>
+    <select id="findEventsByUserId" resultType="dev.yeonlog.dodamdodam.dtos.UserEventDto">
+        SELECT
+            `ea`.`id` AS `applicationId`,
+            `e`.`title` AS `eventTitle`,
+            DATE_FORMAT(`e`.`event_start_at`, '%Y년 %m월 %d일 %H:%i') AS `eventStartAt`,
+            DATE_FORMAT(`e`.`event_end_at`, '%Y년 %m월 %d일 %H:%i') AS `eventEndAt`,
+            `ea`.`status` AS `status`
+        FROM `dodamdodam`.`event_applications` AS `ea`
+                 JOIN `dodamdodam`.`events` AS `e` ON `ea`.`event_id` = `e`.`id`
+        WHERE `ea`.`user_id` = #{userId}
+        ORDER BY `ea`.`created_at` DESC
+    </select>
+</mapper>

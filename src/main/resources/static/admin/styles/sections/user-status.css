@@ -1,0 +1,421 @@
+.page-wrapper {
+  max-width: 68.75rem;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+.page-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.25rem;
+}
+.page-header p {
+  font-size: 0.875rem;
+  color: #666666;
+}
+
+.search-bar {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.search-bar input[type=text] {
+  flex: 1 1 10rem;
+  padding: 0.6rem 1rem;
+  border: 0.09375rem solid #d0d0d0;
+  border-radius: 62.4375rem;
+  font-size: 0.9rem;
+  color: #333333;
+  background: #ffffff;
+  outline: none;
+}
+.search-bar input[type=text]:focus {
+  border-color: #4caf50;
+}
+.search-bar .btn-search {
+  background: #4caf50;
+  color: #ffffff;
+  border: none;
+  border-radius: 62.4375rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.search-bar .btn-search:hover {
+  background: #43a047;
+}
+
+.user-status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.list-header {
+  display: grid;
+  grid-template-columns: 3rem 8rem 1fr 8rem 6rem 10rem 7rem 2rem;
+  padding: 0.75rem 1.25rem;
+  background: #6abf6a;
+  border-radius: 0.75rem;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #aaaaaa;
+  font-size: 0.9rem;
+  background: #ffffff;
+  border-radius: 0.75rem;
+}
+
+.user-item {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 0.0625rem solid #f0f0f0;
+  transition: border-color 0.15s;
+}
+.user-item.open {
+  border-color: #4caf50;
+}
+
+.user-row {
+  display: grid;
+  grid-template-columns: 3rem 8rem 1fr 8rem 6rem 10rem 7rem 2rem;
+  align-items: center;
+  padding: 0.9rem 1.25rem;
+  cursor: pointer;
+  transition: background 0.12s;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #333333;
+}
+.user-row:hover {
+  background: #f9fdf9;
+}
+
+.col-name {
+  text-align: left;
+}
+
+.col-email {
+  font-size: 0.82rem;
+  color: #666666;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.1875rem 0.75rem;
+  border-radius: 62.4375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge.badge-normal {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+.badge.badge-suspend {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.btn-suspend {
+  padding: 0.25rem 0.875rem;
+  border-radius: 62.4375rem;
+  border: 0.125rem solid #ef9a9a;
+  background: #ffffff;
+  color: #e53935;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-suspend:hover {
+  background: #ffebee;
+}
+
+.btn-release {
+  padding: 0.25rem 0.875rem;
+  border-radius: 62.4375rem;
+  border: 0.125rem solid #4caf50;
+  background: #ffffff;
+  color: #4caf50;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-release:hover {
+  background: #4caf50;
+  color: #ffffff;
+}
+
+.accordion-arrow {
+  font-size: 0.9rem;
+  color: #cccccc;
+  text-align: center;
+}
+.user-item.open .accordion-arrow {
+  color: #4caf50;
+}
+
+.user-accordion-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  border-top: 0.0625rem solid transparent;
+}
+.user-item.open .user-accordion-panel {
+  border-top-color: #f0f0f0;
+}
+
+.activity-wrap {
+  padding: 1.25rem;
+}
+
+.activity-switch {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.activity-switch .switch-btn {
+  padding: 0.4rem 1.25rem;
+  border-radius: 62.4375rem;
+  border: 0.0625rem solid #e0e0e0;
+  background: #ffffff;
+  color: #888888;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.activity-switch .switch-btn.active {
+  background: #4caf50;
+  border-color: #4caf50;
+  color: #ffffff;
+}
+.activity-switch .switch-btn:not(.active):hover {
+  border-color: #4caf50;
+  color: #4caf50;
+}
+
+.overdue-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+  padding: 0.6rem 1rem;
+  background: #f9f9f9;
+  border-radius: 0.5rem;
+}
+.overdue-info .overdue-label {
+  font-size: 0.8rem;
+  color: #888888;
+}
+.overdue-info .overdue-count {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #333333;
+}
+.overdue-info .overdue-count.has-overdue {
+  color: #e53935;
+}
+
+.no-data {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.875rem;
+  color: #aaaaaa;
+}
+
+.activity-loading {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.875rem;
+  color: #aaaaaa;
+}
+
+.activity-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.activity-table thead tr {
+  background: #f9fdf9;
+}
+.activity-table thead th {
+  padding: 0.6rem 1rem;
+  text-align: center;
+  font-weight: 600;
+  color: #666666;
+  font-size: 0.78rem;
+  border-bottom: 0.0625rem solid #f0f0f0;
+}
+.activity-table tbody tr {
+  border-bottom: 0.0625rem solid #f9f9f9;
+}
+.activity-table tbody tr:last-child {
+  border-bottom: none;
+}
+.activity-table tbody tr:hover {
+  background: #f9fdf9;
+}
+.activity-table tbody td {
+  padding: 0.65rem 1rem;
+  text-align: center;
+  color: #333333;
+  vertical-align: middle;
+}
+.activity-table .td-book-title {
+  text-align: left;
+  font-weight: 500;
+  max-width: 14rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.act-badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 62.4375rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.act-badge.act-loaned {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+.act-badge.act-returned {
+  background: #f5f5f5;
+  color: #757575;
+}
+.act-badge.act-pending {
+  background: #fff3e0;
+  color: #e65100;
+}
+.act-badge.act-confirmed {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-top: 1.5rem;
+}
+.pagination a, .pagination span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  border: 0.0625rem solid #dddddd;
+  background: #ffffff;
+  color: #444444;
+  cursor: pointer;
+  text-decoration: none;
+}
+.pagination a:hover {
+  background: #e8f5e9;
+  border-color: #4caf50;
+  color: #2e7d32;
+}
+.pagination .active {
+  background: #4caf50;
+  border-color: #4caf50;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: default;
+}
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.active {
+  display: flex;
+}
+.modal-overlay .modal {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  width: 22rem;
+}
+.modal-overlay .modal .modal-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.75rem;
+}
+.modal-overlay .modal .modal-desc {
+  font-size: 0.9rem;
+  color: #555555;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+.modal-overlay .modal .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+.modal-overlay .modal .modal-actions .modal-btn-cancel {
+  padding: 0.5rem 1.25rem;
+  border-radius: 62.4375rem;
+  border: 0.0625rem solid #dddddd;
+  background: #ffffff;
+  color: #666666;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.modal-overlay .modal .modal-actions .modal-btn-cancel:hover {
+  background: #f5f5f5;
+}
+.modal-overlay .modal .modal-actions .modal-btn-confirm {
+  padding: 0.5rem 1.25rem;
+  border-radius: 62.4375rem;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #ffffff;
+}
+.modal-overlay .modal .modal-actions .modal-btn-confirm.suspend {
+  background: #e53935;
+}
+.modal-overlay .modal .modal-actions .modal-btn-confirm.suspend:hover {
+  background: #c62828;
+}
+.modal-overlay .modal .modal-actions .modal-btn-confirm.release {
+  background: #4caf50;
+}
+.modal-overlay .modal .modal-actions .modal-btn-confirm.release:hover {
+  background: #43a047;
+}
+
+/*# sourceMappingURL=user-status.css.map */
