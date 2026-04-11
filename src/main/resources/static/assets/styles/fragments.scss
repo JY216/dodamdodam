@@ -28,6 +28,94 @@
     }
   }
 
+  // 햄버거 버튼
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 0.3rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+
+    span {
+      display: block;
+      width: 1.5rem;
+      height: 0.125rem;
+      background-color: $global-text-color;
+      border-radius: 0.125rem;
+      transition: all 0.3s ease;
+    }
+
+    &.active {
+      span:nth-child(1) {
+        transform: translateY(0.425rem) rotate(45deg);
+      }
+      span:nth-child(2) {
+        opacity: 0;
+      }
+      span:nth-child(3) {
+        transform: translateY(-0.425rem) rotate(-45deg);
+      }
+    }
+  }
+
+  // 모바일 메뉴
+  .nav-mobile-menu {
+    display: none;
+    flex-direction: column;
+    background-color: $global-white;
+    padding: 1rem 1.5rem;
+    border-top: 0.0625rem solid $global-border-color;
+    box-shadow: $global-shadow-sm;
+
+    &.active {
+      display: flex;
+    }
+
+    .mobile-menu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li a {
+        display: block;
+        padding: 0.875rem 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: $global-text-color;
+        border-bottom: 0.0625rem solid rgba($global-text-color, 0.1);
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: $global-color-primary-dark;
+        }
+      }
+    }
+
+    .mobile-auth {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-top: 1rem;
+
+      a {
+        font-size: 0.95rem;
+        color: $global-text-muted;
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: $global-text-color;
+        }
+      }
+    }
+  }
+
   .menu {
     display: flex;
     gap: 10rem;
@@ -129,5 +217,103 @@
     font-size: 0.75rem;
     opacity: 0.6;
     margin-top: 0.25rem;
+  }
+}
+
+// 공통 다이얼로그
+.dialog-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 999;
+  @include flex-center;
+
+  &.active {
+    display: flex;
+  }
+}
+
+.dialog-box {
+  background-color: $global-white;
+  border-radius: $global-border-radius-md;
+  padding: 2rem 1.75rem 1.5rem;
+  width: 90%;
+  max-width: 22rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
+}
+
+.dialog-message {
+  font-size: 1rem;
+  font-weight: 600;
+  color: $global-text-color;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+
+  .dialog-btn {
+    height: 2.75rem;
+    padding: 0 1.5rem;
+    border: none;
+    border-radius: $global-border-radius-pill;
+    font-family: $global-font-main;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    flex: 1;
+
+    &--confirm {
+      background-color: $global-color-primary;
+      color: $global-white;
+
+      &:hover {
+        background-color: $global-color-primary-dark;
+      }
+    }
+
+    &--cancel {
+      background-color: $global-background-color;
+      color: $global-text-muted;
+      border: 0.0625rem solid $global-border-color;
+
+      &:hover {
+        border-color: $global-text-muted;
+        color: $global-text-color;
+      }
+    }
+
+    &--alert {
+      background-color: $global-color-primary;
+      color: $global-white;
+
+      &:hover {
+        background-color: $global-color-primary-dark;
+      }
+    }
+  }
+}
+
+// 반응형
+@include tablet {
+  .nav .menu {
+    gap: 3rem;
+  }
+}
+
+@include mobile {
+  .nav {
+    .inner { padding: 0 1.25rem; }
+    .menu  { display: none; }
+    .auth  { display: none; }
+    .nav-hamburger { display: flex; }
   }
 }

@@ -1,0 +1,182 @@
+@import "../../../assets/styles/def";
+@import "../../../assets/styles/common";
+@import "../../../assets/styles/fragments";
+
+.admin-register {
+  @include container;
+  padding-top: 2.5rem;
+  padding-bottom: 4rem;
+
+  &-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: $global-text-color;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  &-subtitle {
+    font-size: 0.9rem;
+    color: $global-text-muted;
+    margin-bottom: 2rem;
+  }
+}
+
+.register-form {
+  background-color: $global-white;
+  border-radius: $global-border-radius-md;
+  box-shadow: $global-shadow-sm;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-divider {
+  border: none;
+  border-top: 0.0625rem solid $global-border-color;
+  margin: 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 1.5rem;
+
+  &-full {
+    grid-column: 1 / -1;
+  }
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $global-text-color;
+
+    .required {
+      color: $global-color-invalid;
+      margin-left: 0.2rem;
+    }
+  }
+
+  input[type="text"],
+  select,
+  textarea {
+    padding: 0 1.25rem;
+    border: 0.0625rem solid $global-border-color;
+    border-radius: 0.625rem;
+    font-family: $global-font-main;
+    font-size: 0.95rem;
+    color: $global-text-color;
+    background-color: $global-background-color;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &::placeholder {
+      color: $global-text-placeholder;
+    }
+
+    &:focus {
+      border-color: $global-color-primary;
+      box-shadow: 0 0 0 0.2rem rgba($global-color-primary, 0.15);
+    }
+  }
+
+  input[type="text"],
+  select {
+    height: 3rem;
+  }
+
+  textarea {
+    padding: 0.875rem 1.25rem;
+    resize: vertical;
+    min-height: 12rem;
+    line-height: 1.6;
+  }
+}
+
+// 고정 공지 체크박스
+.notice-pin-wrap {
+  display: flex;
+  align-items: center;
+  height: 3rem;
+}
+
+.notice-pin-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem !important;
+  font-weight: 400 !important;
+
+  input[type="checkbox"] {
+    width: 1.125rem;
+    height: 1.125rem;
+    accent-color: $global-color-primary;
+    cursor: pointer;
+  }
+}
+
+.notice-pin-text {
+  font-size: 0.9rem;
+  color: $global-text-color;
+}
+
+// 버튼
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.btn-cancel {
+  height: 3rem;
+  padding: 0 2rem;
+  background-color: transparent;
+  color: $global-text-muted;
+  border: 0.0625rem solid $global-border-color;
+  border-radius: $global-border-radius-pill;
+  font-family: $global-font-main;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    border-color: $global-text-muted;
+    color: $global-text-color;
+  }
+}
+
+.btn-submit {
+  height: 3rem;
+  padding: 0 2.5rem;
+  background-color: $global-color-primary;
+  color: $global-white;
+  border: none;
+  border-radius: $global-border-radius-pill;
+  font-family: $global-font-main;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+
+  &:hover {
+    background-color: $global-color-primary-dark;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}

@@ -1,5 +1,10 @@
 /** @type {HTMLFormElement} */
 const $registerForm = document.forms['registerForm'];
+// 폼 submit (다음 버튼)
+let currentStep = 1;
+let emailSalt = '';
+let isEmailVerified = false;
+let isUserIdChecked = false;
 
 /** @type {HTMLElement[]} */
 const $steps = Array.from($registerForm.querySelectorAll(':scope > .step > .item'));
@@ -125,6 +130,12 @@ const handleInformation = () => {
         return;
     }
 
+    if (!isUserIdChecked) {
+        alert('아이디 중복 확인을 해주세요.');
+        $userIdInput.focus();
+        return;
+    }
+
     // 비밀번호
     if ($passwordInput.value === '') {
         alert('비밀번호를 입력해 주세요.');
@@ -199,7 +210,7 @@ const handleInformation = () => {
                 setStep(++currentStep);
                 break;
             case 'FAILURE_ID_DUPLICATE':
-                alert(`입력하신 아이디(${$userIdInput.value})는 이미 사용 중입니다. 다른 아이디를 사용해 주세요.`);
+                alert(`입력하신 아이디(${$userIdInput.value})는 이미 사용 중입니다.`);
                 $userIdInput.focus();
                 $userIdInput.select();
                 break;
@@ -216,7 +227,6 @@ const handleComplete = () => {
     location.href = '/login';
 };
 
-// 아이디 중복 확인
 $registerForm['userIdCheckButton'].addEventListener('click', () => {
     const $userIdInput = $registerForm['userId'];
     if ($userIdInput.value.trim() === '') {
@@ -230,8 +240,28 @@ $registerForm['userIdCheckButton'].addEventListener('click', () => {
         $userIdInput.select();
         return;
     }
-    // 일단 alert으로만 처리 - 서버 연동 시 xhr 추가
-    alert(`입력하신 아이디(${$userIdInput.value})는 사용 가능합니다.`);
+
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) return;
+        const response = JSON.parse(xhr.responseText);
+        if (response.result === 'AVAILABLE') {
+            isUserIdChecked = true;
+            alert(`입력하신 아이디(${$userIdInput.value})는 사용 가능합니다.`);
+        } else {
+            isUserIdChecked = false;
+            alert(`입력하신 아이디(${$userIdInput.value})는 이미 사용 중입니다.`);
+            $userIdInput.focus();
+            $userIdInput.select();
+        }
+    };
+    xhr.open('GET', `/register/check-id?userId=${encodeURIComponent($userIdInput.value.trim())}`);
+    xhr.send();
+});
+
+// 아이디 변경 시 중복 확인 초기화
+$registerForm['userId'].addEventListener('input', () => {
+    isUserIdChecked = false;
 });
 
 // 이메일 인증번호 전송
@@ -259,6 +289,8 @@ $registerForm['emailCodeSendButton'].addEventListener('click', () => {
             $registerForm['emailCode'].disabled = false;
             $registerForm['emailCodeVerifyButton'].disabled = false;
             alert('인증번호가 전송되었습니다. 이메일을 확인해 주세요.');
+        } else if (response.result === 'FAILURE_EMAIL_DUPLICATE') {
+            alert('이미 가입된 이메일입니다. 다른 이메일을 사용해 주세요.');
         } else {
             alert('인증번호 전송에 실패했습니다. 잠시 후 다시 시도해 주세요.');
         }
@@ -317,11 +349,12 @@ $registerForm['addressFindButton'].addEventListener('click', () => {
     }).open();
 });
 
-// 폼 submit (다음 버튼)
-let currentStep = 1;
-let emailSalt = '';
-let isEmailVerified = false;
-
+// 이전 버튼
+$registerForm['previous'].addEventListener('click', () => {
+    if (currentStep > 1) {
+        setStep(--currentStep);
+    }
+});
 
 $registerForm.addEventListener('submit', (e) => {
     e.preventDefault();

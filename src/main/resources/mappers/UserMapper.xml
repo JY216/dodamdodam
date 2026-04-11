@@ -6,6 +6,10 @@
         VALUES (#{userId}, #{password}, #{name}, #{email}, #{birth}, #{gender},
                 #{role}, #{status}, #{addressPrimary}, #{addressSecondary}, #{mobileFirst}, #{mobileSecond}, #{mobileThird})
     </insert>
+    <select id="countByEmail" resultType="int">
+        SELECT COUNT(*) FROM `dodamdodam`.`users`
+        WHERE `email` = #{email}
+    </select>
     <select id="selectByUserId" resultType="dev.yeonlog.dodamdodam.entities.UserEntity">
         SELECT `user_id`,
                `password`,

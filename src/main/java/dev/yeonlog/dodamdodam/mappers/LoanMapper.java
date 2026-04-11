@@ -44,4 +44,8 @@ public interface LoanMapper {
     List<LoanEntity> selectLoanedWithPage(@Param("pageSize") int pageSize, @Param("offset") int offset);
 
     int countLoanedLoans();
+
+    int extendLoan(@Param("id") long id);
+
+    int countActiveLoansByUserId(@Param("userId") String userId);
 }

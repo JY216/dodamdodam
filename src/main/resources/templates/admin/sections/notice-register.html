@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="noticeRegisterSection">
+
+    <div class="admin-register">
+        <h2 class="admin-register-title">공지 작성</h2>
+        <p class="admin-register-subtitle">홈 화면에 표시될 공지사항을 작성해요.</p>
+
+        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
+        <div class="alert alert--error" th:if="${errorMsg}" th:text="${errorMsg}"></div>
+
+        <form class="register-form" action="/admin/notices/register" method="post">
+            <hr class="form-divider">
+
+            <div class="form-grid">
+                <!-- 공지 제목 -->
+                <div class="form-field form-grid-full">
+                    <label>공지 제목 <span class="required">*</span></label>
+                    <input type="text" name="title" placeholder="공지 제목을 입력하세요">
+                </div>
+
+                <!-- 공지 내용 -->
+                <div class="form-field form-grid-full">
+                    <label>공지 내용 <span class="required">*</span></label>
+                    <textarea name="content" placeholder="공지 내용을 입력하세요" rows="10"></textarea>
+                </div>
+
+                <!-- 고정 여부 -->
+                <div class="form-field">
+                    <label>고정 공지</label>
+                    <div class="notice-pin-wrap">
+                        <label class="notice-pin-label">
+                            <input type="checkbox" name="isPinned" value="true">
+                            <span class="notice-pin-text">홈 화면에 고정 표시</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="history.back()">취소</button>
+                <button type="submit" class="btn-submit">등록하기</button>
+            </div>
+        </form>
+    </div>
+
+</th:block>
+</body>
+</html>

@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -32,4 +33,5 @@ public class BookEntity {
     private String coverImage;
 
     private boolean isAdminRegistered;
+    private List<Integer> categoryIds;
 }

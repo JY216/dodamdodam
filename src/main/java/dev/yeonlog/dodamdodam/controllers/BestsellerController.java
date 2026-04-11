@@ -46,7 +46,8 @@ public class BestsellerController {
                 + "&SearchTarget=Book"
                 + "&CategoryId=" + categoryId
                 + "&output=js"
-                + "&Version=20131101";
+                + "&Version=20131101"
+                + "&Cover=Big";
 
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.setRequestMethod("GET");

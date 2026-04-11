@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dev.yeonlog.dodamdodam.mappers.NoticeMapper">
+    <insert id="insertNotice" parameterType="dev.yeonlog.dodamdodam.entities.NoticeEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `dodamdodam`.`notices`
+            (`title`, `content`, `is_pinned`)
+        VALUES
+            (#{title}, #{content}, #{pinned})
+    </insert>
+
+    <select id="selectAllNotices" resultType="dev.yeonlog.dodamdodam.entities.NoticeEntity">
+        SELECT `id`, `title`, `content`, `is_pinned`, `created_at`, `updated_at`
+        FROM `dodamdodam`.`notices`
+        ORDER BY `is_pinned` DESC, `created_at` DESC
+    </select>
+
+    <select id="selectById" resultType="dev.yeonlog.dodamdodam.entities.NoticeEntity">
+        SELECT `id`, `title`, `content`, `is_pinned`, `created_at`, `updated_at`
+        FROM `dodamdodam`.`notices`
+        WHERE `id` = #{id}
+    </select>
+
+    <update id="updateNotice" parameterType="dev.yeonlog.dodamdodam.entities.NoticeEntity">
+        UPDATE `dodamdodam`.`notices`
+        SET `title`     = #{title},
+            `content`   = #{content},
+            `is_pinned` = #{pinned}
+        WHERE `id` = #{id}
+    </update>
+
+    <delete id="deleteNotice">
+        DELETE FROM `dodamdodam`.`notices`
+        WHERE `id` = #{id}
+    </delete>
+
+    <select id="selectPinnedNotices" resultType="dev.yeonlog.dodamdodam.entities.NoticeEntity">
+        SELECT `id`, `title`, `content`, `is_pinned`, `created_at`, `updated_at`
+        FROM `dodamdodam`.`notices`
+        WHERE `is_pinned` = 1
+        ORDER BY `created_at` DESC
+    </select>
+</mapper>

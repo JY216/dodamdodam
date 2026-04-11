@@ -26,4 +26,6 @@ public class LoanEntity {
     private String bookAuthor;
     private String bookCover;
     private long dday;
+
+    private int extendCount;
 }

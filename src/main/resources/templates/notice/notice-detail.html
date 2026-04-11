@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title th:text="${notice.title} + ' - 도담도담'">공지사항 - 도담도담</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/notice/styles/notice.css">
+    <script defer src="/assets/scripts/common.js"></script>
+</head>
+<body>
+<header th:replace="~{fragment/common :: nav}"></header>
+
+<main class="notice-main">
+    <div class="notice-container">
+
+        <!-- 상세 헤더 -->
+        <div class="notice-detail-header">
+            <span class="notice-pin-badge" th:if="${notice.pinned}">📌 고정</span>
+            <h1 class="notice-detail-title" th:text="${notice.title}"></h1>
+            <div class="notice-detail-meta">
+                <span th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}"></span>
+                <span th:if="${notice.updatedAt != null and notice.updatedAt != notice.createdAt}"
+                      th:text="'(수정됨 ' + ${#temporals.format(notice.updatedAt, 'yyyy-MM-dd')} + ')'">
+                </span>
+            </div>
+        </div>
+
+        <!-- 내용 -->
+        <div class="notice-detail-body" th:text="${notice.content}"></div>
+
+        <!-- 목록으로 -->
+        <div class="notice-detail-footer">
+            <a href="/notices" class="btn-back-notice">← 목록으로</a>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{fragment/common :: footer}"></footer>
+</body>
+</html>

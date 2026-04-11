@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/assets/styles/home.css">
     <link rel="stylesheet" href="/ai/assets/styles/chatbot.css">
     <script defer src="/assets/scripts/home.js"></script>
+    <script defer src="/assets/scripts/common.js"></script>
 </head>
 <body>
 <!--chatbot-floating-->
@@ -23,18 +24,21 @@
     <section class="banner">
         <div class="banner-slider" id="bannerSlider">
             <div class="banner-slide">
-                <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200&q=80" alt="도서관 전경 1">
+                <img src="https://vmspace.com/ActiveFile/spacem.org/board_img/484953769659cf606c638c.jpg" alt="도서관 전경 1">
             </div>
             <div class="banner-slide">
-                <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1200&q=80" alt="도서관 전경 2">
+                <img src="https://dimg.donga.com/wps/NEWS/IMAGE/2025/10/24/132623188.6.jpg" alt="도서관 전경 2">
             </div>
             <div class="banner-slide">
-                <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80" alt="도서관 전경 3">
+                <img src="https://www.publicdesign.kr/jnrepo/upload/editor/202112/b8f0bdbe2e0149bb8e61968e638d1090_1640659358664.jpg" alt="도서관 전경 3">
+            </div>
+            <div class="banner-slide">
+                <img src="https://static.wixstatic.com/media/7526ea_28c58258dd044666a00a1878f6a52367~mv2.jpg" alt="도서관 전경4">
             </div>
         </div>
     </section>
     <!--    빌린 도서 D-Day-->
-    <section class="loan-banner" sec:authorize="isAuthenticated()">
+    <section class="loan-banner" th:if="${activeLoans != null}">
         <div class="loan-slider" id="loanSlider">
             <!-- 빌린 책 없을 때 -->
             <div class="loan-slide active" th:if="${activeLoans == null or #lists.isEmpty(activeLoans)}">
@@ -56,7 +60,25 @@
 
         </div>
         <div class="card card-right">
-
+            <div class="notice-card-header-wrap">
+                <h3 class="notice-card-title">📢 공지사항</h3>
+                <a href="/notices" class="notice-card-more">+ 더보기</a>
+            </div>
+            <ul class="notice-card-list" th:if="${not #lists.isEmpty(notices)}">
+                <li class="notice-card-item" th:each="notice : ${notices}">
+                    <span class="notice-card-pin">📌</span>
+                    <a th:href="@{/notices/{id}(id=${notice.id})}" class="notice-card-info">
+                        <div class="notice-card-header">
+                            <p class="notice-card-name" th:text="${notice.title}"></p>
+                            <p class="notice-card-date" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}"></p>
+                        </div>
+                        <p class="notice-card-content" th:text="${notice.content}"></p>
+                    </a>
+                </li>
+            </ul>
+            <div class="notice-card-empty" th:if="${#lists.isEmpty(notices)}">
+                <p>등록된 공지가 없어요.</p>
+            </div>
         </div>
     </section>
 

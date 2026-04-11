@@ -1,0 +1,191 @@
+@import "../../assets/styles/def";
+@import "../../assets/styles/common";
+@import "../../assets/styles/fragments";
+
+.notice-main {
+  @include container;
+  padding-top: 3rem;
+  padding-bottom: 5rem;
+}
+
+.notice-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+// 헤더
+.notice-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 0.0625rem solid $global-border-color;
+}
+
+.notice-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $global-text-color;
+  letter-spacing: -0.02em;
+}
+
+.notice-desc {
+  font-size: 0.875rem;
+  color: $global-text-muted;
+}
+
+// 공지 목록
+.notice-list {
+  display: flex;
+  flex-direction: column;
+  background-color: $global-white;
+  border-radius: $global-border-radius-md;
+  box-shadow: $global-shadow-sm;
+  overflow: hidden;
+}
+
+.notice-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.125rem 1.5rem;
+  border-bottom: 0.0625rem solid $global-border-color;
+  text-decoration: none;
+  color: $global-text-color;
+  transition: background-color 0.15s ease;
+  gap: 1rem;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: rgba($global-color-primary, 0.04);
+  }
+}
+
+.notice-item-left {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.notice-pin-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.625rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: rgba($global-color-primary, 0.12);
+  color: $global-color-primary-dark;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.notice-item-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: $global-text-color;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notice-item-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.notice-item-date {
+  font-size: 0.85rem;
+  color: $global-text-muted;
+}
+
+.notice-item-arrow {
+  font-size: 1.2rem;
+  color: $global-text-muted;
+}
+
+// 빈 상태
+.notice-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+  color: $global-text-muted;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+// 상세 페이지
+.notice-detail-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 0.0625rem solid $global-border-color;
+
+  .notice-pin-badge {
+    width: fit-content;
+  }
+}
+
+.notice-detail-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $global-text-color;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+}
+
+.notice-detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: $global-text-muted;
+}
+
+.notice-detail-body {
+  background-color: $global-white;
+  border-radius: $global-border-radius-md;
+  box-shadow: $global-shadow-sm;
+  padding: 2rem;
+  font-size: 0.95rem;
+  color: $global-text-color;
+  line-height: 1.8;
+  white-space: pre-line;
+  min-height: 15rem;
+}
+
+.notice-detail-footer {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn-back-notice {
+  display: inline-flex;
+  align-items: center;
+  height: 2.75rem;
+  padding: 0 1.5rem;
+  background-color: transparent;
+  color: $global-text-muted;
+  border: 0.0625rem solid $global-border-color;
+  border-radius: $global-border-radius-pill;
+  font-family: $global-font-main;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    border-color: $global-text-muted;
+    color: $global-text-color;
+  }
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>공지사항 - 도담도담</title>
+    <link rel="stylesheet" href="/assets/styles/common.css">
+    <link rel="stylesheet" href="/notice/styles/notice.css">
+    <script defer src="/assets/scripts/common.js"></script>
+</head>
+<body>
+<header th:replace="~{fragment/common :: nav}"></header>
+
+<main class="notice-main">
+    <div class="notice-container">
+
+        <div class="notice-header">
+            <h1 class="notice-title">공지사항</h1>
+            <p class="notice-desc">도담도담 도서관의 공지사항을 확인해요.</p>
+        </div>
+
+        <div class="notice-list" th:if="${not #lists.isEmpty(notices)}">
+            <a class="notice-item"
+               th:each="notice : ${notices}"
+               th:href="@{/notices/{id}(id=${notice.id})}">
+                <div class="notice-item-left">
+                    <span class="notice-pin-badge" th:if="${notice.pinned}">📌 고정</span>
+                    <span class="notice-item-title" th:text="${notice.title}"></span>
+                </div>
+                <div class="notice-item-right">
+                    <span class="notice-item-date"
+                          th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">
+                    </span>
+                    <span class="notice-item-arrow">›</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="notice-empty" th:if="${#lists.isEmpty(notices)}">
+            <p>등록된 공지가 없어요.</p>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{fragment/common :: footer}"></footer>
+</body>
+</html>

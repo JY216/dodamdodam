@@ -20,35 +20,39 @@
                     <label>도서명 <span class="required">*</span></label>
                     <input type="text" name="title" th:value="${book.title}" placeholder="도서명을 입력하세요">
                 </div>
-                <div class="form-field">
-                    <label>저자 <span class="required">*</span></label>
-                    <input type="text" name="author" th:value="${book.author}" placeholder="저자명">
+                <div class="form-row two">
+                    <div class="form-field">
+                        <label>저자 <span class="required">*</span></label>
+                        <input type="text" name="author" th:value="${book.author}" placeholder="저자명">
+                    </div>
+                    <div class="form-field">
+                        <label>출판사 <span class="required">*</span></label>
+                        <input type="text" name="publisher" th:value="${book.publisher}" placeholder="출판사명">
+                    </div>
                 </div>
-                <div class="form-field">
-                    <label>출판사 <span class="required">*</span></label>
-                    <input type="text" name="publisher" th:value="${book.publisher}" placeholder="출판사명">
+                <div class="form-row three">
+                    <div class="form-field">
+                        <label>출판일</label>
+                        <input type="date" name="publishDate" th:value="${book.publishDate}">
+                    </div>
+                    <div class="form-field">
+                        <label>수량</label>
+                        <input type="number" name="totalQuantity" th:value="${book.totalQuantity}" min="1">
+                    </div>
+                    <div class="form-field">
+                        <label>가격</label>
+                        <input type="number" name="price" th:value="${book.price}" min="0" placeholder="0">
+                    </div>
                 </div>
-                <div class="form-field">
-                    <label>출판일</label>
-                    <input type="date" name="publishDate" th:value="${book.publishDate}">
-                </div>
-                <div class="form-field">
+                <div class="form-field form-grid-full">
                     <label>카테고리</label>
-                    <select name="categoryId">
-                        <option value="">카테고리 선택</option>
-                        <option th:each="category : ${categories}"
-                                th:value="${category.id}"
-                                th:text="${category.name}">
-                        </option>
-                    </select>
-                </div>
-                <div class="form-field">
-                    <label>수량</label>
-                    <input type="number" name="totalQuantity" th:value="${book.totalQuantity}" min="1">
-                </div>
-                <div class="form-field">
-                    <label>가격</label>
-                    <input type="number" name="price" th:value="${book.price}" min="0" placeholder="0">
+                    <div class="category-checkboxes">
+                        <label class="category-checkbox" th:each="category : ${categories}">
+                            <input type="checkbox" name="categoryIds" th:value="${category.id}"
+                                   th:checked="${book.categoryIds != null and book.categoryIds.contains(category.id)}">
+                            <span th:text="${category.name}"></span>
+                        </label>
+                    </div>
                 </div>
             </div>
 

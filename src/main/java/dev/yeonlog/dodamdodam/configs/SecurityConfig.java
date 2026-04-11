@@ -8,19 +8,27 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import dev.yeonlog.dodamdodam.services.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final CustomUserDetailsService customUserDetailsService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .userDetailsService(customUserDetailsService)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")  // 관리자만
-                        .requestMatchers("/events/*/apply", "/events/*/cancel", "/mypage/events").authenticated() // 로그인 필요
-                        .requestMatchers("/", "/login", "/register", "/search", "/bestseller", "/assets/**", "/user/**", "/ai/**", "/mypage/**", "/wish-book", "/wish-book/**", "/books/like", "/books/ensure", "/mypage/likes", "/books/unlike", "/mypage/wish-books", "/events/**", "/find-account", "/find-id", "/reset-password/**").permitAll() // 누구나
+
+                        .requestMatchers("/events/*/apply", "/events/*/cancel", "/mypage/events", "/mypage/loans/extend").authenticated() // 로그인 필요
+
+                        .requestMatchers("/", "/login", "/register", "/search", "/bestseller", "/assets/**", "/user/**", "/ai/**", "/mypage/**", "/wish-book", "/wish-book/**", "/books/like", "/books/ensure", "/mypage/likes", "/books/unlike", "/mypage/wish-books", "/events/**", "/find-account", "/find-id", "/reset-password/**", "/notices", "/notices/**", "/register/check-id").permitAll() // 누구나
+
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form

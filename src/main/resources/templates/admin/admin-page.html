@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/admin/styles/sections/book-register.css}">
     <link rel="stylesheet" th:href="@{/admin/styles/sections/book-list.css}">
     <link rel="stylesheet" th:href="@{/admin/styles/sections/event-register.css}">
+    <link rel="stylesheet" th:href="@{/admin/styles/sections/notice-register.css}">
 </head>
 <body>
 <div class="admin-layout">
@@ -25,6 +26,16 @@
             <!-- 대시보드 -->
             <div th:case="'dashboard'">
                 <th:block th:replace="~{admin/sections/dashboard :: dashboardSection}"></th:block>
+            </div>
+            <!-- 공지 관리 -->
+            <div th:case="'notice-register'">
+                <th:block th:replace="~{admin/sections/notice-register :: noticeRegisterSection}"></th:block>
+            </div>
+            <div th:case="'notice-manage'">
+                <th:block th:replace="~{admin/sections/notice-manage :: noticeManageSection}"></th:block>
+            </div>
+            <div th:case="'notice-edit'">
+                <th:block th:replace="~{admin/sections/notice-edit :: noticeEditSection}"></th:block>
             </div>
 
             <!-- 도서 관리 -->

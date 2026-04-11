@@ -45,7 +45,7 @@ if ($programsSlider && $programsTrack && $prevBtn && $nextBtn) {
 
     if ($cards.length > 0) {
         let currentProgram = 0;
-        const visibleCount = 3;
+        const visibleCount = window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
         const maxIndex = Math.max(0, $cards.length - visibleCount);
 
         const showProgram = (index) => {
@@ -61,5 +61,20 @@ if ($programsSlider && $programsTrack && $prevBtn && $nextBtn) {
         $nextBtn.addEventListener('click', () => showProgram(currentProgram + 1));
 
         showProgram(0);
+    }
+}
+
+// loan 슬라이더 초기화 + 자동 전환
+const $loanSlides = Array.from(document.querySelectorAll('.loan-slide'));
+if ($loanSlides.length > 0) {
+    let currentLoan = 0;
+    $loanSlides[0].classList.add('active');
+
+    if ($loanSlides.length > 1) {
+        setInterval(() => {
+            $loanSlides[currentLoan].classList.remove('active');
+            currentLoan = (currentLoan + 1) % $loanSlides.length;
+            $loanSlides[currentLoan].classList.add('active');
+        }, 3000); // 3초마다 전환
     }
 }

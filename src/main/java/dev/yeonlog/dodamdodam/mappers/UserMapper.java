@@ -10,6 +10,8 @@ public interface UserMapper {
 
     UserEntity selectByUserId(@Param("userId") String userId);
 
+    int countByEmail(@Param("email") String email); // 이메일 중복 체크용
+
     UserEntity selectByEmail(@Param("email") String email);
 
     void updatePassword(@Param("userId") String userId, @Param("password") String password);

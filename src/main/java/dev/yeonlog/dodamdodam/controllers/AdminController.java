@@ -3,10 +3,7 @@ package dev.yeonlog.dodamdodam.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.yeonlog.dodamdodam.entities.*;
-import dev.yeonlog.dodamdodam.mappers.BookMapper;
-import dev.yeonlog.dodamdodam.mappers.EventMapper;
-import dev.yeonlog.dodamdodam.mappers.LoanMapper;
-import dev.yeonlog.dodamdodam.mappers.WishBookMapper;
+import dev.yeonlog.dodamdodam.mappers.*;
 import dev.yeonlog.dodamdodam.vos.PageVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +41,7 @@ public class AdminController {
     private String aladinApiKey;
     private final LoanMapper loanMapper;
     private final EventMapper eventMapper;
+    private final NoticeMapper noticeMapper;
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String adminPage(@RequestParam(defaultValue = "dashboard") String menu,
@@ -167,12 +165,19 @@ public class AdminController {
                 model.addAttribute("pageVo", pageVo);
             }
             case "book-edit" -> {
-                model.addAttribute("book", bookMapper.selectById(id));
+                BookEntity book = bookMapper.selectById(id);
+                book.setCategoryIds(bookMapper.selectCategoryIdsByBookId(id));
+                model.addAttribute("book", book);
                 model.addAttribute("categories", bookMapper.selectAllCategories());
             }
             case "event-register" -> {}
             case "event-manage" ->
                     model.addAttribute("events", eventMapper.selectAllEvents());
+            case "notice-register" -> {}
+            case "notice-manage" ->
+                    model.addAttribute("notices", noticeMapper.selectAllNotices());
+            case "notice-edit" ->
+                    model.addAttribute("notice", noticeMapper.selectById(id));
         }
         return "admin/admin-page";
     }
@@ -264,13 +269,19 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/books/register", method = RequestMethod.POST)
-    public String registerBook(BookEntity book, RedirectAttributes redirectAttributes) {
-
-        // 수량만큼 book_copies insert
+    public String registerBook(BookEntity book,
+                               @RequestParam(value = "categoryIds", required = false) List<Integer> categoryIds,
+                               RedirectAttributes redirectAttributes) {
         try {
-            // 도서 insert
             book.setAdminRegistered(true);
             bookMapper.insertBook(book);
+
+            // 카테고리 여러개 insert
+            if (categoryIds != null) {
+                for (int categoryId : categoryIds) {
+                    bookMapper.insertBookCategory(book.getId(), categoryId);
+                }
+            }
 
             for (int i = 0; i < book.getTotalQuantity(); i++) {
                 BookCopyEntity copy = BookCopyEntity.builder()
@@ -284,7 +295,6 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("errorMsg", "이미 등록된 ISBN이에요! 수량 추가는 도서 상태 관리에서 해주세요.");
             return "redirect:/admin?menu=book-register";
         }
-
         return "redirect:/admin?menu=book-list";
     }
 
@@ -398,5 +408,36 @@ public class AdminController {
         eventMapper.deleteEvent(id);
         redirectAttributes.addFlashAttribute("successMsg", "행사가 삭제됐어요!");
         return "redirect:/admin?menu=event-manage";
+    }
+
+    // 공지 등록
+    @RequestMapping(value = "/notices/register", method = RequestMethod.POST)
+    public String registerNotice(NoticeEntity notice,
+                                 @RequestParam(required = false) String isPinned,
+                                 RedirectAttributes redirectAttributes) {
+        notice.setPinned(isPinned != null);
+        noticeMapper.insertNotice(notice);
+        redirectAttributes.addFlashAttribute("successMsg", "공지가 등록됐어요!");
+        return "redirect:/admin?menu=notice-manage";
+    }
+
+    // 공지 삭제
+    @RequestMapping(value = "/notices/delete", method = RequestMethod.POST)
+    public String deleteNotice(@RequestParam Long id,
+                               RedirectAttributes redirectAttributes) {
+        noticeMapper.deleteNotice(id);
+        redirectAttributes.addFlashAttribute("successMsg", "공지가 삭제됐어요!");
+        return "redirect:/admin?menu=notice-manage";
+    }
+
+    // 공지 수정
+    @RequestMapping(value = "/notices/update", method = RequestMethod.POST)
+    public String updateNotice(NoticeEntity notice,
+                               @RequestParam(required = false) String isPinned,
+                               RedirectAttributes redirectAttributes) {
+        notice.setPinned(isPinned != null);
+        noticeMapper.updateNotice(notice);
+        redirectAttributes.addFlashAttribute("successMsg", "공지가 수정됐어요!");
+        return "redirect:/admin?menu=notice-manage";
     }
 }

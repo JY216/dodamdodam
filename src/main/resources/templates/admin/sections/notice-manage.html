@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="noticeManageSection">
+
+    <div class="admin-list">
+        <div class="admin-list-header">
+            <div>
+                <h2 class="admin-list-title">공지 관리</h2>
+                <p class="admin-list-subtitle">등록된 공지사항을 확인하고 관리해요.</p>
+            </div>
+            <a href="/admin?menu=notice-register" class="btn-add">+ 공지 작성</a>
+        </div>
+
+        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
+
+        <div class="table-wrap">
+            <table class="book-table notice-table">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>고정</th>
+                    <th>등록일</th>
+                    <th>관리</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="notice : ${notices}">
+                    <td th:text="${notice.id}"></td>
+                    <td class="notice-title-cell">
+                        <span th:if="${notice.pinned}" class="notice-pin-badge">📌</span>
+                        <span th:text="${notice.title}"></span>
+                    </td>
+                    <td>
+                        <span class="status-badge"
+                              th:classappend="${notice.pinned} ? 'status-badge--available' : 'status-badge--etc'"
+                              th:text="${notice.pinned} ? '고정' : '-'">
+                        </span>
+                    </td>
+                    <td th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}"></td>
+                    <td>
+                        <div class="notice-actions">
+                            <a th:href="@{/admin(menu='notice-edit', id=${notice.id})}" class="btn-edit">수정</a>
+                            <form th:action="@{/admin/notices/delete}" method="post" style="display:inline;">
+                                <input type="hidden" name="id" th:value="${notice.id}">
+                                <button type="submit" class="btn-return"
+                                        onclick="return confirm('공지를 삭제하시겠어요?')">삭제</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(notices)}">
+                    <td colspan="5" class="table-empty">등록된 공지가 없어요.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>

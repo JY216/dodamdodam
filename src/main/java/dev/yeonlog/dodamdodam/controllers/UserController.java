@@ -45,6 +45,12 @@ public class UserController {
     public Map<String, Object> postRegisterEmail(@RequestParam(value = "email", required = false) String email) {
         Map<String, Object> response = new HashMap<>();
         try {
+            // 이메일 중복 체크
+            if (userMapper.countByEmail(email) > 0) {
+                response.put("result", "FAILURE_EMAIL_DUPLICATE");
+                return response;
+            }
+
             EmailTokenEntity emailToken = userService.sendEmail(email);
             if (emailToken == null) {
                 response.put("result", "FAILURE");
@@ -79,6 +85,19 @@ public class UserController {
         Map<String, Object> response = new HashMap<>();
         boolean result = userService.register(user, email, code, salt);
         response.put("result", result ? "SUCCESS" : "FAILURE");
+        return response;
+    }
+
+    @RequestMapping(value = "/register/check-id", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> checkUserId(@RequestParam String userId) {
+        Map<String, Object> response = new HashMap<>();
+        UserEntity existing = userMapper.selectByUserId(userId);
+        if (existing != null) {
+            response.put("result", "DUPLICATE");
+        } else {
+            response.put("result", "AVAILABLE");
+        }
         return response;
     }
 

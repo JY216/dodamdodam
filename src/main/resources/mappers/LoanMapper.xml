@@ -44,7 +44,13 @@
             `return_date` = NOW()
         WHERE `id` = #{id}
     </update>
-<!--    유저 대출 목록-->
+    <update id="extendLoan">
+        UPDATE `dodamdodam`.`loans`
+        SET `due_date`     = DATE_ADD(`due_date`, INTERVAL 7 DAY),
+            `extend_count` = `extend_count` + 1
+        WHERE `id` = #{id}
+    </update>
+    <!--    유저 대출 목록-->
     <select id="selectLoansByUserId" resultType="dev.yeonlog.dodamdodam.entities.LoanEntity">
         SELECT l.`id`,
                l.`user_id`,
@@ -53,13 +59,14 @@
                l.`due_date`,
                l.`return_date`,
                l.`status`,
+               l.`extend_count`,
                l.`created_at`,
                b.`title` AS `book_title`,
                b.`author` AS `book_author`,
                b.`cover_image` AS `book_cover`
         FROM `dodamdodam`.`loans` AS l
-        LEFT JOIN `dodamdodam`.`book_copies` bc ON l.`copy_id` = bc.`id`
-        LEFT JOIN `dodamdodam`.`books` b ON bc.`book_id` = b.`id`
+                 LEFT JOIN `dodamdodam`.`book_copies` bc ON l.`copy_id` = bc.`id`
+                 LEFT JOIN `dodamdodam`.`books` b ON bc.`book_id` = b.`id`
         WHERE l.`user_id` = #{userId}
         ORDER BY l.`created_at` DESC
     </select>
@@ -163,5 +170,11 @@
 
     <select id="countLoanedLoans" resultType="int">
         SELECT COUNT(*) FROM `dodamdodam`.`loans` WHERE `status` = 'LOANED'
+    </select>
+    <select id="countActiveLoansByUserId" resultType="int">
+        SELECT COUNT(*)
+        FROM `dodamdodam`.`loans`
+        WHERE `user_id` = #{userId}
+          AND `status` IN ('PENDING', 'LOANED')
     </select>
 </mapper>

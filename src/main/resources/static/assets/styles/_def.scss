@@ -44,3 +44,19 @@ $global-nav-height:           4rem;
   margin: 0 auto;
   padding: 0 1.25rem;
 }
+
+// Breakpoints
+$bp-mobile:  768px;
+$bp-tablet:  1024px;
+
+@mixin mobile {
+  @media (max-width: $bp-mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $bp-tablet) {
+    @content;
+  }
+}

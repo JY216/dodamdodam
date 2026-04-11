@@ -84,4 +84,6 @@ public interface BookMapper {
     void updateBook(BookEntity book);
 
     void deleteBookCategories(@Param("bookId") Long bookId);
+
+    List<Integer> selectCategoryIdsByBookId(@Param("bookId") Long bookId);
 }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="noticeEditSection">
+
+    <div class="admin-register">
+        <h2 class="admin-register-title">공지 수정</h2>
+        <p class="admin-register-subtitle">공지사항을 수정해요.</p>
+
+        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
+        <div class="alert alert--error" th:if="${errorMsg}" th:text="${errorMsg}"></div>
+
+        <form class="register-form" action="/admin/notices/update" method="post">
+            <input type="hidden" name="id" th:value="${notice.id}">
+
+            <hr class="form-divider">
+
+            <div class="form-grid">
+                <div class="form-field form-grid-full">
+                    <label>공지 제목 <span class="required">*</span></label>
+                    <input type="text" name="title" th:value="${notice.title}" placeholder="공지 제목을 입력하세요">
+                </div>
+
+                <div class="form-field form-grid-full">
+                    <label>공지 내용 <span class="required">*</span></label>
+                    <textarea name="content" rows="10" th:text="${notice.content}" placeholder="공지 내용을 입력하세요"></textarea>
+                </div>
+
+                <div class="form-field">
+                    <label>고정 공지</label>
+                    <div class="notice-pin-wrap">
+                        <label class="notice-pin-label">
+                            <input type="checkbox" name="isPinned" value="true"
+                                   th:checked="${notice.pinned}">
+                            <span class="notice-pin-text">홈 화면에 고정 표시</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="/admin?menu=notice-manage" class="btn-cancel">취소</a>
+                <button type="submit" class="btn-submit">수정하기</button>
+            </div>
+        </form>
+    </div>
+
+</th:block>
+</body>
+</html>

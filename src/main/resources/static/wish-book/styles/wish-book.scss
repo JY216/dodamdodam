@@ -266,3 +266,77 @@
   font-size: 0.78rem;
   color: $global-text-muted;
 }
+
+// 태블릿 반응형
+@include tablet {
+  .wish-main {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+  }
+
+  .wish-grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    &--2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+// 모바일 반응형
+@include mobile {
+  .wish-main {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+  }
+
+  .wish-title {
+    font-size: 1.375rem;
+  }
+
+  .wish-grid {
+    grid-template-columns: 1fr;
+
+    &--2 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .wish-book-search-row {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    .wish-input--flex {
+      width: 100%;
+    }
+  }
+
+  .btn-book-search {
+    height: 2.5rem;
+    padding: 0 1rem;
+    font-size: 0.8rem;
+  }
+
+  .wish-input {
+    height: 2.5rem;
+    font-size: 0.9rem;
+  }
+
+  .wish-textarea {
+    min-height: 10rem;
+    font-size: 0.9rem;
+  }
+
+  .btn-wish-submit {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .wish-actions {
+    justify-content: stretch;
+  }
+
+  .search-dropdown {
+    width: 100%;
+  }
+}

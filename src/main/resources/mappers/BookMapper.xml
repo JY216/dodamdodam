@@ -322,4 +322,9 @@
         ORDER BY b.`created_at` DESC
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
+    <select id="selectCategoryIdsByBookId" resultType="int">
+        SELECT `category_id`
+        FROM `book_categories`
+        WHERE `book_id` = #{bookId}
+    </select>
 </mapper>

@@ -14,6 +14,23 @@
   gap: 1.75rem;
 }
 
+.alert {
+  padding: 0.875rem 1.25rem;
+  border-radius: 0.625rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  &--success {
+    background-color: rgba($global-color-primary, 0.12);
+    color: $global-color-primary-dark;
+  }
+
+  &--error {
+    background-color: rgba($global-color-invalid, 0.12);
+    color: $global-color-invalid;
+  }
+}
+
 // 헤더
 .loans-header {
   display: flex;
@@ -185,7 +202,7 @@
   &--disabled {
     background-color: $global-background-color;
     color: $global-text-muted;
-    cursor: not-allowed;
+    cursor: default;
     border: 0.0625rem solid $global-border-color;
 
     &:hover {

@@ -232,6 +232,17 @@ button {
   }
 }
 
+button[name="complete"],
+button[name="previous"],
+button[name="cancel"],
+button[name="next"] {
+  display: none;
+
+  &[data-visible] {
+    display: inline-flex;
+  }
+}
+
 .btn-concept {
   background-color: $global-color-primary;
   color: #ffffff;
@@ -250,6 +261,7 @@ button {
   align-items: center;
   width: 100%;
   max-width: 40rem;
+  gap: 0.5rem;
 
   .-flex-stretch {
     flex: 1;
