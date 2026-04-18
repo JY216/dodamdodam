@@ -221,43 +221,51 @@
 }
 
 // 공통 다이얼로그
+// 공통 다이얼로그
 .dialog-overlay {
-  display: none;
+  visibility: hidden;
+  pointer-events: none;
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.45);
   z-index: 999;
-  @include flex-center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &.active {
-    display: flex;
+    visibility: visible;
+    pointer-events: auto;
   }
 }
 
 .dialog-box {
-  background-color: $global-white;
-  border-radius: $global-border-radius-md;
-  padding: 2rem 1.75rem 1.5rem;
-  width: 90%;
-  max-width: 22rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  background: $global-white;
+  border-radius: 0.75rem;
+  padding: 2.25rem 2.25rem 1.75rem;
+  width: 26rem;
+  height: 15rem;
   box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: center;
 }
 
 .dialog-message {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 600;
   color: $global-text-color;
   line-height: 1.6;
   text-align: center;
+  align-self: center;
+  margin-bottom: 2rem;
 }
 
 .dialog-actions {
   display: flex;
   gap: 0.75rem;
   justify-content: center;
+  width: 100%;
 
   .dialog-btn {
     height: 2.75rem;
@@ -269,35 +277,25 @@
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    flex: 1;
+    width: 100%;
 
     &--confirm {
       background-color: $global-color-primary;
       color: $global-white;
-
-      &:hover {
-        background-color: $global-color-primary-dark;
-      }
+      &:hover { background-color: $global-color-primary-dark; }
     }
 
     &--cancel {
       background-color: $global-background-color;
       color: $global-text-muted;
       border: 0.0625rem solid $global-border-color;
-
-      &:hover {
-        border-color: $global-text-muted;
-        color: $global-text-color;
-      }
+      &:hover { border-color: $global-text-muted; color: $global-text-color; }
     }
 
     &--alert {
       background-color: $global-color-primary;
       color: $global-white;
-
-      &:hover {
-        background-color: $global-color-primary-dark;
-      }
+      &:hover { background-color: $global-color-primary-dark; }
     }
   }
 }

@@ -8,15 +8,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>도담도담</title>
     <link rel="stylesheet" href="/assets/styles/home.css">
-    <link rel="stylesheet" href="/ai/assets/styles/chatbot.css">
     <link rel="stylesheet" href="/assets/styles/ai-recommend.css">
     <script defer src="/assets/scripts/home.js"></script>
     <script defer src="/assets/scripts/ai-recommend.js"></script>
     <script defer src="/assets/scripts/common.js"></script>
 </head>
 <body>
-<!--chatbot-floating-->
-<div th:replace="~{fragment/common :: .fab}"></div>
+
 
 <!-- 네비게이션 바 -->
 <header th:replace="~{fragment/common :: nav}"></header>
@@ -146,6 +144,8 @@
         </div>
     </section>
 </main>
+<!--chatbot-floating-->
+<th:block th:replace="~{fragment/common :: fab}"></th:block>
 <!--footer-->
 <footer th:replace="~{fragment/common :: footer}"></footer>
 </body>

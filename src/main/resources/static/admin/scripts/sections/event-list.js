@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // ── 아코디언 토글 ──────────────────────────────────────────────
     document.querySelectorAll('.js-event-row').forEach(function (rowEl) {
         rowEl.addEventListener('click', function () {
             toggleAccordion(rowEl);
@@ -48,15 +47,13 @@ document.addEventListener('DOMContentLoaded', function () {
                                     ? '<span class="app-badge app-confirmed">확정</span>'
                                     : '<span class="app-badge app-rejected">거절</span>';
                             const actionBtns = isPending ? `
-        <form method="post" action="/admin/event-list/${eventId}/applicants/${a.applicationId}/status" style="display:inline">
-            <input type="hidden" name="status" value="CONFIRMED">
-            <button type="submit" class="app-btn app-btn-confirm">수락</button>
-        </form>
-        <form method="post" action="/admin/event-list/${eventId}/applicants/${a.applicationId}/status" style="display:inline">
-            <input type="hidden" name="status" value="REJECTED">
-            <button type="submit" class="app-btn app-btn-reject">거절</button>
-        </form>
-    ` : '-';
+                                <button type="button" class="app-btn app-btn-confirm"
+                                    data-event-id="${eventId}"
+                                    data-app-id="${a.applicationId}">수락</button>
+                                <button type="button" class="app-btn app-btn-reject"
+                                    data-event-id="${eventId}"
+                                    data-app-id="${a.applicationId}">거절</button>
+                            ` : '-';
                             html += '<tr>'
                                 + '<td>' + a.name + '</td>'
                                 + '<td>' + a.mobileFirst + '-' + a.mobileSecond + '-' + a.mobileThird + '</td>'
@@ -67,6 +64,27 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                         html += '</tbody></table>';
                         panel.innerHTML = html;
+
+                        // 수락/거절 다이얼로그
+                        panel.querySelectorAll('.app-btn-confirm').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                const eventId = btn.dataset.eventId;
+                                const appId = btn.dataset.appId;
+                                dialog.confirm('수락하시겠어요?', () => {
+                                    submitStatus(eventId, appId, 'CONFIRMED');
+                                });
+                            });
+                        });
+
+                        panel.querySelectorAll('.app-btn-reject').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                const eventId = btn.dataset.eventId;
+                                const appId = btn.dataset.appId;
+                                dialog.confirm('거절하시겠어요?', () => {
+                                    submitStatus(eventId, appId, 'REJECTED');
+                                });
+                            });
+                        });
                     }
                     panel.style.maxHeight = panel.scrollHeight + 'px';
                 })
@@ -75,5 +93,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     panel.style.maxHeight = panel.scrollHeight + 'px';
                 });
         }
+    }
+
+    function submitStatus(eventId, appId, status) {
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = `/admin/event-list/${eventId}/applicants/${appId}/status`;
+        form.innerHTML = `<input type="hidden" name="status" value="${status}">`;
+        document.body.appendChild(form);
+        form.submit();
     }
 });

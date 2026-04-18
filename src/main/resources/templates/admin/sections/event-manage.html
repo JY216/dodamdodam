@@ -9,7 +9,7 @@
             <div>
                 <h1>행사 운영 관리</h1>
             </div>
-            <a th:href="@{/admin/event-register}" class="btn-register">+ 행사 등록</a>
+            <a th:href="@{/admin(menu='event-register')}" class="btn-register">+ 행사 등록</a>
         </div>
 
         <th:block th:if="${data != null}">
@@ -91,37 +91,6 @@
 
         </th:block>
 
-    </div>
-
-    <!-- 상태 변경 모달 -->
-    <div class="modal-overlay" id="statusModal">
-        <div class="modal">
-            <h3 class="modal-title" id="statusModalTitle">상태 변경</h3>
-            <p class="modal-desc" id="statusModalDesc"></p>
-            <div class="modal-actions">
-                <button class="modal-btn-cancel" id="statusCancelBtn">취소</button>
-                <form id="statusForm" method="post">
-                    <input type="hidden" name="status" id="statusInput" />
-                    <input type="hidden" name="page" id="statusPageInput" />
-                    <button type="submit" class="modal-btn-confirm" id="statusConfirmBtn">확인</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- 삭제 모달 -->
-    <div class="modal-overlay" id="deleteModal">
-        <div class="modal">
-            <h3 class="modal-title">행사 삭제</h3>
-            <p class="modal-desc" id="deleteModalDesc"></p>
-            <div class="modal-actions">
-                <button class="modal-btn-cancel" id="deleteCancelBtn">취소</button>
-                <form id="deleteForm" method="post">
-                    <input type="hidden" name="page" id="deletePageInput" />
-                    <button type="submit" class="modal-btn-confirm danger">삭제</button>
-                </form>
-            </div>
-        </div>
     </div>
 
 </th:block>

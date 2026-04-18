@@ -8,10 +8,15 @@
     <title>새로 들어온 책 - 도담도담</title>
     <link rel="stylesheet" href="/assets/styles/common.css">
     <link rel="stylesheet" href="/new-books/styles/new-books.css">
-    <script defer src="/assets/scripts/common.js"></script>
 </head>
 <body>
 <header th:replace="~{fragment/common :: nav}"></header>
+<div th:replace="~{fragment/common :: dialog}"></div>
+<div id="flashData"
+     th:data-success="${successMsg}"
+     th:data-error="${errorMsg}"
+     style="display:none;">
+</div>
 
 <main class="new-books-main">
     <div class="new-books-container">
@@ -21,9 +26,6 @@
             <h1 class="new-books-title">새로 들어온 책</h1>
             <p class="new-books-desc">새로 들어온 책을 확인 해보세요!</p>
         </div>
-
-        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
-        <div class="alert alert--error" th:if="${errorMsg}" th:text="${errorMsg}"></div>
 
         <!-- 필터 -->
         <form class="new-books-filters" action="/new-books" method="get">
@@ -154,5 +156,7 @@
 </main>
 
 <footer th:replace="~{fragment/common :: footer}"></footer>
+<script src="/assets/scripts/common.js"></script>
+<script src="/event/scripts/event-detail.js"></script>
 </body>
 </html>

@@ -7,8 +7,6 @@
         <h2 class="admin-register-title">신규 도서 등록</h2>
         <p class="admin-register-subtitle">ISBN 바코드를 스캔하거나 직접 입력해 도서를 등록하세요.</p>
 
-        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
-        <div class="alert alert--error" th:if="${errorMsg}" th:text="${errorMsg}"></div>
         <form class="register-form" action="/admin/books/register" method="post">
 
             <!-- ISBN + 바코드 스캔 -->
@@ -84,7 +82,7 @@
         </form>
     </div>
     <!-- QuaggaJS 먼저 로드 후 JS 파일 불러오기 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.min.js"></script>
     <script th:src="@{/admin/scripts/sections/book-register.js}"></script>
 </th:block>
 </body>

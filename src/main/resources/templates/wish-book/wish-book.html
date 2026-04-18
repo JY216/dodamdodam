@@ -8,12 +8,16 @@
     <title>희망 도서 신청 - 도담도담</title>
     <link rel="stylesheet" href="/assets/styles/common.css">
     <link rel="stylesheet" href="/wish-book/styles/wish-book.css">
-    <script src="/wish-book/scripts/wish-book.js"></script>
-    <script defer src="/assets/scripts/common.js"></script>
 </head>
 <body>
 
 <header th:replace="~{fragment/common :: nav}"></header>
+<div th:replace="~{fragment/common :: dialog}"></div>
+<div id="flashData"
+     th:data-success="${successMsg}"
+     th:data-error="${errorMsg}"
+     style="display:none;">
+</div>
 
 <main class="wish-main">
     <div class="wish-container">
@@ -41,7 +45,7 @@
                 <label class="wish-label">희망 도서명</label>
                 <div class="wish-book-search-row">
                     <input type="text" id="wishTitle" name="title"
-                           class="wish-input wish-input--flex" placeholder="">
+                           class="wish-input wish-input--flex" placeholder="" required>
                     <button type="button" class="btn-book-search" id="bookSearchBtn">도서 검색</button>
                     <label class="wish-checkbox-label">
                         <input type="checkbox" id="directInput" class="wish-checkbox">
@@ -94,7 +98,7 @@
 </main>
 
 <footer th:replace="~{fragment/common :: footer}"></footer>
-
-<script src="/user/scripts/wish-book.js"></script>
+<script src="/assets/scripts/common.js"></script>
+<script src="/wish-book/scripts/wish-book.js"></script>
 </body>
 </html>

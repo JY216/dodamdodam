@@ -6,10 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>회원가입</title>
     <link rel="stylesheet" href="/user/styles/register.css">
-    <script defer src="/user/scripts/register.js"></script>
-    <script src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
+<div th:replace="~{fragment/common :: dialog}"></div>
 <div id="addressDialog">
     <div class="modal"></div>
 </div>
@@ -372,5 +371,8 @@
         <button name="complete" type="submit" class="btn-concept">완료</button>
     </div>
 </form>
+<script src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="/assets/scripts/common.js"></script>
+<script src="/user/scripts/register.js"></script>
 </body>
 </html>

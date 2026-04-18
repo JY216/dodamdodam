@@ -17,41 +17,24 @@ document.addEventListener('DOMContentLoaded', function () {
     // ── 상태 변경 버튼 ─────────────────────────────────────────────
     document.querySelectorAll('.js-status-btn').forEach(function (btn) {
         btn.addEventListener('click', function () {
-            const userId    = btn.dataset.id;
-            const userName  = btn.dataset.name;
-            const action    = btn.dataset.action;
+            const userId = btn.dataset.id;
+            const userName = btn.dataset.name;
+            const action = btn.dataset.action;
             const isSuspend = action === 'SUSPENDED';
 
-            const modalTitle  = document.getElementById('modalTitle');
-            const modalDesc   = document.getElementById('modalDesc');
-            const confirmBtn  = document.getElementById('modalConfirmBtn');
-            const statusForm  = document.getElementById('statusForm');
-            const modal       = document.getElementById('statusModal');
+            const message = isSuspend
+                ? `${userName} 회원을 정지하시겠어요?`
+                : `${userName} 회원의 정지를 해제하시겠어요?`;
 
-            if (!modal) return;
-
-            modalTitle.textContent  = isSuspend ? '회원 정지' : '정지 해제';
-            modalDesc.textContent   = isSuspend
-                ? userName + ' 회원을 정지하시겠습니까?'
-                : userName + ' 회원의 정지를 해제하시겠습니까?';
-            confirmBtn.className    = 'modal-btn-confirm ' + (isSuspend ? 'suspend' : 'release');
-            statusForm.action       = '/admin/users/' + userId + '/status';
-            modal.classList.add('active');
+            dialog.confirm(message, () => {
+                const form = document.createElement('form');
+                form.method = 'post';
+                form.action = `/admin/users/${userId}/status`;
+                document.body.appendChild(form);
+                form.submit();
+            });
         });
     });
-
-    // ── 모달 닫기 ──────────────────────────────────────────────────
-    const cancelBtn   = document.getElementById('modalCancelBtn');
-    const statusModal = document.getElementById('statusModal');
-
-    if (cancelBtn)   cancelBtn.addEventListener('click', closeModal);
-    if (statusModal) statusModal.addEventListener('click', function (e) {
-        if (e.target === this) closeModal();
-    });
-
-    function closeModal() {
-        document.getElementById('statusModal').classList.remove('active');
-    }
 
     // ── 스위치 탭 ──────────────────────────────────────────────────
     document.querySelectorAll('.switch-btn').forEach(function (btn) {
@@ -80,17 +63,22 @@ document.addEventListener('DOMContentLoaded', function () {
     // ── 아코디언 ───────────────────────────────────────────────────
     function toggleUserAccordion(rowEl) {
         const item   = rowEl.closest('.user-item');
-        const panel  = item.querySelector('.user-accordion-panel');
         const arrow  = rowEl.querySelector('.accordion-arrow');
         const isOpen = item.classList.contains('open');
 
         document.querySelectorAll('.user-item.open').forEach(function (el) {
-            el.classList.remove('open');
-            el.querySelector('.user-accordion-panel').style.maxHeight = null;
-            el.querySelector('.accordion-arrow').textContent = '▾';
+            if (el !== item) {
+                el.classList.remove('open');
+                el.querySelector('.user-accordion-panel').style.maxHeight = '0';
+                el.querySelector('.accordion-arrow').textContent = '▾';
+            }
         });
 
-        if (!isOpen) {
+        if (isOpen) {
+            item.classList.remove('open');
+            item.querySelector('.user-accordion-panel').style.maxHeight = '0';
+            arrow.textContent = '▾';
+        } else {
             item.classList.add('open');
             arrow.textContent = '▴';
 
@@ -99,7 +87,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 item.dataset.loaded = 'true';
             }
 
-            adjustPanelHeight(item);
+            setTimeout(() => {
+                adjustPanelHeight(item);
+            }, 50);
         }
     }
 

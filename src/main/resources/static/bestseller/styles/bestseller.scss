@@ -108,6 +108,16 @@
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .bestseller-filters {
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
 }
 
 .bestseller-tabs {
@@ -202,6 +212,14 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.25rem;
+
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mobile {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 // 로딩

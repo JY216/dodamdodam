@@ -108,17 +108,6 @@
                     <span>도서 상태 관리</span>
                 </a>
             </li>
-            <li>
-                <a th:href="@{/admin?menu=book-recommend}"
-                   th:classappend="${currentMenu == 'book-recommend'} ? 'is-active'"
-                   class="sidebar-menu__item">
-                    <svg class="sidebar-menu__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                        <path d="M8 2l1.5 3 3.3.5-2.4 2.3.6 3.2L8 9.5l-3 1.5.6-3.2L3.2 5.5l3.3-.5z"
-                              stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
-                    </svg>
-                    <span>추천 도서 설정</span>
-                </a>
-            </li>
         </ul>
     </div>
 
@@ -192,7 +181,7 @@
                         <line x1="5" y1="8.5" x2="11" y2="8.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
                         <line x1="5" y1="11" x2="8" y2="11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
                     </svg>
-                    <span>대출 기록 관리</span>
+                    <span>전체 대출 기록 관리</span>
                 </a>
             </li>
         </ul>

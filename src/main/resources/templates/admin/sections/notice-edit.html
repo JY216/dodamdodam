@@ -7,9 +7,6 @@
         <h2 class="admin-register-title">공지 수정</h2>
         <p class="admin-register-subtitle">공지사항을 수정해요.</p>
 
-        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
-        <div class="alert alert--error" th:if="${errorMsg}" th:text="${errorMsg}"></div>
-
         <form class="register-form" action="/admin/notices/update" method="post">
             <input type="hidden" name="id" th:value="${notice.id}">
 

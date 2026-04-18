@@ -7,9 +7,6 @@
         <h2 class="admin-register-title">문화 행사 등록</h2>
         <p class="admin-register-subtitle">문화 행사 및 강좌를 등록해요.</p>
 
-        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
-        <div class="alert alert--error" th:if="${errorMsg}" th:text="${errorMsg}"></div>
-
         <form class="register-form" action="/admin/events/register"
               method="post" enctype="multipart/form-data">
 

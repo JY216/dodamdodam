@@ -8,18 +8,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const price = document.getElementById('price');
     const bookSearchBtn = document.getElementById('bookSearchBtn');
 
-    // 검색 결과 드롭다운 생성
     const dropdown = document.createElement('div');
     dropdown.className = 'search-dropdown';
     dropdown.style.display = 'none';
     wishTitle.parentElement.style.position = 'relative';
     wishTitle.parentElement.appendChild(dropdown);
 
-    // 직접 입력 체크박스
     directInput.addEventListener('change', () => {
         const isDirect = directInput.checked;
         [author, publisher, publishYear, isbn, price].forEach(input => {
-            input.disabled = isDirect ? false : false;
             input.value = '';
         });
         wishTitle.value = '';
@@ -28,30 +25,29 @@ document.addEventListener('DOMContentLoaded', () => {
         dropdown.style.display = 'none';
     });
 
-    // 도서 검색 버튼
     bookSearchBtn.addEventListener('click', async () => {
         const title = wishTitle.value.trim();
         if (!title) {
-            alert('희망 도서명을 입력해주세요.');
+            dialog.alert('희망 도서명을 입력해주세요.');
             return;
         }
-
         try {
             const response = await fetch(`/wish-book/search?keyword=${encodeURIComponent(title)}`);
             const data = await response.json();
-
             if (data.result === 'SUCCESS' && data.books.length > 0) {
                 showDropdown(data.books);
             } else {
-                alert('도서 정보를 찾을 수 없어요. 직접 입력해주세요.');
-                directInput.checked = true;
+                dialog.alert('도서 정보를 찾을 수 없어요. 직접 입력해주세요.', () => {
+                    directInput.checked = true;
+                });
             }
         } catch (e) {
-            alert('오류가 발생했어요. 직접 입력해주세요.');
+            dialog.alert('오류가 발생했어요. 직접 입력해주세요.', () => {
+                directInput.checked = true;
+            });
         }
     });
 
-    // 드롭다운 표시
     function showDropdown(books) {
         dropdown.innerHTML = '';
         books.forEach(book => {
@@ -75,21 +71,32 @@ document.addEventListener('DOMContentLoaded', () => {
         dropdown.style.display = 'block';
     }
 
-    // 외부 클릭 시 드롭다운 닫기
     document.addEventListener('click', (e) => {
         if (!dropdown.contains(e.target) && e.target !== bookSearchBtn) {
             dropdown.style.display = 'none';
         }
     });
 
-    // 엔터 키 제출 방지
     document.querySelector('.wish-form').addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            // 도서명 입력창에서 엔터 치면 도서 검색 실행
-            if (e.target === wishTitle) {
-                bookSearchBtn.click();
-            }
+            if (e.target === wishTitle) bookSearchBtn.click();
         }
     });
+
+    document.querySelector('.wish-form').addEventListener('submit', (e) => {
+        const title = wishTitle.value.trim();
+        if (!title) {
+            e.preventDefault();
+            dialog.alert('희망 도서명을 입력해주세요.');
+        }
+    });
+
+    const flash = document.getElementById('flashData');
+    if (flash) {
+        const success = flash.dataset.success;
+        const error = flash.dataset.error;
+        if (success) dialog.alert(success);
+        else if (error) dialog.alert(error);
+    }
 });

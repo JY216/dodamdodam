@@ -17,11 +17,18 @@
     <link rel="stylesheet" th:href="@{/admin/styles/sections/user-status.css}">
     <link rel="stylesheet" th:href="@{/admin/styles/sections/event-manage.css}">
     <link rel="stylesheet" th:href="@{/admin/styles/sections/event-list.css}">
-    <script defer th:src="@{/admin/scripts/sections/user-status.js}"></script>
     <script th:src="@{/admin/scripts/sections/event-manage.js}" defer></script>
     <script th:src="@{/admin/scripts/sections/event-list.js}" defer></script>
 </head>
 <body>
+
+<div class="dialog-overlay" id="dialogOverlay">
+    <div class="dialog-box" id="dialogBox">
+        <p class="dialog-message" id="dialogMessage"></p>
+        <div class="dialog-actions" id="dialogActions"></div>
+    </div>
+</div>
+
 <div class="admin-layout">
 
     <!-- 사이드바 fragment -->
@@ -62,9 +69,6 @@
             <div th:case="'book-copies'">
                 <th:block th:replace="~{admin/sections/book-copies :: bookCopiesSection}"></th:block>
             </div>
-            <div th:case="'book-recommend'">
-                <th:block th:replace="~{admin/sections/book-recommend :: bookRecommendSection}"></th:block>
-            </div>
             <div th:case="'book-edit'">
                 <th:block th:replace="~{admin/sections/book-edit :: bookEditSection}"></th:block>
             </div>
@@ -104,7 +108,16 @@
 
         </th:block>
     </main>
-
 </div>
+<script src="/assets/scripts/common.js"></script>
+<script src="/admin/scripts/sections/book-copies.js"></script>
+<script src="/admin/scripts/sections/book-edit.js"></script>
+<script src="/admin/scripts/sections/wish-book-list.js"></script>
+<script src="/admin/scripts/sections/book-status.js"></script>
+<script src="/admin/scripts/sections/circulation-process.js"></script>
+<script src="/admin/scripts/sections/user-list.js"></script>
+<script src="/admin/scripts/sections/notice-manage.js"></script>
+<script src="/admin/scripts/sections/notice-register.js"></script>
+<script src="/admin/scripts/sections/notice-edit.js"></script>
 </body>
 </html>

@@ -211,7 +211,8 @@ ul, li {
 }
 
 .dialog-overlay {
-  display: none;
+  visibility: hidden;
+  pointer-events: none;
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.45);
@@ -221,33 +222,37 @@ ul, li {
   justify-content: center;
 }
 .dialog-overlay.active {
-  display: flex;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .dialog-box {
-  background-color: #ffffff;
-  border-radius: 1rem;
-  padding: 2rem 1.75rem 1.5rem;
-  width: 90%;
-  max-width: 22rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  padding: 2.25rem 2.25rem 1.75rem;
+  width: 26rem;
+  height: 15rem;
   box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: center;
 }
 
 .dialog-message {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 600;
   color: #212121;
   line-height: 1.6;
   text-align: center;
+  align-self: center;
+  margin-bottom: 2rem;
 }
 
 .dialog-actions {
   display: flex;
   gap: 0.75rem;
   justify-content: center;
+  width: 100%;
 }
 .dialog-actions .dialog-btn {
   height: 2.75rem;
@@ -259,7 +264,7 @@ ul, li {
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  flex: 1;
+  width: 100%;
 }
 .dialog-actions .dialog-btn--confirm {
   background-color: #55B14E;
@@ -770,6 +775,62 @@ ul, li {
   border-color: #55B14E;
   color: #ffffff;
   font-weight: 700;
+}
+
+.circulation-table th:nth-child(1) {
+  width: 5%;
+}
+.circulation-table th:nth-child(2) {
+  width: 7%;
+}
+.circulation-table th:nth-child(3) {
+  width: 18%;
+}
+.circulation-table th:nth-child(4) {
+  width: 8%;
+}
+.circulation-table th:nth-child(5) {
+  width: 10%;
+}
+.circulation-table th:nth-child(6) {
+  width: 10%;
+}
+.circulation-table th:nth-child(7) {
+  width: 10%;
+}
+.circulation-table th:nth-child(8) {
+  width: 9%;
+}
+.circulation-table th:nth-child(9) {
+  width: 8%;
+}
+
+.circulation-history-table th:nth-child(1) {
+  width: 5%;
+}
+.circulation-history-table th:nth-child(2) {
+  width: 7%;
+}
+.circulation-history-table th:nth-child(3) {
+  width: 15%;
+}
+.circulation-history-table th:nth-child(4) {
+  width: 8%;
+}
+.circulation-history-table th:nth-child(5) {
+  width: 10%;
+}
+.circulation-history-table th:nth-child(6) {
+  width: 10%;
+}
+.circulation-history-table th:nth-child(7) {
+  width: 10%;
+}
+.circulation-history-table th:nth-child(8) {
+  width: 10%;
+}
+.circulation-history-table th:nth-child(9) {
+  width: 8%;
 }
 
 /*# sourceMappingURL=book-list.css.map */

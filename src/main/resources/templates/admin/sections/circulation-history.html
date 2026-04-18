@@ -6,7 +6,7 @@
     <div class="admin-list">
         <div class="admin-list-header">
             <div>
-                <h2 class="admin-list-title">대출 기록 관리</h2>
+                <h2 class="admin-list-title">전체 대출 기록 관리</h2>
                 <p class="admin-list-subtitle">전체 대출 기록을 조회해요.</p>
             </div>
         </div>
@@ -20,7 +20,7 @@
         </form>
 
         <div class="table-wrap">
-            <table class="book-table">
+            <table class="book-table circulation-history-table">
                 <thead>
                 <tr>
                     <th>번호</th>
@@ -39,7 +39,7 @@
                     <td th:text="${loan.id}"></td>
                     <td th:text="${loan.userName}"></td>
                     <td class="col-ellipsis" th:text="${loan.bookTitle}"></td>
-                    <td th:text="${loan.bookAuthor}"></td>
+                    <td class="col-ellipsis" th:text="${loan.bookAuthor}"></td>
                     <td th:text="${#temporals.format(loan.createdAt, 'yyyy-MM-dd')}"></td>
                     <td th:text="${loan.loanDate != null} ? ${#temporals.format(loan.loanDate, 'yyyy-MM-dd')} : '-'"></td>
                     <td th:text="${loan.dueDate != null} ? ${loan.dueDate} : '-'"></td>

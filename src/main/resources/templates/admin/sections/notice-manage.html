@@ -12,7 +12,10 @@
             <a href="/admin?menu=notice-register" class="btn-add">+ 공지 작성</a>
         </div>
 
-        <div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
+        <div id="flashData"
+             th:data-success="${successMsg}"
+             style="display:none;">
+        </div>
 
         <div class="table-wrap">
             <table class="book-table notice-table">
@@ -44,8 +47,7 @@
                             <a th:href="@{/admin(menu='notice-edit', id=${notice.id})}" class="btn-edit">수정</a>
                             <form th:action="@{/admin/notices/delete}" method="post" style="display:inline;">
                                 <input type="hidden" name="id" th:value="${notice.id}">
-                                <button type="submit" class="btn-return"
-                                        onclick="return confirm('공지를 삭제하시겠어요?')">삭제</button>
+                                <button type="button" class="btn-return js-delete-notice">삭제</button>
                             </form>
                         </div>
                     </td>

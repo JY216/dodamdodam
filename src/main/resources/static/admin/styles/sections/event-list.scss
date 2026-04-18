@@ -1,7 +1,11 @@
+@import "../../../assets/styles/def";
+@import "../../../assets/styles/common";
+@import "../../../assets/styles/fragments";
+
 .page-wrapper {
-  max-width: 68.75rem;
-  margin: 0 auto;
-  padding: 2.5rem 2rem;
+  @include container;
+  padding-top: 2.5rem;
+  padding-bottom: 4rem;
 }
 
 .page-header {

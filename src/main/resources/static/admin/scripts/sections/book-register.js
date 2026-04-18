@@ -14,40 +14,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 target: document.querySelector("#camera"),
                 constraints: {
                     facingMode: "environment",
-                    width: { min: 1920 },   // ← 해상도 높이기
-                    height: { min: 1080 }
+                    width: { min: 640 },
+                    height: { min: 480 }
                 }
             },
             locator: {
-                patchSize: "medium",       // ← 인식 영역 크기
-                halfSample: true
+                patchSize: "large",
+                halfSample: false
             },
-            numOfWorkers: 2,               // ← 워커 수 늘리기
-            frequency: 10,                 // ← 초당 인식 횟수
+            numOfWorkers: 2,
+            frequency: 10,
             decoder: {
                 readers: ["ean_reader"],
                 multiple: false
             },
-            locate: true                   // ← 바코드 위치 자동 탐색
+            locate: true
         }, (err) => {
             if (err) {
-                alert('카메라를 시작할 수 없습니다. 카메라 권한을 확인해주세요.');
+                console.error('Quagga 에러:', err);
+                dialog.alert('카메라를 시작할 수 없습니다. 카메라 권한을 확인해주세요.');
                 cameraArea.classList.remove('is-active');
                 return;
             }
             Quagga.start();
         });
 
-        // 같은 바코드 연속 인식 방지
         let lastResult = null;
         Quagga.onDetected((result) => {
             const isbn = result.codeResult.code;
-            if (isbn === lastResult) return; // 중복 방지
+            if (isbn === lastResult) return;
             lastResult = isbn;
 
             isbnInput.value = isbn;
             stopScan();
-            alert(`ISBN 인식 완료: ${isbn}`);
+            dialog.alert(`ISBN 인식 완료: ${isbn}`);
         });
     });
 
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchBtn.addEventListener('click', async () => {
         const isbn = isbnInput.value.trim();
         if (!isbn) {
-            alert('ISBN을 입력해주세요.');
+            dialog.alert('ISBN을 입력해주세요.');
             return;
         }
 
@@ -75,12 +75,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('publisher').value = data.publisher;
                 document.getElementById('publishDate').value = data.publishDate;
                 document.getElementById('coverImage').value = data.coverImage;
-                alert('도서 정보를 불러왔어요!');
+                dialog.alert('도서 정보를 불러왔어요!');
             } else {
-                alert('도서 정보를 찾을 수 없어요. ISBN을 확인해주세요.');
+                dialog.alert('도서 정보를 찾을 수 없어요. ISBN을 확인해주세요.');
             }
         } catch (e) {
-            alert('오류가 발생했습니다.');
+            dialog.alert('오류가 발생했습니다.');
         }
     });
+
+    // 등록하기 다이얼로그
+    document.querySelector('.register-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        dialog.confirm('도서를 등록하시겠어요?', () => {
+            document.querySelector('.register-form').submit();
+        });
+    });
+});
+
+window.addEventListener('pageshow', () => {
+    const overlay = document.getElementById('dialogOverlay');
+    if (overlay) overlay.classList.remove('active');
 });

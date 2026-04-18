@@ -65,6 +65,16 @@ document.querySelectorAll('.btn-like--api').forEach(btn => {
     });
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const flash = document.getElementById('flashData');
+    if (flash) {
+        const success = flash.dataset.success;
+        const error = flash.dataset.error;
+        if (success) dialog.alert(success);
+        else if (error) dialog.alert(error);
+    }
+});
+
 // 책 목록 클릭 시 상세 페이지 이동
 document.querySelectorAll('.book-item').forEach(function (item) {
     item.addEventListener('click', function (e) {
@@ -90,6 +100,23 @@ document.querySelectorAll('.book-item').forEach(function (item) {
             ensureBook(reserveBtn).then(function (bookId) {
                 location.href = '/books/' + bookId;
             }).catch(function () {});
+        }
+    });
+});
+
+// 하트 이미지 처리
+document.querySelectorAll('.btn-like').forEach(btn => {
+    const img = btn.querySelector('.like-img');
+
+    btn.addEventListener('mouseenter', () => {
+        img.src = '/user/images/mypage/likes-hover.png';
+    });
+
+    btn.addEventListener('mouseleave', () => {
+        if (btn.classList.contains('btn-like--active')) {
+            img.src = '/user/images/mypage/likes-active.png';
+        } else {
+            img.src = '/user/images/mypage/likes.png';
         }
     });
 });

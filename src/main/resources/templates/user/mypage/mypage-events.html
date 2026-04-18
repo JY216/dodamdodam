@@ -12,6 +12,12 @@
 <body>
 
 <header th:replace="~{fragment/common :: nav}"></header>
+<div th:replace="~{fragment/common :: dialog}"></div>
+<div id="flashData"
+     th:data-success="${successMsg}"
+     th:data-error="${errorMsg}"
+     style="display:none;">
+</div>
 
 <main class="events-main">
     <div class="events-container">
@@ -60,8 +66,7 @@
                     <form th:if="${app.eventStatus == 'OPEN'}"
                           th:action="@{/events/{id}/cancel(id=${app.eventId})}" method="post">
                         <input type="hidden" name="redirect" value="/mypage/events">
-                        <button type="submit" class="btn-cancel-event"
-                                onclick="return confirm('신청을 취소하시겠어요?')">
+                        <button type="submit" class="btn-cancel-event">
                             신청 취소
                         </button>
                     </form>
@@ -81,5 +86,7 @@
 </main>
 
 <footer th:replace="~{fragment/common :: footer}"></footer>
+<script src="/assets/scripts/common.js"></script>
+<script src="/user/scripts/mypage/events.js"></script>
 </body>
 </html>

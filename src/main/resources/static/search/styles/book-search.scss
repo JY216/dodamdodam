@@ -284,20 +284,21 @@
 .btn-like {
   background: none;
   border: none;
-  font-size: 1.25rem;
-  color: $global-border-color;
   cursor: pointer;
   padding: 0.25rem;
-  transition: color 0.2s ease, transform 0.1s ease;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
 
-  &:hover {
-    color: #e53e3e;
-    transform: scale(1.1);
+  .like-img {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+    transition: transform 0.1s ease;
   }
 
-  &--active {
-    color: #e53e3e;
+  &:hover .like-img {
+    transform: scale(1.1);
   }
 }
 

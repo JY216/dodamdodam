@@ -12,9 +12,12 @@
 <body>
 
 <header th:replace="~{fragment/common :: nav}"></header>
-<!-- 알림 메시지 -->
-<div class="alert alert--success" th:if="${successMsg}" th:text="${successMsg}"></div>
-<div class="alert alert--error" th:if="${errorMsg}" th:text="${errorMsg}"></div>
+<div th:replace="~{fragment/common :: dialog}"></div>
+<div id="flashData"
+     th:data-success="${successMsg}"
+     th:data-error="${errorMsg}"
+     style="display:none;">
+</div>
 
 <main class="loans-main">
     <div class="loans-container">
@@ -92,6 +95,7 @@
 </main>
 
 <footer th:replace="~{fragment/common :: footer}"></footer>
-
+<script src="/assets/scripts/common.js"></script>
+<script src="/user/scripts/mypage/loans.js"></script>
 </body>
 </html>

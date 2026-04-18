@@ -131,8 +131,8 @@ public class AdminController {
             case "circulation-status" -> {
                 if (loanKeyword != null && !loanKeyword.trim().isEmpty()) {
                     List<LoanEntity> loans = loanMapper.searchLoans(loanKeyword.trim(), pageSize, offset);
-                    int totalCount = loanMapper.countSearchLoans(loanKeyword.trim());
                     loans = loans.stream().filter(l -> l.getStatus().equals("LOANED")).toList();
+                    int totalCount = loans.size();
                     loans.forEach(loan -> {
                         if (loan.getDueDate() != null) {
                             long diff = java.time.temporal.ChronoUnit.DAYS.between(

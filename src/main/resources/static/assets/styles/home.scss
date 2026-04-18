@@ -36,6 +36,33 @@
   }
 }
 
+.fab {
+  position: fixed;
+  bottom: 1.75rem;
+  right: 1.75rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  background: $global-color-primary;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0.25rem 1rem rgba(85, 177, 78, 0.4);
+  z-index: 1000;
+  transition: background 0.2s, transform 0.2s;
+
+  &:hover {
+    background: $global-color-primary-dark;
+    transform: scale(1.06);
+  }
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: #ffffff;
+  }
+}
+
 .loan-banner {
   background-color: rgba($global-color-primary, 0.25);
   border-radius: $global-border-radius-md;

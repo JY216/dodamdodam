@@ -494,3 +494,29 @@
     font-weight: 700;
   }
 }
+
+// 대출/반납 처리 테이블
+.circulation-table {
+  th:nth-child(1) { width: 5%; }   // 번호
+  th:nth-child(2) { width: 7%; }   // 회원명
+  th:nth-child(3) { width: 18%; }  // 도서명
+  th:nth-child(4) { width: 8%; }   // 저자
+  th:nth-child(5) { width: 10%; }  // 예약일
+  th:nth-child(6) { width: 10%; }  // 대출일
+  th:nth-child(7) { width: 10%; }  // 반납 예정일
+  th:nth-child(8) { width: 9%; }   // 상태
+  th:nth-child(9) { width: 8%; }   // 처리
+}
+
+// 대출 기록 테이블
+.circulation-history-table {
+  th:nth-child(1) { width: 5%; }   // 번호
+  th:nth-child(2) { width: 7%; }   // 회원명
+  th:nth-child(3) { width: 15%; }  // 도서명
+  th:nth-child(4) { width: 8%; }   // 저자
+  th:nth-child(5) { width: 10%; }  // 예약일
+  th:nth-child(6) { width: 10%; }  // 대출일
+  th:nth-child(7) { width: 10%; }  // 반납 예정일
+  th:nth-child(8) { width: 10%; }  // 실제 반납일
+  th:nth-child(9) { width: 8%; }   // 상태
+}
