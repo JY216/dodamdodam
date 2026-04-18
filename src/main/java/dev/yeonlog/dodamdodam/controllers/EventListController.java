@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,5 +48,15 @@ public class EventListController {
     public ResponseEntity<List<EventApplicantDto>> getApplicants(@PathVariable Long eventId) {
         List<EventApplicantDto> applicants = eventListMapper.findApplicantsByEventId(eventId);
         return ResponseEntity.ok(applicants);
+    }
+
+    @RequestMapping(value = "/event-list/{eventId}/applicants/{applicationId}/status", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE)
+    public String updateApplicationStatus(
+            @PathVariable Long eventId,
+            @PathVariable Long applicationId,
+            @RequestParam String status,
+            RedirectAttributes redirectAttributes) {
+        eventListMapper.updateApplicationStatus(applicationId, status);
+        return "redirect:/admin/event-list";
     }
 }
