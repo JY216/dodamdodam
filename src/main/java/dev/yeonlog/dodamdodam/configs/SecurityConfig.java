@@ -33,9 +33,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")  // 관리자만
 
-                        .requestMatchers("/events/*/apply", "/events/*/cancel", "/mypage/events", "/mypage/loans/extend").authenticated() // 로그인 필요
+                        .requestMatchers("/events/*/apply", "/events/*/cancel", "/mypage/events", "/mypage/loans/extend", "/journal/**").authenticated() // 로그인 필요
 
-                        .requestMatchers("/", "/login", "/register", "/search", "/bestseller", "/assets/**", "/user/**", "/ai/**", "/mypage/**", "/wish-book", "/wish-book/**", "/books/like", "/books/ensure", "/mypage/likes", "/books/unlike", "/mypage/wish-books", "/events/**", "/find-account", "/find-id", "/reset-password/**", "/notices", "/notices/**", "/register/check-id").permitAll() // 누구나
+                        .requestMatchers("/", "/login", "/register", "/search", "/bestseller", "/assets/**", "/user/**", "/ai/**", "/mypage/**", "/wish-book", "/wish-book/**", "/books/like", "/books/ensure", "/mypage/likes", "/books/unlike", "/mypage/wish-books", "/events/**", "/find-account", "/find-id", "/reset-password/**", "/notices", "/notices/**", "/register/check-id", "/journal/assets/**").permitAll() // 누구나
 
                         .anyRequest().permitAll()
                 )

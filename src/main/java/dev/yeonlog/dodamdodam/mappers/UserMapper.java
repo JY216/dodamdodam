@@ -15,4 +15,6 @@ public interface UserMapper {
     UserEntity selectByEmail(@Param("email") String email);
 
     void updatePassword(@Param("userId") String userId, @Param("password") String password);
+
+    void updateProfile(UserEntity user);
 }

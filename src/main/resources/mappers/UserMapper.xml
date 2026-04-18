@@ -43,4 +43,16 @@
         SET `password` = #{password}
         WHERE `user_id` = #{userId}
     </update>
+    <update id="updateProfile">
+        UPDATE `dodamdodam`.`users`
+        SET
+            `name`              = #{name},
+            `mobile_first`      = #{mobileFirst},
+            `mobile_second`     = #{mobileSecond},
+            `mobile_third`      = #{mobileThird},
+            `address_primary`   = #{addressPrimary},
+            `address_secondary` = #{addressSecondary},
+            `updated_at`        = NOW()
+        WHERE `user_id` = #{userId}
+    </update>
 </mapper>

@@ -14,4 +14,6 @@ public interface EventListMapper {
     int countAll();
 
     List<EventApplicantDto> findApplicantsByEventId(@Param("eventId") Long eventId);
+
+    void updateApplicationStatus(@Param("id") Long id, @Param("status") String status);
 }

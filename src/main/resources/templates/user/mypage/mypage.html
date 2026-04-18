@@ -121,6 +121,35 @@
                 </div>
             </a>
 
+            <!-- 일지 쓰기 -->
+            <a th:href="@{/journal}" class="mypage-card">
+                <div class="mypage-card-icon">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                </div>
+                <div class="mypage-card-body">
+                    <p class="mypage-card-label">독서 일지</p>
+                    <p class="mypage-card-count">→</p>
+                </div>
+            </a>
+
+            <!-- 관리자 페이지 (관리자만 표시) -->
+            <a th:href="@{/admin/dashboard}" class="mypage-card" sec:authorize="hasRole('ADMIN')">
+                <div class="mypage-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <div class="mypage-card-body">
+                    <p class="mypage-card-label">관리자 페이지</p>
+                    <p class="mypage-card-count">→</p>
+                </div>
+            </a>
         </div>
     </div>
 </main>

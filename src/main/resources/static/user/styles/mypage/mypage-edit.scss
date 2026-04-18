@@ -1,0 +1,215 @@
+@import "../../../assets/styles/def";
+@import "../../../assets/styles/common";
+@import "../../../assets/styles/fragments";
+
+.edit-main {
+  background: #f5f7f5;
+  min-height: calc(100vh - 4rem);
+  padding: 3rem 0;
+}
+
+.edit-inner {
+  @include container;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// 헤더
+.edit-header {
+  margin-bottom: 0.5rem;
+}
+
+.edit-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: #4caf50;
+  text-decoration: none;
+  margin-bottom: 1rem;
+
+  &:hover { text-decoration: underline; }
+}
+
+.edit-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.3rem;
+}
+
+.edit-sub {
+  font-size: 0.875rem;
+  color: #888888;
+}
+
+// 카드
+.edit-card {
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.edit-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #333333;
+  padding-bottom: 0.75rem;
+  border-bottom: 0.0625rem solid #f0f0f0;
+
+  svg {
+    color: #4caf50;
+    flex-shrink: 0;
+  }
+}
+
+// 읽기 전용 행
+.edit-readonly-row {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 0.0625rem solid #f9f9f9;
+
+  .edit-readonly-label {
+    font-size: 0.8rem;
+    color: #aaaaaa;
+    width: 4rem;
+    flex-shrink: 0;
+  }
+
+  .edit-readonly-value {
+    font-size: 0.9rem;
+    color: #555555;
+  }
+}
+
+// 2열 폼 행
+.edit-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+// 폼 그룹
+.edit-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.edit-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #555555;
+}
+
+.edit-input {
+  width: 90%;
+  padding: 0.65rem 0.875rem;
+  border: 0.0625rem solid #e0e0e0;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: #333333;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+
+  &:focus { border-color: #4caf50; }
+  &::placeholder { color: #cccccc; }
+}
+
+.edit-input-secondary {
+  margin-top: 0.4rem;
+  width: calc(100% - 6rem);
+}
+
+// 휴대폰 번호
+.edit-mobile-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.edit-input-mobile {
+  flex: 1;
+  text-align: center;
+}
+
+.edit-mobile-dash {
+  font-size: 1rem;
+  color: #cccccc;
+  flex-shrink: 0;
+}
+
+// 주소 찾기
+.edit-address-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  .edit-input {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.btn-address {
+  padding: 0.65rem 1rem;
+  border-radius: 0.5rem;
+  border: 0.0625rem solid #4caf50;
+  background: #ffffff;
+  color: #4caf50;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: #4caf50;
+    color: #ffffff;
+  }
+}
+
+// 저장 버튼
+.edit-form-bottom {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.25rem;
+}
+
+.btn-save {
+  background: #4caf50;
+  color: #ffffff;
+  border: none;
+  border-radius: 62.4375rem;
+  padding: 0.6rem 1.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: #43a047; }
+}
+
+// 결과 메시지
+.edit-msg {
+  font-size: 0.82rem;
+  min-height: 1.2rem;
+  text-align: right;
+
+  &.success { color: #2e7d32; }
+  &.error   { color: #e53935; }
+}

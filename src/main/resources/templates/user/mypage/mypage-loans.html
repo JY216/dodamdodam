@@ -75,6 +75,9 @@
                         연장 완료
                     </button>
                 </div>
+                <a th:if="${loan.status == 'LOANED' or loan.status == 'RETURNED'}"
+                   th:href="@{/journal(title=${loan.bookTitle}, author=${loan.bookAuthor})}"
+                   class="btn-diary">일지 작성</a>
 
             </div>
         </div>

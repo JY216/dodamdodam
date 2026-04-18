@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dev.yeonlog.dodamdodam.mappers.BookDetailMapper">
+
+    <select id="findById" resultType="dev.yeonlog.dodamdodam.dtos.BookDetailDto">
+        SELECT
+            `b`.`id` AS `id`,
+            `b`.`isbn` AS `isbn`,
+            `b`.`title` AS `title`,
+            `b`.`author` AS `author`,
+            `b`.`publisher` AS `publisher`,
+            DATE_FORMAT(`b`.`publish_date`, '%Y.%m.%d') AS `publishDate`,
+            `b`.`cover_image` AS `coverImage`,
+            `b`.`total_quantity` AS `totalQuantity`,
+            `b`.`status` AS `status`,
+            GROUP_CONCAT(DISTINCT `c`.`name` ORDER BY `c`.`name` SEPARATOR ', ') AS `categoryName`
+        FROM `dodamdodam`.`books` `b`
+                 LEFT JOIN `dodamdodam`.`book_categories` AS `bc` ON `b`.`id` = `bc`.`book_id`
+                 LEFT JOIN `dodamdodam`.`categories` AS `c` ON `bc`.`category_id` = `c`.`id`
+        WHERE `b`.`id` = #{id}
+        GROUP BY `b`.`id`
+    </select>
+    <select id="countTotal" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `dodamdodam`.`book_copies`
+        WHERE `book_id` = #{bookId}
+    </select>
+
+    <select id="countLoaned" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `dodamdodam`.`book_copies`
+        WHERE `book_id` = #{bookId} AND `status` = 'LOANED'
+    </select>
+
+    <select id="countAvailable" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `dodamdodam`.`book_copies`
+        WHERE `book_id` = #{bookId} AND `status` = 'AVAILABLE'
+    </select>
+
+    <select id="isLiked" resultType="java.lang.Boolean">
+        SELECT COUNT(*) > 0 FROM `dodamdodam`.`book_likes`
+        WHERE `book_id` = #{bookId} AND `user_id` = #{userId}
+    </select>
+
+</mapper>

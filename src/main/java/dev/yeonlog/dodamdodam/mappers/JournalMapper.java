@@ -1,6 +1,6 @@
 package dev.yeonlog.dodamdodam.mappers;
 
-import dev.yeonlog.dodamdodam.dtos.JournalDto;
+import dev.yeonlog.dodamdodam.entities.JournalEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -8,18 +8,17 @@ import java.util.List;
 
 @Mapper
 public interface JournalMapper {
+    List<JournalEntity> findAllByUserId(@Param("userId") String userId);
 
-//    List<JournalDto> findAllByUserId(@Param("userId") Long userId, @Param("keyword") String keyword);
-//
-//    JournalDto findById(@Param("id") Long id, @Param("userId") Long userId);
-//
-//    void insert(JournalDto dto);
-//
-//    int delete(@Param("id") Long id, @Param("userId") Long userId);
-//
-//    int countDone(@Param("userId") Long userId);
-//
-//    Integer findGoalByUserId(@Param("userId") Long userId);
-//
-//    void updateGoal(@Param("userId") Long userId, @Param("goal") int goal);
+    JournalEntity findById(@Param("id") Long id, @Param("userId") String userId);
+
+    void insert(JournalEntity journal);
+
+    void deleteById(@Param("id") Long id, @Param("userId") String userId);
+
+    Integer findGoal(@Param("userId") String userId);
+
+    void upsertGoal(@Param("userId") String userId, @Param("goalCount") int goalCount);
+
+    int countDoneByUserId(@Param("userId") String userId);
 }

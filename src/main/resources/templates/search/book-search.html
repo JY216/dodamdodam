@@ -62,7 +62,9 @@
 
             <!-- 결과 목록 -->
             <ul class="book-list" th:unless="${#lists.isEmpty(books)}">
-                <li class="book-item" th:each="book : ${books}" th:data-book-id="${book.id}">
+                <li class="book-item" th:each="book : ${books}"
+                    th:data-book-id="${book.id}"
+                    th:data-url="${book.id != null} ? '/books/' + ${book.id} : null">
                     <!-- 책 표지 -->
                     <div class="book-cover">
                         <img th:src="${book.coverImage}" th:alt="${book.title}"

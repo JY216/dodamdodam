@@ -7,12 +7,12 @@
 
         <div class="page-header">
             <div>
-                <h1>회원 상태 제어</h1>
+                <h1>회원 상세 조회</h1>
                 <p>회원의 이용 상태를 정지하거나 해제할 수 있어요.</p>
             </div>
         </div>
 
-        <form method="get" th:action="@{/admin/users/status}" class="search-bar">
+        <form method="get" th:action="@{/admin/status}" class="search-bar">
             <input type="text" name="name" th:value="${name}" placeholder="이름으로 검색" />
             <input type="text" name="mobile" th:value="${mobile}" placeholder="전화번호로 검색" />
             <button type="submit" class="btn-search">검색</button>

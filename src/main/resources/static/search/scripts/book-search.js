@@ -64,3 +64,32 @@ document.querySelectorAll('.btn-like--api').forEach(btn => {
         } catch (e) { alert('오류가 발생했습니다.'); }
     });
 });
+
+// 책 목록 클릭 시 상세 페이지 이동
+document.querySelectorAll('.book-item').forEach(function (item) {
+    item.addEventListener('click', function (e) {
+        // 버튼 클릭 시엔 이동 안 함
+        if (e.target.closest('button') || e.target.closest('a') || e.target.closest('form')) return;
+        const url = item.dataset.url;
+        if (url) location.href = url;
+    });
+});
+
+document.querySelectorAll('.book-item').forEach(function (item) {
+    item.addEventListener('click', function (e) {
+        if (e.target.closest('button') || e.target.closest('a') || e.target.closest('form')) return;
+
+        const url = item.dataset.url;
+        if (url) {
+            // DB에 있는 책
+            location.href = url;
+        } else {
+            // API에만 있는 책 → ensureBook 후 이동
+            const reserveBtn = item.querySelector('.btn-reserve--api');
+            if (!reserveBtn) return;
+            ensureBook(reserveBtn).then(function (bookId) {
+                location.href = '/books/' + bookId;
+            }).catch(function () {});
+        }
+    });
+});

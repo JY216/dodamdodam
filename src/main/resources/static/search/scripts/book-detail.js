@@ -1,42 +1,29 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
 
-    // 도서 목록 -> 상세 페이지 이동
-    // .book-list 가 존재하는 페이지(검색 결과)에서만 실행
-    const bookList = document.querySelector('.book-list');
-    if (bookList) {
-        bookList.addEventListener('click', (e) => {
+    // ── 관심 도서 버튼 ─────────────────────────────────────────────
+    const likeBtn = document.querySelector('.js-like-btn');
+    if (likeBtn) {
+        likeBtn.addEventListener('click', function () {
+            const bookId  = likeBtn.dataset.id;
+            const isLiked = likeBtn.dataset.liked === 'true';
 
-            if (e.target.closest('.book-action')) return;
-
-            const item = e.target.closest('.book-item');
-            if (!item) return;
-
-            // th:each 로 렌더링된 bookId 값을 data 속성으로 읽어옴
-            const bookId = item.dataset.bookId;
-            if (bookId) {
-                window.location.href = `/books/${bookId}`;
-            }
+            fetch('/books/like', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'bookId=' + bookId
+            })
+                .then(function (res) {
+                    if (res.status === 401) { location.href = '/login'; return null; }
+                    return res.json();
+                })
+                .then(function (data) {
+                    if (!data) return;
+                    const nowLiked = data.liked;
+                    likeBtn.dataset.liked = nowLiked;
+                    likeBtn.classList.toggle('active', nowLiked);
+                    likeBtn.querySelector('span').textContent = nowLiked ? '관심 해제' : '관심 도서';
+                })
+                .catch(function () {});
         });
     }
-
-    // 뒤로가기
-    const backBtn = document.querySelector('.back-btn');
-    if (backBtn) {
-        backBtn.addEventListener('click', () => history.back());
-    }
-
-    // 하트(찜) 토글
-    const heartBtn = document.getElementById('heartBtn');
-    if (heartBtn) {
-        heartBtn.addEventListener('click', () => {
-            const svg = heartBtn.querySelector('svg');
-            heartBtn.classList.toggle('on');
-            if (heartBtn.classList.contains('on')) {
-                svg.setAttribute('stroke', '#e74c3c');
-            } else {
-                svg.setAttribute('stroke', '#aaa');
-            }
-        });
-    }
-
 });

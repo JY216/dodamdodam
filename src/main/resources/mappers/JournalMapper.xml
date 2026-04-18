@@ -1,4 +1,67 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="dev.yeonlog.dodamdodam.mappers.JournalMapper">
+    <insert id="insert">
+        INSERT INTO `dodamdodam`.`journals`
+        (`user_id`, `title`, `book_title`, `author`, `content`, `date`, `star`, `status`, `pages`)
+        VALUES
+            (#{userId}, #{title}, #{bookTitle}, #{author}, #{content},
+             #{date}, #{star}, #{status}, #{pages})
+    </insert>
+
+    <insert id="upsertGoal">
+        INSERT INTO `dodamdodam`.`reading_goals` (`user_id`, `goal_count`)
+        VALUES (#{userId}, #{goalCount})
+        ON DUPLICATE KEY UPDATE `goal_count` = #{goalCount}
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM `dodamdodam`.`journals`
+        WHERE id = #{id} AND user_id = #{userId}
+    </delete>
+
+    <select id="findAllByUserId" resultType="dev.yeonlog.dodamdodam.entities.JournalEntity">
+        SELECT
+            `id` AS `id`,
+            `user_id` AS `userId`,
+            `title` AS `title`,
+            `book_title` AS `bookTitle`,
+            `author` AS `author`,
+            `content` AS `content`,
+            DATE_FORMAT(`date`, '%Y-%m-%d') AS `date`,
+            `star` AS `star`,
+            `status` AS `status`,
+            `pages` AS `pages`,
+            DATE_FORMAT(`created_at`, '%Y-%m-%dT%H:%i:%s') AS `createdAt`
+        FROM `dodamdodam`.`journals`
+        WHERE `user_id` = #{userId}
+        ORDER BY `date` DESC, `created_at` DESC
+    </select>
+
+    <select id="findById" resultType="dev.yeonlog.dodamdodam.entities.JournalEntity">
+        SELECT
+            `id` AS `id`,
+            `user_id` AS `userId`,
+            `title` AS `title`,
+            `book_title` AS `bookTitle`,
+            `author` AS `author`,
+            `content`,
+            DATE_FORMAT(`date`, '%Y-%m-%d') AS `date`,
+            `star` AS `star`,
+            `status` AS `status`,
+            `pages` AS `pages`,
+            DATE_FORMAT(`created_at`, '%Y-%m-%dT%H:%i:%s') AS `createdAt`
+        FROM `dodamdodam`.`journals`
+        WHERE `id` = #{id} AND `user_id` = #{userId}
+    </select>
+
+    <select id="findGoal" resultType="java.lang.Integer">
+        SELECT `goal_count` FROM `dodamdodam`.`reading_goals`
+        WHERE `user_id` = #{userId}
+    </select>
+
+    <select id="countDoneByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `dodamdodam`.`journals`
+        WHERE `user_id` = #{userId} AND `status` = 'done'
+    </select>
 </mapper>

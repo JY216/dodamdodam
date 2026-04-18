@@ -3,6 +3,7 @@ package dev.yeonlog.dodamdodam.controllers;
 import dev.yeonlog.dodamdodam.entities.*;
 import dev.yeonlog.dodamdodam.mappers.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import dev.yeonlog.dodamdodam.services.UserService;
 import jakarta.mail.MessagingException;
@@ -28,6 +29,7 @@ public class UserController {
     private final BookLikeMapper bookLikeMapper;
     private final WishBookMapper wishBookMapper;
     private final EventMapper eventMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLogin() {
@@ -298,5 +300,76 @@ public class UserController {
         model.addAttribute("applications", applications);
 
         return "user/mypage/mypage-events";
+    }
+
+    // 정보 수정 페이지
+    @RequestMapping(value = "/mypage/edit", method = RequestMethod.GET)
+    public String editPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (userDetails == null) return "redirect:/login";
+        UserEntity user = userMapper.selectByUserId(userDetails.getUsername());
+        model.addAttribute("user", user);
+        return "user/mypage/mypage-edit";
+    }
+
+    // 프로필 수정 (이름, 연락처, 주소)
+    @RequestMapping(value = "/mypage/edit/profile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> updateProfile(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam String name,
+            @RequestParam String mobileFirst,
+            @RequestParam String mobileSecond,
+            @RequestParam String mobileThird,
+            @RequestParam(required = false) String addressPrimary,
+            @RequestParam(required = false) String addressSecondary) {
+
+        Map<String, Object> response = new HashMap<>();
+        if (userDetails == null) {
+            response.put("result", "FAILURE");
+            return response;
+        }
+
+        UserEntity user = new UserEntity();
+        user.setUserId(userDetails.getUsername());
+        user.setName(name);
+        user.setMobileFirst(mobileFirst);
+        user.setMobileSecond(mobileSecond);
+        user.setMobileThird(mobileThird);
+        user.setAddressPrimary(addressPrimary);
+        user.setAddressSecondary(addressSecondary);
+
+        userMapper.updateProfile(user);
+        response.put("result", "SUCCESS");
+        return response;
+    }
+
+    // 비밀번호 변경
+    @RequestMapping(value = "/mypage/edit/password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> updatePassword(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam String currentPassword,
+            @RequestParam String newPassword,
+            @RequestParam String confirmPassword) {
+
+        Map<String, Object> response = new HashMap<>();
+        if (userDetails == null) {
+            response.put("result", "FAILURE");
+            return response;
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            response.put("result", "FAILURE_MISMATCH");
+            return response;
+        }
+
+        UserEntity user = userMapper.selectByUserId(userDetails.getUsername());
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            response.put("result", "FAILURE_WRONG_PASSWORD");
+            return response;
+        }
+
+        userMapper.updatePassword(userDetails.getUsername(), passwordEncoder.encode(newPassword));
+        response.put("result", "SUCCESS");
+        return response;
     }
 }
