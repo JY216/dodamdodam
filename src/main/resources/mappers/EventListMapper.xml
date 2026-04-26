@@ -19,7 +19,8 @@
             `e`.`status`         AS `status`,
             `e`.`poster_image`   AS `posterImage`,
             (SELECT COUNT(*) FROM `dodamdodam`.`event_applications` AS `ea`
-             WHERE `ea`.`event_id` = `e`.`id`) AS `applicantCount`
+             WHERE `ea`.`event_id` = `e`.`id`
+               AND `ea`.`status` != 'REJECTED') AS `applicantCount`
         FROM `dodamdodam`.`events` AS `e`
         ORDER BY `e`.`event_start_at` DESC
         LIMIT #{limit} OFFSET #{offset}
