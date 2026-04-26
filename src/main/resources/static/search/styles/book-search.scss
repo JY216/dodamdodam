@@ -465,3 +465,26 @@
     font-size: 0.8rem;
   }
 }
+
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(1rem);
+  background-color: $global-text-color;
+  color: $global-white;
+  padding: 0.75rem 1.5rem;
+  border-radius: $global-border-radius-pill;
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9999;
+  white-space: nowrap;
+
+  &.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

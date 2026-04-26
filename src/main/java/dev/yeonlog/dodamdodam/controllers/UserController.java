@@ -105,7 +105,8 @@ public class UserController {
 
     // 로그인
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody Map<String, Object> postLogin(@RequestParam(value = "userId", required = false) String userId,
+    @ResponseBody
+    public Map<String, Object> postLogin(@RequestParam(value = "userId", required = false) String userId,
                                                 @RequestParam(value = "password", required = false) String password,
                                                 HttpSession session) {
         Map<String, Object> response = new HashMap<>();
