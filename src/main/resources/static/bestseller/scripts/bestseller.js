@@ -47,6 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 data.books.forEach(book => bookGrid.appendChild(createBookCard(book)));
                 renderPagination(data.totalCount);
             } else {
+                const existing = document.getElementById('pagination');
+                if (existing) existing.remove();
                 bookGrid.innerHTML = `<div class="empty-result"><p>도서 정보를 불러올 수 없어요.</p></div>`;
             }
         } catch (e) {
@@ -123,3 +125,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchBooks();
 });
+
+// 모바일 툴팁 클릭 처리
+const tooltipTrigger = document.querySelector('.tooltip-trigger');
+const tooltipBox = document.querySelector('.tooltip-box');
+
+if (tooltipTrigger && tooltipBox) {
+    tooltipTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        tooltipBox.classList.toggle('tooltip-visible');
+    });
+
+    document.addEventListener('click', () => {
+        tooltipBox.classList.remove('tooltip-visible');
+    });
+}

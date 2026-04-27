@@ -231,7 +231,8 @@ ul, li {
   border-radius: 0.75rem;
   padding: 2.25rem 2.25rem 1.75rem;
   width: 26rem;
-  height: 15rem;
+  min-height: 15rem;
+  height: auto;
   box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
   display: grid;
   grid-template-rows: 1fr auto;
@@ -246,6 +247,9 @@ ul, li {
   text-align: center;
   align-self: center;
   margin-bottom: 2rem;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  white-space: pre-line;
 }
 
 .dialog-actions {
@@ -565,6 +569,53 @@ ul, li {
 .btn-diary:hover {
   background: #4caf50;
   color: #ffffff;
+}
+
+@media (max-width: 1024px) {
+  .loan-item {
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+  }
+  .btn-extend {
+    padding: 0 1rem;
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 768px) {
+  .loans-main {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+  }
+  .loans-title {
+    font-size: 1.375rem;
+  }
+  .loan-item {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+  .loan-cover {
+    width: 3.5rem;
+    height: 4.5rem;
+  }
+  .loan-title {
+    font-size: 0.9rem;
+  }
+  .loan-meta {
+    font-size: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .loan-action {
+    width: 100%;
+  }
+  .btn-extend {
+    width: 100%;
+    justify-content: center;
+  }
+  .btn-diary {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /*# sourceMappingURL=mypage-loans.css.map */

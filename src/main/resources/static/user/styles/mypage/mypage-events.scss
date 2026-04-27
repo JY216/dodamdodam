@@ -190,3 +190,24 @@
     background-color: $global-color-primary-dark;
   }
 }
+
+@include tablet {
+  .event-item {
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+  }
+}
+
+@include mobile {
+  .events-main { padding-top: 1.5rem; padding-bottom: 2rem; }
+  .events-title { font-size: 1.375rem; }
+  .event-item {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+  .event-item-title { font-size: 0.9rem; }
+  .event-item-meta { font-size: 0.75rem; flex-wrap: wrap; }
+  .event-item-action { width: 100%; }
+  .btn-cancel-event { width: 100%; justify-content: center; }
+}

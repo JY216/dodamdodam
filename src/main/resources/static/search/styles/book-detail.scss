@@ -233,3 +233,74 @@
   text-align: center;
   padding: 1.5rem 0;
 }
+
+@include tablet {
+  .detail-top {
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .detail-cover-wrap {
+    width: 9rem;
+  }
+
+  .detail-title {
+    font-size: 1.25rem;
+  }
+}
+
+@include mobile {
+  .detail-main {
+    padding: 1.5rem 0;
+  }
+
+  .detail-container {
+    gap: 1.25rem;
+  }
+
+  .detail-top {
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    align-items: center;
+  }
+
+  .detail-cover-wrap {
+    width: 8rem;
+  }
+
+  .detail-info {
+    width: 100%;
+  }
+
+  .detail-title {
+    font-size: 1.1rem;
+  }
+
+  .detail-author-pub {
+    font-size: 0.8rem;
+  }
+
+  .detail-actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    .btn-reserve, .btn-like {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  .detail-stock {
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .detail-section {
+    padding: 1.25rem;
+  }
+
+  .detail-description {
+    font-size: 0.875rem;
+  }
+}

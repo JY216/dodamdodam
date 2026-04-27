@@ -23,7 +23,7 @@ public class JournalController {
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String journalPage() {
-        return "/journal";
+        return "journal";
     }
 
     // 일지 목록 조회

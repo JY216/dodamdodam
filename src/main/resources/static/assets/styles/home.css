@@ -231,7 +231,8 @@ ul, li {
   border-radius: 0.75rem;
   padding: 2.25rem 2.25rem 1.75rem;
   width: 26rem;
-  height: 15rem;
+  min-height: 15rem;
+  height: auto;
   box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
   display: grid;
   grid-template-rows: 1fr auto;
@@ -246,6 +247,9 @@ ul, li {
   text-align: center;
   align-self: center;
   margin-bottom: 2rem;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  white-space: pre-line;
 }
 
 .dialog-actions {
@@ -383,6 +387,7 @@ ul, li {
   justify-content: space-between;
   padding: 0.875rem 1.5rem;
   animation: fadeIn 0.4s ease;
+  gap: 1rem;
 }
 .loan-slide.active {
   display: flex;
@@ -400,6 +405,11 @@ ul, li {
   font-size: 1rem;
   font-weight: 700;
   color: #459C3F;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
 }
 
 .loan-diary {

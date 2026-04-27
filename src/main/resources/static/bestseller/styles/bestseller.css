@@ -231,7 +231,8 @@ ul, li {
   border-radius: 0.75rem;
   padding: 2.25rem 2.25rem 1.75rem;
   width: 26rem;
-  height: 15rem;
+  min-height: 15rem;
+  height: auto;
   box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
   display: grid;
   grid-template-rows: 1fr auto;
@@ -246,6 +247,9 @@ ul, li {
   text-align: center;
   align-self: center;
   margin-bottom: 2rem;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  white-space: pre-line;
 }
 
 .dialog-actions {
@@ -658,6 +662,30 @@ ul, li {
   border-color: #55B14E;
   color: #ffffff;
   font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .bestseller-tooltip-wrap {
+    position: relative;
+  }
+  .tooltip-box {
+    position: absolute;
+    left: 0;
+    top: 3rem;
+    transform: none;
+    white-space: normal;
+    width: 12rem;
+    text-align: left;
+    z-index: 9999;
+  }
+  .tooltip-box::before {
+    display: none;
+  }
+  .tooltip-box.tooltip-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
 }
 
 /*# sourceMappingURL=bestseller.css.map */

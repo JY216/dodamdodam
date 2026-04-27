@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const title = btn.dataset.title;
             const page = btn.dataset.page;
 
-            dialog.confirm(`"${title}" 행사를 삭제하시겠어요? 이 작업은 되돌릴 수 없어요.`, () => {
+            dialog.confirm(`"${title}" 행사를 삭제하시겠어요?\n이 작업은 되돌릴 수 없어요.`, () => {
                 const form = document.createElement('form');
                 form.method = 'post';
                 form.action = `/admin/events/${id}/delete`;

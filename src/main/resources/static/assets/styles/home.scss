@@ -78,6 +78,7 @@
   justify-content: space-between;
   padding: 0.875rem 1.5rem;
   animation: fadeIn 0.4s ease;
+  gap: 1rem;
 
   &.active {
     display: flex;
@@ -93,6 +94,11 @@
   font-size: 1rem;
   font-weight: 700;
   color: $global-color-primary-dark;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
 }
 
 .loan-diary {

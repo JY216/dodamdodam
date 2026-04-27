@@ -231,7 +231,8 @@ ul, li {
   border-radius: 0.75rem;
   padding: 2.25rem 2.25rem 1.75rem;
   width: 26rem;
-  height: 15rem;
+  min-height: 15rem;
+  height: auto;
   box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
   display: grid;
   grid-template-rows: 1fr auto;
@@ -246,6 +247,9 @@ ul, li {
   text-align: center;
   align-self: center;
   margin-bottom: 2rem;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  white-space: pre-line;
 }
 
 .dialog-actions {
@@ -485,6 +489,41 @@ ul, li {
 }
 .btn-go-home:hover {
   background-color: #459C3F;
+}
+
+@media (max-width: 1024px) {
+  .event-item {
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+  }
+}
+@media (max-width: 768px) {
+  .events-main {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+  }
+  .events-title {
+    font-size: 1.375rem;
+  }
+  .event-item {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+  .event-item-title {
+    font-size: 0.9rem;
+  }
+  .event-item-meta {
+    font-size: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .event-item-action {
+    width: 100%;
+  }
+  .btn-cancel-event {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /*# sourceMappingURL=mypage-events.css.map */

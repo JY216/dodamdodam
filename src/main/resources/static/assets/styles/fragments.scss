@@ -221,7 +221,6 @@
 }
 
 // 공통 다이얼로그
-// 공통 다이얼로그
 .dialog-overlay {
   visibility: hidden;
   pointer-events: none;
@@ -244,7 +243,8 @@
   border-radius: 0.75rem;
   padding: 2.25rem 2.25rem 1.75rem;
   width: 26rem;
-  height: 15rem;
+  min-height: 15rem;
+  height: auto;
   box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
   display: grid;
   grid-template-rows: 1fr auto;
@@ -259,6 +259,9 @@
   text-align: center;
   align-self: center;
   margin-bottom: 2rem;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  white-space: pre-line;
 }
 
 .dialog-actions {

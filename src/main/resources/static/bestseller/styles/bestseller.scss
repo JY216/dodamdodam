@@ -367,3 +367,30 @@
     font-weight: 700;
   }
 }
+
+@include mobile {
+  .bestseller-tooltip-wrap {
+    position: relative;
+  }
+
+  .tooltip-box {
+    position: absolute;
+    left: 0;
+    top: 3rem;
+    transform: none;
+    white-space: normal;
+    width: 12rem;
+    text-align: left;
+    z-index: 9999;
+
+    &::before {
+      display: none;
+    }
+
+    &.tooltip-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+  }
+}
