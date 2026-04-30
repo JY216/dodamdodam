@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailNewBtn   = document.querySelector('.detail-new-btn');
     const detailWriteBtn = document.querySelector('.detail-btn:not(.del)');
     const detailDelBtn   = document.querySelector('.detail-btn.del');
+    const btnHome = document.querySelector('.btn-home');
 
     // 초기 데이터 로드
     setTodayDate();
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 journals = data;
                 renderSidebar();
             })
-            .catch(function () { showToast('일지를 불러오지 못했어요.'); });
+            .catch(function () { window.dialog.alert('일지를 불러오지 못했어요.'); });
     }
 
     function loadGoal() {
@@ -154,11 +155,21 @@ document.addEventListener('DOMContentLoaded', () => {
         sliderVal.textContent = pageSlider.value + ' p';
     });
 
-    btnCancel.addEventListener('click', resetForm);
+    btnCancel.addEventListener('click', function() {
+        window.dialog.confirm('작성 중인 내용을 초기화하시겠습니까?', function() {
+            resetForm();
+        });
+    });
     btnSubmit.addEventListener('click', submitJournal);
     detailNewBtn.addEventListener('click', showWriteForm);
     detailWriteBtn.addEventListener('click', showWriteForm);
     detailDelBtn.addEventListener('click', function () { deleteJournal(); });
+
+    btnHome.addEventListener('click', function() {
+        window.dialog.confirm('메인페이지로 돌아갈까요? 작성 중인 내용은 저장되지 않습니다.', function() {
+            location.href = '/';
+        });
+    });
 
     // ── 함수 정의 ─────────────────────────────────────────────────
 
@@ -238,10 +249,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const status  = document.getElementById('readStatus').value;
         const pages   = parseInt(pageSlider.value) || 0;
 
-        if (!title)   { alert('일지 제목을 입력해주세요.');  return; }
-        if (!date)    { alert('독서 날짜를 선택해주세요.');  return; }
-        if (!book)    { alert('책 제목을 입력해주세요.');    return; }
-        if (!content) { alert('독서 감상을 입력해주세요.');  return; }
+        if (!title)   { window.dialog.alert('일지 제목을 입력해주세요.');  return; }
+        if (!date)    { window.dialog.alert('독서 날짜를 선택해주세요.');  return; }
+        if (!book)    { window.dialog.alert('책 제목을 입력해주세요.');    return; }
+        if (!content) { window.dialog.alert('독서 감상을 입력해주세요.');  return; }
 
         const dto = { title, date, bookTitle: book, author, star: currentStar, status, pages, content };
 
@@ -255,8 +266,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 renderSidebar();
                 selectJournal(saved.id);
+                window.dialog.alert('저장이 완료되었습니다.');
             })
-            .catch(function () { showToast('저장에 실패했어요. 다시 시도해주세요.'); });
+            .catch(function () { window.dialog.alert('저장에 실패했어요. 다시 시도해주세요.'); });
     }
 
     function deleteJournal() {
@@ -265,20 +277,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function deleteJournalById(id) {
-        if (!confirm('이 일지를 삭제할까요?')) return;
-        const j = journals.find(function (x) { return x.id === id; });
+        window.dialog.confirm('이 일지를 삭제할까요?', function() {
+            const j = journals.find(function (x) { return x.id === id; });
 
-        deleteJournalFromServer(id)
-            .then(function () {
-                journals = journals.filter(function (x) { return x.id !== id; });
-                if (j && j.status === 'done' && readCount > 0) {
-                    readCount--;
-                    renderGoal();
-                }
-                if (id === activeId) showWriteForm();
-                renderSidebar(searchInput.value.trim());
-            })
-            .catch(function () { showToast('삭제에 실패했어요.'); });
+            deleteJournalFromServer(id)  // ← 들여쓰기 맞춰서 콜백 안으로
+                .then(function () {
+                    journals = journals.filter(function (x) { return x.id !== id; });
+                    if (j && j.status === 'done' && readCount > 0) {
+                        readCount--;
+                        renderGoal();
+                    }
+                    if (id === activeId) showWriteForm();
+                    renderSidebar(searchInput.value.trim());
+                })
+                .catch(function () { window.dialog.alert('삭제에 실패했어요.'); });
+        });
     }
 
     function resetForm() {
